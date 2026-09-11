@@ -54,17 +54,27 @@
 }
 
 :root {
+  /* The firm's own colour. Overridden per page in the inlined <style>. */
   --brand: #123b5e;
   --brand-ink: #ffffff;
   --brand-text: #123b5e;
-  --ink: #14181d;
-  --ink-2: #55606c;
-  --rule: #dfe3e8;
-  --ground: #ffffff;
-  --ground-2: #f5f7f9;
-  --bar: 62px;                 /* height of the sticky call bar on phones */
-  --gutter: 20px;
-  --measure: 68ch;
+
+  /* A WARM ground, not white. The pages these firms have today are cold
+   * default-white bootstrap templates; a warm paper is the cheapest single
+   * signal that someone chose it. */
+  --paper: #fbfaf8;
+  --paper-2: #f2f0ec;
+  --ink: #16171a;
+  --ink-2: #55585f;
+  /* The faint ink still has to clear 4.5:1 — on the FOOTER's darker ground,
+   * not just on paper. #8a8d94 read at 3.2:1 and the gate caught it on all
+   * three pages. "Muted" is a tone, not a licence to be unreadable. */
+  --ink-3: #66696f;
+  --rule: #e3e0da;
+
+  --measure: 44rem;
+  --gutter: 22px;
+  --bar: 56px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -73,141 +83,210 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--ground);
-  color: var(--ink);
-  font-family: 'Waraq Arabic Text', 'Noto Naskh Arabic', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Waraq Arabic Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 17px;
-  line-height: 1.75;
-  /* room for the sticky bar so the last line is never sat on */
+  line-height: 1.85;
+  color: var(--ink);
+  background: var(--paper);
   padding-bottom: calc(var(--bar) + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
 }
 @media (min-width: 820px) { body { padding-bottom: 0; } }
 
-img { max-width: 100%; height: auto; display: block; }
-a { color: inherit; }
+.wrap { max-width: var(--measure); margin-inline: auto; padding-inline: var(--gutter); }
 
-.wrap { max-width: 960px; margin-inline: auto; padding-inline: var(--gutter); }
+a { color: var(--brand-text); }
 
-/* --- masthead ------------------------------------------------------------ */
+/* --- the masthead --------------------------------------------------------
+ *
+ * NO COLOURED SLAB. The firm's colour appears here as a 5px rule across the
+ * very top and nowhere else at size. A full-bleed block of a company's brand
+ * colour with white text on it is the single fastest way to make a page look
+ * like a free template, which is exactly what this page must not look like.
+ * The name carries the page; the colour only marks it. */
 
-.top { background: var(--brand); color: var(--brand-ink); padding-block: 30px 26px; }
-.top__name { margin: 0; font-size: clamp(26px, 7vw, 40px); font-weight: 600; line-height: 1.25; }
+.top { padding-block: 30px 26px; border-bottom: 1px solid var(--rule); }
+.top::before {
+  content: ''; display: block; height: 5px; background: var(--brand);
+  position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 30;
+}
+
+/* The eyebrow is the only place a fact appears before the name: where they
+ * are and since when. Both come from the record or the line is not printed. */
+.top__eyebrow {
+  margin: 0 0 14px; font-size: 13px; font-weight: 600; color: var(--ink-3);
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.top__eyebrow span + span::before {
+  content: ''; display: inline-block; width: 3px; height: 3px; border-radius: 50%;
+  background: currentColor; vertical-align: middle; margin-inline-end: 10px;
+}
+
+.top__name {
+  margin: 0; font-weight: 600; color: var(--ink);
+  font-size: clamp(2.05rem, 8.6vw, 3.3rem);
+  line-height: 1.14;
+  /* Arabic is never letter-spaced. Tightening the tracking of an Arabic
+   * display line closes the joins and is the same mistake wearing a minus. */
+  letter-spacing: 0;
+}
 .top__name-en {
-  margin: 6px 0 0; font-size: clamp(13px, 3.2vw, 15px); font-weight: 400;
-  letter-spacing: .04em; opacity: .8;
+  margin: 10px 0 0; color: var(--ink-3);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase; /* Latin only */
 }
-.top__line { margin: 14px 0 0; font-size: clamp(15px, 4vw, 18px); opacity: .92; max-width: var(--measure); }
-.top__meta {
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.22);
-  display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 14px; opacity: .85;
+.top__line {
+  margin: 20px 0 0; color: var(--ink-2);
+  font-size: clamp(1.06rem, 4.3vw, 1.24rem); line-height: 1.72;
+  max-width: 34ch;
 }
 
-/* --- the call row: the only thing on this page that has to work ---------- */
+/* --- the facts band ------------------------------------------------------
+ *
+ * Counts of what the firm PUBLISHES, never a claim we make on its behalf.
+ * Each cell is labelled with what it counts, so "48" can never be read as a
+ * number we invented about their business. */
+.band { border-bottom: 1px solid var(--rule); }
+.band__grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 700px) { .band__grid { grid-template-columns: repeat(4, 1fr); } }
+.band__cell { padding-block: 22px 24px; padding-inline-end: 18px; }
+.band__cell + .band__cell { border-inline-start: 1px solid var(--rule); padding-inline-start: 18px; }
+@media (max-width: 699px) {
+  .band__cell:nth-child(odd) { border-inline-start: 0; padding-inline-start: 0; }
+  .band__cell:nth-child(n+3) { border-block-start: 1px solid var(--rule); }
+  /* An odd third cell left alone in a two-column grid looks like a mistake,
+   * so it takes the whole row. Records publish what they publish; the band
+   * is never padded with a fourth figure to make the grid come out even. */
+  .band__grid > .band__cell:nth-child(3):last-child { grid-column: 1 / -1; }
+}
+.band__n {
+  display: block; font-weight: 600; color: var(--brand-text);
+  font-size: clamp(1.75rem, 7.2vw, 2.3rem); line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.band__k { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-3); line-height: 1.5; }
 
-.calls { display: grid; gap: 10px; margin-block: 22px; }
-@media (min-width: 560px) { .calls { grid-auto-flow: column; grid-auto-columns: 1fr; } }
+/* --- sections ------------------------------------------------------------
+ *
+ * One ground throughout. The old file alternated a tinted background per
+ * section, which chopped the page into slabs and made every record look the
+ * same regardless of what it contained. Structure is carried by hairlines
+ * and space. */
+.sec { padding-block: 40px 44px; }
+.sec + .sec { border-block-start: 1px solid var(--rule); }
+
+.sec__h { margin: 0 0 4px; font-size: 1.16rem; font-weight: 600; line-height: 1.4; }
+.sec__h-en {
+  margin: 0 0 24px; color: var(--ink-3);
+  font-size: 11.5px; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase; /* Latin only */
+}
+.sec > .wrap > p { margin: 0 0 1.1em; }
+.sec > .wrap > p:last-child { margin-bottom: 0; }
+
+/* --- label / value rows, the spine of the whole page --------------------- */
+.facts { display: grid; gap: 0; }
+.fact { display: grid; grid-template-columns: 8.5rem 1fr; gap: 14px; padding-block: 13px; }
+.fact + .fact { border-block-start: 1px solid var(--rule); }
+.fact__k { color: var(--ink-3); font-size: 14px; line-height: 1.6; }
+.fact__v { line-height: 1.65; overflow-wrap: anywhere; }
+.fact__v-en { display: block; color: var(--ink-3); font-size: 13px; letter-spacing: .04em; /* Latin only */ }
+@media (max-width: 419px) { .fact { grid-template-columns: 1fr; gap: 2px; } }
+
+/* --- record rows: services, projects ------------------------------------- */
+.rows { display: grid; }
+.row { padding-block: 22px; }
+.row + .row { border-block-start: 1px solid var(--rule); }
+.row__t { margin: 0; font-size: 1.06rem; font-weight: 600; line-height: 1.5; }
+.row__t-en {
+  margin-top: 5px; color: var(--ink-3); font-size: 11.5px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; /* Latin only */
+}
+.row__b { margin: 10px 0 0; color: var(--ink-2); line-height: 1.8; }
+.row__spec { margin-top: 12px; display: grid; gap: 0; }
+.row__spec div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding-block: 7px; font-size: 15px; }
+.row__spec div + div { border-block-start: 1px dotted var(--rule); }
+.row__spec dt, .row__spec .k { color: var(--ink-3); }
+.row__spec .v { color: var(--ink); }
+@media (max-width: 419px) { .row__spec div { grid-template-columns: 1fr; gap: 0; } }
+.row__tag { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+
+details.more { margin-top: 4px; }
+details.more > summary {
+  cursor: pointer; padding-block: 16px; font-weight: 600; font-size: 15px;
+  color: var(--brand-text); border-block-start: 1px solid var(--rule);
+}
+details.more[open] > summary { border-block-end: 1px solid var(--rule); }
+
+/* --- the catalogue grid --------------------------------------------------
+ * Used when the record's weight is in its PRODUCTS. A part number and a
+ * material code are what a maintenance engineer scans for, so they lead. */
+.grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
+.card { padding-block: 16px; border-block-start: 1px solid var(--rule); }
+.card__img {
+  display: block; width: 100%; height: auto; margin-bottom: 12px;
+  background: var(--paper-2); aspect-ratio: 4 / 3; object-fit: cover;
+}
+.card__t { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.5; }
+.card__t-en {
+  margin-top: 4px; color: var(--ink-3); font-size: 12px;
+  letter-spacing: .06em; /* Latin only */
+}
+.card__s { margin: 6px 0 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.65; }
+
+/* --- plain lists: clients, certifications -------------------------------
+ * A two-column list of names, not a cloud of pills. Pills read as tags on a
+ * blog; a purchasing officer reads a list. */
+.list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .list { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
+.list li { padding-block: 11px; border-block-start: 1px solid var(--rule); line-height: 1.6; }
+.list li small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
+
+/* --- the call row -------------------------------------------------------- */
+.calls { display: grid; gap: 10px; padding-block: 22px; }
+@media (min-width: 480px) { .calls { grid-auto-flow: column; grid-auto-columns: 1fr; } }
 .call {
   display: flex; align-items: center; justify-content: center; gap: 9px;
-  min-height: 52px; padding-inline: 16px; border-radius: 6px;
-  font-size: 17px; font-weight: 600; text-decoration: none;
-  border: 1.5px solid var(--brand); color: var(--brand-text); background: #fff;
+  min-height: 52px; padding-inline: 18px;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+  border: 1px solid var(--rule); color: var(--brand-text); background: transparent;
 }
-.call--fill { background: var(--brand); color: var(--brand-ink); }
-.call svg { width: 20px; height: 20px; flex: none; fill: currentColor; }
+/* THE PRIMARY CALL IS INK, NOT THE BRAND COLOUR.
+ *
+ * A full-width slab of a firm's own colour was the loudest thing on the page
+ * and the first thing that read as a free template — a bright chartreuse
+ * green filling the width says "generated" before a word is read. Ink is
+ * quiet, works under every brand colour a record can carry, and still reads
+ * as the one button on the page. The colour survives where it means
+ * something: the rule across the top, the figures, and the links. */
+.call--fill { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.call svg { width: 19px; height: 19px; flex: none; fill: currentColor; }
 
-/* --- sections ------------------------------------------------------------ */
-
-.sec { padding-block: 32px; border-top: 1px solid var(--rule); }
-.sec--tint { background: var(--ground-2); border-top: 0; }
-.sec__h { margin: 0 0 4px; font-size: clamp(20px, 5vw, 25px); font-weight: 600; line-height: 1.3; }
-.sec__h-en { margin: 0 0 20px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
-.sec p { margin: 0 0 1em; max-width: var(--measure); }
-.sec p:last-child { margin-bottom: 0; }
-
-/* --- capability numbers: what a purchasing manager actually compares ----- */
-
-/* auto-fit, not a fixed column count. The grid paints its own 1px rules by
- * showing its background through the gaps, so a fixed `repeat(3, 1fr)` holding
- * one cell leaves two empty tracks — a bare grey slab beside the only fact a
- * sparse record has. auto-fit collapses the empty tracks instead. A sparse
- * record has to look deliberate, not broken: it is the one we will send to the
- * firms with the least public material, which is most of them. */
-.caps {
-  display: grid; gap: 1px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  background: var(--rule); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+/* --- footer -------------------------------------------------------------- */
+.foot {
+  background: var(--paper-2); border-block-start: 1px solid var(--rule);
+  padding-block: 30px 34px; font-size: 14px; color: var(--ink-2); line-height: 1.8;
 }
-.cap { background: #fff; padding: 16px 18px; }
-.cap__k { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
-.cap__v { font-size: clamp(19px, 5vw, 23px); font-weight: 600; line-height: 1.35; margin-top: 4px; }
-.cap__v-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
-
-/* --- products ------------------------------------------------------------ */
-
-.grid { display: grid; gap: 18px; }
-@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 820px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-
-.card { border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; background: #fff; }
-.card__img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; background: var(--ground-2); }
-.card__body { padding: 14px 16px 16px; }
-.card__t { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4; }
-.card__t-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; line-height: 1.5; }
-.card__s { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-2); line-height: 1.6; }
-
-/* --- services and projects as rows -------------------------------------- */
-
-.rows { display: grid; gap: 0; }
-.row { padding-block: 18px; border-top: 1px solid var(--rule); }
-.row:first-child { border-top: 0; padding-top: 0; }
-.row__t { margin: 0; font-size: 17.5px; font-weight: 600; line-height: 1.45; }
-.row__t-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
-.row__b { margin: 7px 0 0; font-size: 15.5px; color: var(--ink-2); max-width: var(--measure); }
-.row__tag {
-  display: inline-block; margin-top: 8px; font-size: 12.5px; color: var(--ink-2);
-  border: 1px solid var(--rule); border-radius: 3px; padding: 2px 9px;
-}
-
-/* --- plain lists (clients, certifications) ------------------------------- */
-
-.chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
-.chip {
-  border: 1px solid var(--rule); border-radius: 3px; padding: 7px 13px;
-  font-size: 14.5px; background: #fff;
-}
-.chip small { display: block; font-size: 12px; color: var(--ink-2); }
-
-/* --- contact ------------------------------------------------------------- */
-
-.facts { margin: 0; display: grid; gap: 14px; }
-@media (min-width: 560px) { .facts { grid-template-columns: 1fr 1fr; } }
-.fact__k { font-size: 13px; color: var(--ink-2); }
-.fact__v { font-size: 16.5px; margin-top: 2px; }
-.fact__v a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+.foot p { margin: 0 0 .8em; max-width: var(--measure); }
+.foot p:last-child { margin-bottom: 0; }
+.foot a { color: var(--brand-text); }
 
 /* --- the sticky bar ------------------------------------------------------ */
-
 .bar {
   position: fixed; inset-inline: 0; bottom: 0; z-index: 20;
   display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
-  background: #fff; border-top: 1px solid var(--rule);
+  background: var(--paper); border-block-start: 1px solid var(--rule);
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 0 -2px 14px rgba(0,0,0,.07);
 }
 .bar a {
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  height: var(--bar); font-size: 16px; font-weight: 600; text-decoration: none; color: var(--brand-text);
+  height: var(--bar); font-size: 15px; font-weight: 600; text-decoration: none;
+  color: var(--brand-text);
 }
 .bar a + a { border-inline-start: 1px solid var(--rule); }
-.bar a svg { width: 19px; height: 19px; fill: currentColor; }
+.bar a svg { width: 18px; height: 18px; fill: currentColor; }
 @media (min-width: 820px) { .bar { display: none; } }
-
-/* --- footer -------------------------------------------------------------- */
-
-.foot { background: var(--ground-2); border-top: 1px solid var(--rule); padding-block: 26px 30px; font-size: 13.5px; color: var(--ink-2); }
-.foot p { margin: 0 0 .7em; max-width: var(--measure); }
-.foot p:last-child { margin-bottom: 0; }
-.foot a { color: var(--brand-text); }
 
 /* --- bidi plumbing, shared with the press -------------------------------- */
 
@@ -229,467 +308,351 @@ bdi.nb { white-space: nowrap; }
 <body>
 
 <header class="top"><div class="wrap">
+  <p class="top__eyebrow"><span>القاهرة</span><span>منذ ١٩٧٦</span></p>
   <h1 class="top__name">شركة المسابك الحديثة</h1>
   <p class="top__name-en"><bdi dir="ltr">ABD Modern Foundries Company</bdi></p>
   <p class="top__line">قطع إحلال مصبوبة من السبائك الحديدية للمحاجر والمناجم والطرق والأسمنت والكيماويات</p>
-  <div class="top__meta"><span>القاهرة</span><span>تأسست ١٩٧٦</span></div>
 </div></header>
+
+<section class="band"><div class="wrap"><div class="band__grid">
+    <div class="band__cell">
+      <span class="band__n">١٩٧٦</span>
+      <span class="band__k">سنة التأسيس المعلنة</span>
+    </div><div class="band__cell">
+      <span class="band__n">٥٧</span>
+      <span class="band__k">منتج في قائمتهم</span>
+    </div><div class="band__cell">
+      <span class="band__n">٩</span>
+      <span class="band__k">خدمة معلنة</span>
+    </div>
+  </div></div></section>
 
 <div class="wrap"><div class="calls"><a class="call call--fill" href="tel:+20023891005253"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل بنا</span></a></div></div>
 
 <section class="sec"><div class="wrap">
-    <h2 class="sec__h">نبذة عن الشركة</h2><p class="sec__h-en"><bdi dir="ltr">About</bdi></p>
-    <p>«شركة المسابك الحديثة» (<bdi dir="ltr">ABD Modern Foundries</bdi>) تأسست سنة ١٩٧٦، وتقول عن نفسها إن أخلاق العمل والمثابرة عندها متجذرة في جيلين من إنتاج الحديد والصلب. الشركة تصبّ قطع الإحلال من السبائك الحديدية، وتقول إن توريدها للسوق المصري من أواخر السبعينيات خلق مستخدماً نهائياً يقدر يعتمد على السوق المحلي في قطع الإحلال.</p><p>وفي التسعينيات وسّعت أسواقها لتغطي أمريكا الشمالية وغرب أوروبا وشمال أفريقيا والشرق الأوسط. والتوسّع — كما تكتب — استلزم استثمارات وخطوط إنتاج وتقنيات جديدة مع زيادة الطاقة الإنتاجية، ثم رُكّب خط سباكة يعمل بأحدث تكنولوجيا رابطات الرمل للوصول إلى أعلى إنتاجية وأفضل جودة.</p><p>والشركة تصف نفسها بأنها المورّد المصري الرائد لقطع الإحلال المصبوبة من السبائك الحديدية لصناعات المحاجر والمناجم وإنشاء الطرق والأسمنت والكيماويات وغيرها. والجودة عندها — بنصّهم — «حالة ذهنية من التصميم إلى التسليم». والعملاء الدوليون يساهمون حالياً بأكثر من ٣٠٪ من المبيعات السنوية.</p>
-    <div class="caps" style="margin-top:22px"><div class="cap"><div class="cap__k">يعمل منذ</div><div class="cap__v">١٩٧٦</div></div><div class="cap"><div class="cap__k">المحافظة</div><div class="cap__v">القاهرة</div></div></div>
-  </div></section>
-<section class="sec sec--tint"><div class="wrap">
-    <h2 class="sec__h">القدرات والمواصفات</h2><p class="sec__h-en"><bdi dir="ltr">Capabilities</bdi></p>
-    <div class="caps"><div class="cap">
-        <div class="cap__k">أرضيات السباكة</div>
-        <div class="cap__v">٣ أرضيات بتقنيات مختلفة</div>
-        <div class="cap__v-en"><bdi dir="ltr">3 floors, different techniques</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">طاقة الصهر</div>
-        <div class="cap__v">حتى ٣ طن/ساعة</div>
-        <div class="cap__v-en"><bdi dir="ltr">Up to 3 tons/hr</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">أقصى مقاس قالب — الأرضية اليدوية</div>
-        <div class="cap__v"><bdi dir="ltr" class="nb">٤×٤</bdi> متر</div>
-        <div class="cap__v-en"><bdi dir="ltr">4x4 metres</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">إنتاج الخط الآلي</div>
-        <div class="cap__v">أكثر من ١٥٠ قالباً في الوردية، لقطع أقل من ٤٠ كجم</div>
-        <div class="cap__v-en"><bdi dir="ltr">Over 150 molds per shift, parts under 40 kg</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">إنتاج الخط نصف الآلي</div>
-        <div class="cap__v">٨٠ قالباً في الوردية، لصبّات حتى ٣٠٠ كجم</div>
-        <div class="cap__v-en"><bdi dir="ltr">80 molds per shift, castings up to 300 kg</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">أفران المعالجة الحرارية</div>
-        <div class="cap__v">أربعة أفران بتحكم <bdi dir="ltr" class="nb">SCR</bdi></div>
-        <div class="cap__v-en"><bdi dir="ltr">Four, SCR controlled</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">خلاط الرمل المستمر</div>
-        <div class="cap__v">٢٠ طن/ساعة (<bdi dir="ltr" class="nb">AlphaSet</bdi>)</div>
-        <div class="cap__v-en"><bdi dir="ltr">20 tons/hour (AlphaSet)</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">أكبر قالب ووزن صبّة منشوران</div>
-        <div class="cap__v">قالب <bdi dir="ltr" class="nb">Blow Bar ١</bdi>٫<bdi dir="ltr" class="nb">٨ × ١ × ٠</bdi>٫٥/٠٫٥ متر، وزن صبّة صافٍ ٤١٥ كجم</div>
-        <div class="cap__v-en"><bdi dir="ltr">Blow Bar mold 1.8m x 1m x 0.5/0.5m, casting net weight 415 kg</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">نصيب التصدير من المبيعات السنوية</div>
-        <div class="cap__v">أكثر من ٣٠٪</div>
-        <div class="cap__v-en"><bdi dir="ltr">Over 30%</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">أسواق التصدير المنشورة</div>
-        <div class="cap__v">بلجيكا، ألمانيا، النمسا، السعودية، السودان، اليمن، تونس</div>
-        <div class="cap__v-en"><bdi dir="ltr">Belgium, Germany, Austria, Kingdom of Saudi Arabia, Republic of Sudan, Republic of Yemen, Tunisia</bdi></div>
-      </div></div>
-  </div></section>
-<section class="sec"><div class="wrap">
     <h2 class="sec__h">المنتجات</h2><p class="sec__h-en"><bdi dir="ltr">Products</bdi></p>
     <div class="grid"><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Lifter Liner Plate</bdi></h3>
-        
-        <p class="card__s">الأسمنت</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Lifter Liner Plate</bdi></h3>
+      
+      <p class="card__s">الأسمنت</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Boltless Lifter Classifier Liner Plate</bdi></h3>
-        
-        <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR72/WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Boltless Lifter Classifier Liner Plate</bdi></h3>
+      
+      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR72/WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Wet Process Liner Plate</bdi></h3>
-        
-        <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Wet Process Liner Plate</bdi></h3>
+      
+      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Cooler Plate</bdi></h3>
-        
-        <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Cooler Plate</bdi></h3>
+      
+      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Clinker Crusher Hammer</bdi></h3>
-        
-        <p class="card__s">الأسمنت</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Clinker Crusher Hammer</bdi></h3>
+      
+      <p class="card__s">الأسمنت</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Diaphragm Plate</bdi></h3>
-        
-        <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR57</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Diaphragm Plate</bdi></h3>
+      
+      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR57</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Protection Segment</bdi></h3>
-        
-        <p class="card__s">الأسمنت</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Protection Segment</bdi></h3>
+      
+      <p class="card__s">الأسمنت</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Peter Pump End Flight</bdi></h3>
-        
-        <p class="card__s">الأسمنت</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Peter Pump End Flight</bdi></h3>
+      
+      <p class="card__s">الأسمنت</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Nozzle</bdi></h3>
-        
-        <p class="card__s">الأسمنت</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Nozzle</bdi></h3>
+      
+      <p class="card__s">الأسمنت</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Nosering</bdi></h3>
-        
-        <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Nosering</bdi></h3>
+      
+      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Liner Plate</bdi></h3>
-        
-        <p class="card__s">الأسمنت</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Liner Plate</bdi></h3>
+      
+      <p class="card__s">الأسمنت</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Impeller Casing</bdi></h3>
-        
-        <p class="card__s">الكيماويات</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Impeller Casing</bdi></h3>
+      
+      <p class="card__s">الكيماويات</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Sulfuric Acid Furnace Mixer</bdi></h3>
-        
-        <p class="card__s">الكيماويات</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Sulfuric Acid Furnace Mixer</bdi></h3>
+      
+      <p class="card__s">الكيماويات</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Water Pump Casing</bdi></h3>
-        
-        <p class="card__s">الكيماويات</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Water Pump Casing</bdi></h3>
+      
+      <p class="card__s">الكيماويات</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Asphalt Mixer Blade</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR91</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Asphalt Mixer Blade</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR91</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">CAT 966H Bucket Loader Tip/Adapter</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55/WIR56</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">CAT 966H Bucket Loader Tip/Adapter</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55/WIR56</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">CAT Grader Shank</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR56</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">CAT Grader Shank</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR56</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Cement Pump</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Cement Pump</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Loader Bucket Tip</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Loader Bucket Tip</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Loader Tip</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Loader Tip</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Mixer Blade</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Mixer Blade</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Mixer Arm</bdi></h3>
-        
-        <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Mixer Arm</bdi></h3>
+      
+      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Hammer</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Hammer</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Fixed Hammer</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Fixed Hammer</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Wear Plate</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Wear Plate</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Impact Plate</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Impact Plate</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">AMMAN Crusher Hammer</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">AMMAN Crusher Hammer</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">HAZMAG Crusher Hammer</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">HAZMAG Crusher Hammer</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Rotating Crusher Drum</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR57 / WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Rotating Crusher Drum</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR57 / WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Fixed Jaw Plate</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Fixed Jaw Plate</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Moveable Jaw Plate</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Moveable Jaw Plate</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Cone Crusher</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Cone Crusher</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Svedala Crusher Hammer</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Svedala Crusher Hammer</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Blow Bar</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Blow Bar</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Sandvik Blow Bar</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Sandvik Blow Bar</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Metso Blow Bar</bdi></h3>
-        
-        <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Metso Blow Bar</bdi></h3>
+      
+      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Roller</bdi></h3>
-        
-        <p class="card__s">الميكانيكا</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Roller</bdi></h3>
+      
+      <p class="card__s">الميكانيكا</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Roller Drum</bdi></h3>
-        
-        <p class="card__s">الميكانيكا</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Roller Drum</bdi></h3>
+      
+      <p class="card__s">الميكانيكا</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Under Carriage Gear</bdi></h3>
-        
-        <p class="card__s">الميكانيكا</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Under Carriage Gear</bdi></h3>
+      
+      <p class="card__s">الميكانيكا</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Sprocket</bdi></h3>
-        
-        <p class="card__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">GS-52</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Sprocket</bdi></h3>
+      
+      <p class="card__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">GS-52</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Sprocket Gear</bdi></h3>
-        
-        <p class="card__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Sprocket Gear</bdi></h3>
+      
+      <p class="card__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Tractor Trailer Joint</bdi></h3>
-        
-        <p class="card__s">الميكانيكا</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Tractor Trailer Joint</bdi></h3>
+      
+      <p class="card__s">الميكانيكا</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Wire Sheave</bdi></h3>
-        
-        <p class="card__s">الميكانيكا</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Wire Sheave</bdi></h3>
+      
+      <p class="card__s">الميكانيكا</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Dredge Impeller</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Dredge Impeller</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Feet Bench Side</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">GG25</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Feet Bench Side</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">GG25</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Heat Treatment Pier</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Heat Treatment Pier</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Carbon Treatment Tray</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Carbon Treatment Tray</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Recycling Mill Hammer Tray</bdi></h3>
-        
-        <p class="card__s">منوعات</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Recycling Mill Hammer Tray</bdi></h3>
+      
+      <p class="card__s">منوعات</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Steel Heat Treatment Tray</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD18/38</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Steel Heat Treatment Tray</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD18/38</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Street Bollard</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Street Bollard</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Power Station Grate Bar</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD17</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Power Station Grate Bar</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD17</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Recycling Mill Liner</bdi></h3>
-        
-        <p class="card__s">منوعات</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Recycling Mill Liner</bdi></h3>
+      
+      <p class="card__s">منوعات</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Dredger Wearing Sheet</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Dredger Wearing Sheet</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Heat Treatment Furnace Roller</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Heat Treatment Furnace Roller</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Recycling Mill Hammer</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Recycling Mill Hammer</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr" class="nb">Garden Seat Bench</bdi></h3>
-        
-        <p class="card__s">منوعات</p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr" class="nb">Garden Seat Bench</bdi></h3>
+      
+      <p class="card__s">منوعات</p>
     </article><article class="card">
       
-      <div class="card__body">
-        <h3 class="card__t"><bdi dir="ltr">Recycling Rotor Shredder</bdi></h3>
-        
-        <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-      </div>
+      <h3 class="card__t"><bdi dir="ltr">Recycling Rotor Shredder</bdi></h3>
+      
+      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
     </article></div>
   </div></section>
-<section class="sec sec--tint"><div class="wrap">
+<section class="sec"><div class="wrap">
+    <h2 class="sec__h">القدرات والمواصفات</h2><p class="sec__h-en"><bdi dir="ltr">Capabilities</bdi></p>
+    <div class="facts"><div class="fact">
+        <div class="fact__k">أرضيات السباكة</div>
+        <div class="fact__v">٣ أرضيات بتقنيات مختلفة<span class="fact__v-en"><bdi dir="ltr">3 floors, different techniques</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">طاقة الصهر</div>
+        <div class="fact__v">حتى ٣ طن/ساعة<span class="fact__v-en"><bdi dir="ltr">Up to 3 tons/hr</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">أقصى مقاس قالب — الأرضية اليدوية</div>
+        <div class="fact__v"><bdi dir="ltr" class="nb">٤×٤</bdi> متر<span class="fact__v-en"><bdi dir="ltr">4x4 metres</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">إنتاج الخط الآلي</div>
+        <div class="fact__v">أكثر من ١٥٠ قالباً في الوردية، لقطع أقل من ٤٠ كجم<span class="fact__v-en"><bdi dir="ltr">Over 150 molds per shift, parts under 40 kg</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">إنتاج الخط نصف الآلي</div>
+        <div class="fact__v">٨٠ قالباً في الوردية، لصبّات حتى ٣٠٠ كجم<span class="fact__v-en"><bdi dir="ltr">80 molds per shift, castings up to 300 kg</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">أفران المعالجة الحرارية</div>
+        <div class="fact__v">أربعة أفران بتحكم <bdi dir="ltr" class="nb">SCR</bdi><span class="fact__v-en"><bdi dir="ltr">Four, SCR controlled</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">خلاط الرمل المستمر</div>
+        <div class="fact__v">٢٠ طن/ساعة (<bdi dir="ltr" class="nb">AlphaSet</bdi>)<span class="fact__v-en"><bdi dir="ltr">20 tons/hour (AlphaSet)</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">أكبر قالب ووزن صبّة منشوران</div>
+        <div class="fact__v">قالب <bdi dir="ltr" class="nb">Blow Bar ١</bdi>٫<bdi dir="ltr" class="nb">٨ × ١ × ٠</bdi>٫٥/٠٫٥ متر، وزن صبّة صافٍ ٤١٥ كجم<span class="fact__v-en"><bdi dir="ltr">Blow Bar mold 1.8m x 1m x 0.5/0.5m, casting net weight 415 kg</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">نصيب التصدير من المبيعات السنوية</div>
+        <div class="fact__v">أكثر من ٣٠٪<span class="fact__v-en"><bdi dir="ltr">Over 30%</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">أسواق التصدير المنشورة</div>
+        <div class="fact__v">بلجيكا، ألمانيا، النمسا، السعودية، السودان، اليمن، تونس<span class="fact__v-en"><bdi dir="ltr">Belgium, Germany, Austria, Kingdom of Saudi Arabia, Republic of Sudan, Republic of Yemen, Tunisia</bdi></span></div>
+      </div></div>
+  </div></section>
+<section class="sec"><div class="wrap">
     <h2 class="sec__h">الخدمات</h2><p class="sec__h-en"><bdi dir="ltr">Services</bdi></p>
     <div class="rows"><div class="row">
       <h3 class="row__t">قسم النوى (<bdi dir="ltr" class="nb">Core Shop</bdi>)</h3>
@@ -729,9 +692,13 @@ bdi.nb { white-space: nowrap; }
       <p class="row__b">الأجهزة والاختبارات المنشورة: مطياف انبعاث ضوئي، وأجهزة اختبار رمل كاملة، واختبار صلادة برينل وروكويل، واختبار صدم (إيزود وشاربي)، واختبار شدّ، وفحص ميتالوجرافي، واختبار موجات فوق صوتية، واختبار السائل النافذ.</p>
     </div></div>
   </div></section>
+<section class="sec"><div class="wrap">
+    <h2 class="sec__h">نبذة عن الشركة</h2><p class="sec__h-en"><bdi dir="ltr">About</bdi></p>
+    <p>«شركة المسابك الحديثة» (<bdi dir="ltr">ABD Modern Foundries</bdi>) تأسست سنة ١٩٧٦، وتقول عن نفسها إن أخلاق العمل والمثابرة عندها متجذرة في جيلين من إنتاج الحديد والصلب. الشركة تصبّ قطع الإحلال من السبائك الحديدية، وتقول إن توريدها للسوق المصري من أواخر السبعينيات خلق مستخدماً نهائياً يقدر يعتمد على السوق المحلي في قطع الإحلال.</p><p>وفي التسعينيات وسّعت أسواقها لتغطي أمريكا الشمالية وغرب أوروبا وشمال أفريقيا والشرق الأوسط. والتوسّع — كما تكتب — استلزم استثمارات وخطوط إنتاج وتقنيات جديدة مع زيادة الطاقة الإنتاجية، ثم رُكّب خط سباكة يعمل بأحدث تكنولوجيا رابطات الرمل للوصول إلى أعلى إنتاجية وأفضل جودة.</p><p>والشركة تصف نفسها بأنها المورّد المصري الرائد لقطع الإحلال المصبوبة من السبائك الحديدية لصناعات المحاجر والمناجم وإنشاء الطرق والأسمنت والكيماويات وغيرها. والجودة عندها — بنصّهم — «حالة ذهنية من التصميم إلى التسليم». والعملاء الدوليون يساهمون حالياً بأكثر من ٣٠٪ من المبيعات السنوية.</p>
+    <div class="facts" style="margin-top:26px"><div class="fact"><div class="fact__k">يعمل منذ</div><div class="fact__v">١٩٧٦</div></div><div class="fact"><div class="fact__k">المحافظة</div><div class="fact__v">القاهرة</div></div></div>
+  </div></section>
 
-
-<section class="sec sec--tint" id="contact"><div class="wrap">
+<section class="sec" id="contact"><div class="wrap">
     <h2 class="sec__h">للتواصل</h2><p class="sec__h-en"><bdi dir="ltr">Contact</bdi></p>
     <div class="facts"><div class="fact"><div class="fact__k">تليفون</div><div class="fact__v"><a href="tel:+20023891005253"><bdi dir="ltr" class="tel">+20-(0)2-38910052/53</bdi></a></div></div><div class="fact"><div class="fact__k">البريد</div><div class="fact__v"><a href="mailto:info@abdmodernfoundries.com"><bdi dir="ltr">info@abdmodernfoundries.com</bdi></a></div></div><div class="fact"><div class="fact__k">الموقع</div><div class="fact__v"><bdi dir="ltr">abdmodernfoundries.com</bdi></div></div><div class="fact"><div class="fact__k">العنوان</div><div class="fact__v">طناش طريق الوراق القناطر ص . ب <bdi dir="ltr" class="nb">167</bdi> امبابة</div></div></div>
   </div></section>

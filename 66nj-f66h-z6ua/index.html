@@ -54,17 +54,27 @@
 }
 
 :root {
+  /* The firm's own colour. Overridden per page in the inlined <style>. */
   --brand: #123b5e;
   --brand-ink: #ffffff;
   --brand-text: #123b5e;
-  --ink: #14181d;
-  --ink-2: #55606c;
-  --rule: #dfe3e8;
-  --ground: #ffffff;
-  --ground-2: #f5f7f9;
-  --bar: 62px;                 /* height of the sticky call bar on phones */
-  --gutter: 20px;
-  --measure: 68ch;
+
+  /* A WARM ground, not white. The pages these firms have today are cold
+   * default-white bootstrap templates; a warm paper is the cheapest single
+   * signal that someone chose it. */
+  --paper: #fbfaf8;
+  --paper-2: #f2f0ec;
+  --ink: #16171a;
+  --ink-2: #55585f;
+  /* The faint ink still has to clear 4.5:1 — on the FOOTER's darker ground,
+   * not just on paper. #8a8d94 read at 3.2:1 and the gate caught it on all
+   * three pages. "Muted" is a tone, not a licence to be unreadable. */
+  --ink-3: #66696f;
+  --rule: #e3e0da;
+
+  --measure: 44rem;
+  --gutter: 22px;
+  --bar: 56px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -73,141 +83,210 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--ground);
-  color: var(--ink);
-  font-family: 'Waraq Arabic Text', 'Noto Naskh Arabic', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Waraq Arabic Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 17px;
-  line-height: 1.75;
-  /* room for the sticky bar so the last line is never sat on */
+  line-height: 1.85;
+  color: var(--ink);
+  background: var(--paper);
   padding-bottom: calc(var(--bar) + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
 }
 @media (min-width: 820px) { body { padding-bottom: 0; } }
 
-img { max-width: 100%; height: auto; display: block; }
-a { color: inherit; }
+.wrap { max-width: var(--measure); margin-inline: auto; padding-inline: var(--gutter); }
 
-.wrap { max-width: 960px; margin-inline: auto; padding-inline: var(--gutter); }
+a { color: var(--brand-text); }
 
-/* --- masthead ------------------------------------------------------------ */
+/* --- the masthead --------------------------------------------------------
+ *
+ * NO COLOURED SLAB. The firm's colour appears here as a 5px rule across the
+ * very top and nowhere else at size. A full-bleed block of a company's brand
+ * colour with white text on it is the single fastest way to make a page look
+ * like a free template, which is exactly what this page must not look like.
+ * The name carries the page; the colour only marks it. */
 
-.top { background: var(--brand); color: var(--brand-ink); padding-block: 30px 26px; }
-.top__name { margin: 0; font-size: clamp(26px, 7vw, 40px); font-weight: 600; line-height: 1.25; }
+.top { padding-block: 30px 26px; border-bottom: 1px solid var(--rule); }
+.top::before {
+  content: ''; display: block; height: 5px; background: var(--brand);
+  position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 30;
+}
+
+/* The eyebrow is the only place a fact appears before the name: where they
+ * are and since when. Both come from the record or the line is not printed. */
+.top__eyebrow {
+  margin: 0 0 14px; font-size: 13px; font-weight: 600; color: var(--ink-3);
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.top__eyebrow span + span::before {
+  content: ''; display: inline-block; width: 3px; height: 3px; border-radius: 50%;
+  background: currentColor; vertical-align: middle; margin-inline-end: 10px;
+}
+
+.top__name {
+  margin: 0; font-weight: 600; color: var(--ink);
+  font-size: clamp(2.05rem, 8.6vw, 3.3rem);
+  line-height: 1.14;
+  /* Arabic is never letter-spaced. Tightening the tracking of an Arabic
+   * display line closes the joins and is the same mistake wearing a minus. */
+  letter-spacing: 0;
+}
 .top__name-en {
-  margin: 6px 0 0; font-size: clamp(13px, 3.2vw, 15px); font-weight: 400;
-  letter-spacing: .04em; opacity: .8;
+  margin: 10px 0 0; color: var(--ink-3);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase; /* Latin only */
 }
-.top__line { margin: 14px 0 0; font-size: clamp(15px, 4vw, 18px); opacity: .92; max-width: var(--measure); }
-.top__meta {
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.22);
-  display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 14px; opacity: .85;
+.top__line {
+  margin: 20px 0 0; color: var(--ink-2);
+  font-size: clamp(1.06rem, 4.3vw, 1.24rem); line-height: 1.72;
+  max-width: 34ch;
 }
 
-/* --- the call row: the only thing on this page that has to work ---------- */
+/* --- the facts band ------------------------------------------------------
+ *
+ * Counts of what the firm PUBLISHES, never a claim we make on its behalf.
+ * Each cell is labelled with what it counts, so "48" can never be read as a
+ * number we invented about their business. */
+.band { border-bottom: 1px solid var(--rule); }
+.band__grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 700px) { .band__grid { grid-template-columns: repeat(4, 1fr); } }
+.band__cell { padding-block: 22px 24px; padding-inline-end: 18px; }
+.band__cell + .band__cell { border-inline-start: 1px solid var(--rule); padding-inline-start: 18px; }
+@media (max-width: 699px) {
+  .band__cell:nth-child(odd) { border-inline-start: 0; padding-inline-start: 0; }
+  .band__cell:nth-child(n+3) { border-block-start: 1px solid var(--rule); }
+  /* An odd third cell left alone in a two-column grid looks like a mistake,
+   * so it takes the whole row. Records publish what they publish; the band
+   * is never padded with a fourth figure to make the grid come out even. */
+  .band__grid > .band__cell:nth-child(3):last-child { grid-column: 1 / -1; }
+}
+.band__n {
+  display: block; font-weight: 600; color: var(--brand-text);
+  font-size: clamp(1.75rem, 7.2vw, 2.3rem); line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.band__k { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-3); line-height: 1.5; }
 
-.calls { display: grid; gap: 10px; margin-block: 22px; }
-@media (min-width: 560px) { .calls { grid-auto-flow: column; grid-auto-columns: 1fr; } }
+/* --- sections ------------------------------------------------------------
+ *
+ * One ground throughout. The old file alternated a tinted background per
+ * section, which chopped the page into slabs and made every record look the
+ * same regardless of what it contained. Structure is carried by hairlines
+ * and space. */
+.sec { padding-block: 40px 44px; }
+.sec + .sec { border-block-start: 1px solid var(--rule); }
+
+.sec__h { margin: 0 0 4px; font-size: 1.16rem; font-weight: 600; line-height: 1.4; }
+.sec__h-en {
+  margin: 0 0 24px; color: var(--ink-3);
+  font-size: 11.5px; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase; /* Latin only */
+}
+.sec > .wrap > p { margin: 0 0 1.1em; }
+.sec > .wrap > p:last-child { margin-bottom: 0; }
+
+/* --- label / value rows, the spine of the whole page --------------------- */
+.facts { display: grid; gap: 0; }
+.fact { display: grid; grid-template-columns: 8.5rem 1fr; gap: 14px; padding-block: 13px; }
+.fact + .fact { border-block-start: 1px solid var(--rule); }
+.fact__k { color: var(--ink-3); font-size: 14px; line-height: 1.6; }
+.fact__v { line-height: 1.65; overflow-wrap: anywhere; }
+.fact__v-en { display: block; color: var(--ink-3); font-size: 13px; letter-spacing: .04em; /* Latin only */ }
+@media (max-width: 419px) { .fact { grid-template-columns: 1fr; gap: 2px; } }
+
+/* --- record rows: services, projects ------------------------------------- */
+.rows { display: grid; }
+.row { padding-block: 22px; }
+.row + .row { border-block-start: 1px solid var(--rule); }
+.row__t { margin: 0; font-size: 1.06rem; font-weight: 600; line-height: 1.5; }
+.row__t-en {
+  margin-top: 5px; color: var(--ink-3); font-size: 11.5px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; /* Latin only */
+}
+.row__b { margin: 10px 0 0; color: var(--ink-2); line-height: 1.8; }
+.row__spec { margin-top: 12px; display: grid; gap: 0; }
+.row__spec div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding-block: 7px; font-size: 15px; }
+.row__spec div + div { border-block-start: 1px dotted var(--rule); }
+.row__spec dt, .row__spec .k { color: var(--ink-3); }
+.row__spec .v { color: var(--ink); }
+@media (max-width: 419px) { .row__spec div { grid-template-columns: 1fr; gap: 0; } }
+.row__tag { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+
+details.more { margin-top: 4px; }
+details.more > summary {
+  cursor: pointer; padding-block: 16px; font-weight: 600; font-size: 15px;
+  color: var(--brand-text); border-block-start: 1px solid var(--rule);
+}
+details.more[open] > summary { border-block-end: 1px solid var(--rule); }
+
+/* --- the catalogue grid --------------------------------------------------
+ * Used when the record's weight is in its PRODUCTS. A part number and a
+ * material code are what a maintenance engineer scans for, so they lead. */
+.grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
+.card { padding-block: 16px; border-block-start: 1px solid var(--rule); }
+.card__img {
+  display: block; width: 100%; height: auto; margin-bottom: 12px;
+  background: var(--paper-2); aspect-ratio: 4 / 3; object-fit: cover;
+}
+.card__t { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.5; }
+.card__t-en {
+  margin-top: 4px; color: var(--ink-3); font-size: 12px;
+  letter-spacing: .06em; /* Latin only */
+}
+.card__s { margin: 6px 0 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.65; }
+
+/* --- plain lists: clients, certifications -------------------------------
+ * A two-column list of names, not a cloud of pills. Pills read as tags on a
+ * blog; a purchasing officer reads a list. */
+.list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .list { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
+.list li { padding-block: 11px; border-block-start: 1px solid var(--rule); line-height: 1.6; }
+.list li small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
+
+/* --- the call row -------------------------------------------------------- */
+.calls { display: grid; gap: 10px; padding-block: 22px; }
+@media (min-width: 480px) { .calls { grid-auto-flow: column; grid-auto-columns: 1fr; } }
 .call {
   display: flex; align-items: center; justify-content: center; gap: 9px;
-  min-height: 52px; padding-inline: 16px; border-radius: 6px;
-  font-size: 17px; font-weight: 600; text-decoration: none;
-  border: 1.5px solid var(--brand); color: var(--brand-text); background: #fff;
+  min-height: 52px; padding-inline: 18px;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+  border: 1px solid var(--rule); color: var(--brand-text); background: transparent;
 }
-.call--fill { background: var(--brand); color: var(--brand-ink); }
-.call svg { width: 20px; height: 20px; flex: none; fill: currentColor; }
+/* THE PRIMARY CALL IS INK, NOT THE BRAND COLOUR.
+ *
+ * A full-width slab of a firm's own colour was the loudest thing on the page
+ * and the first thing that read as a free template — a bright chartreuse
+ * green filling the width says "generated" before a word is read. Ink is
+ * quiet, works under every brand colour a record can carry, and still reads
+ * as the one button on the page. The colour survives where it means
+ * something: the rule across the top, the figures, and the links. */
+.call--fill { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.call svg { width: 19px; height: 19px; flex: none; fill: currentColor; }
 
-/* --- sections ------------------------------------------------------------ */
-
-.sec { padding-block: 32px; border-top: 1px solid var(--rule); }
-.sec--tint { background: var(--ground-2); border-top: 0; }
-.sec__h { margin: 0 0 4px; font-size: clamp(20px, 5vw, 25px); font-weight: 600; line-height: 1.3; }
-.sec__h-en { margin: 0 0 20px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
-.sec p { margin: 0 0 1em; max-width: var(--measure); }
-.sec p:last-child { margin-bottom: 0; }
-
-/* --- capability numbers: what a purchasing manager actually compares ----- */
-
-/* auto-fit, not a fixed column count. The grid paints its own 1px rules by
- * showing its background through the gaps, so a fixed `repeat(3, 1fr)` holding
- * one cell leaves two empty tracks — a bare grey slab beside the only fact a
- * sparse record has. auto-fit collapses the empty tracks instead. A sparse
- * record has to look deliberate, not broken: it is the one we will send to the
- * firms with the least public material, which is most of them. */
-.caps {
-  display: grid; gap: 1px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  background: var(--rule); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+/* --- footer -------------------------------------------------------------- */
+.foot {
+  background: var(--paper-2); border-block-start: 1px solid var(--rule);
+  padding-block: 30px 34px; font-size: 14px; color: var(--ink-2); line-height: 1.8;
 }
-.cap { background: #fff; padding: 16px 18px; }
-.cap__k { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
-.cap__v { font-size: clamp(19px, 5vw, 23px); font-weight: 600; line-height: 1.35; margin-top: 4px; }
-.cap__v-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
-
-/* --- products ------------------------------------------------------------ */
-
-.grid { display: grid; gap: 18px; }
-@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 820px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-
-.card { border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; background: #fff; }
-.card__img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; background: var(--ground-2); }
-.card__body { padding: 14px 16px 16px; }
-.card__t { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4; }
-.card__t-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; line-height: 1.5; }
-.card__s { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-2); line-height: 1.6; }
-
-/* --- services and projects as rows -------------------------------------- */
-
-.rows { display: grid; gap: 0; }
-.row { padding-block: 18px; border-top: 1px solid var(--rule); }
-.row:first-child { border-top: 0; padding-top: 0; }
-.row__t { margin: 0; font-size: 17.5px; font-weight: 600; line-height: 1.45; }
-.row__t-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
-.row__b { margin: 7px 0 0; font-size: 15.5px; color: var(--ink-2); max-width: var(--measure); }
-.row__tag {
-  display: inline-block; margin-top: 8px; font-size: 12.5px; color: var(--ink-2);
-  border: 1px solid var(--rule); border-radius: 3px; padding: 2px 9px;
-}
-
-/* --- plain lists (clients, certifications) ------------------------------- */
-
-.chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
-.chip {
-  border: 1px solid var(--rule); border-radius: 3px; padding: 7px 13px;
-  font-size: 14.5px; background: #fff;
-}
-.chip small { display: block; font-size: 12px; color: var(--ink-2); }
-
-/* --- contact ------------------------------------------------------------- */
-
-.facts { margin: 0; display: grid; gap: 14px; }
-@media (min-width: 560px) { .facts { grid-template-columns: 1fr 1fr; } }
-.fact__k { font-size: 13px; color: var(--ink-2); }
-.fact__v { font-size: 16.5px; margin-top: 2px; }
-.fact__v a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+.foot p { margin: 0 0 .8em; max-width: var(--measure); }
+.foot p:last-child { margin-bottom: 0; }
+.foot a { color: var(--brand-text); }
 
 /* --- the sticky bar ------------------------------------------------------ */
-
 .bar {
   position: fixed; inset-inline: 0; bottom: 0; z-index: 20;
   display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
-  background: #fff; border-top: 1px solid var(--rule);
+  background: var(--paper); border-block-start: 1px solid var(--rule);
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 0 -2px 14px rgba(0,0,0,.07);
 }
 .bar a {
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  height: var(--bar); font-size: 16px; font-weight: 600; text-decoration: none; color: var(--brand-text);
+  height: var(--bar); font-size: 15px; font-weight: 600; text-decoration: none;
+  color: var(--brand-text);
 }
 .bar a + a { border-inline-start: 1px solid var(--rule); }
-.bar a svg { width: 19px; height: 19px; fill: currentColor; }
+.bar a svg { width: 18px; height: 18px; fill: currentColor; }
 @media (min-width: 820px) { .bar { display: none; } }
-
-/* --- footer -------------------------------------------------------------- */
-
-.foot { background: var(--ground-2); border-top: 1px solid var(--rule); padding-block: 26px 30px; font-size: 13.5px; color: var(--ink-2); }
-.foot p { margin: 0 0 .7em; max-width: var(--measure); }
-.foot p:last-child { margin-bottom: 0; }
-.foot a { color: var(--brand-text); }
 
 /* --- bidi plumbing, shared with the press -------------------------------- */
 
@@ -229,98 +308,308 @@ bdi.nb { white-space: nowrap; }
 <body>
 
 <header class="top"><div class="wrap">
+  <p class="top__eyebrow"><span>القاهرة</span><span>منذ ١٩٩٤</span></p>
   <h1 class="top__name">أركونز</h1>
   <p class="top__name-en"><bdi dir="ltr">ARCONS Industrial Steel Solutions</bdi></p>
   <p class="top__line">منشآت معدنية وخزانات وأوعية ضغط للتطبيقات الصناعية الثقيلة منذ ١٩٩٤</p>
-  <div class="top__meta"><span>القاهرة</span><span>تأسست ١٩٩٤</span></div>
 </div></header>
+
+<section class="band"><div class="wrap"><div class="band__grid">
+    <div class="band__cell">
+      <span class="band__n">١٩٩٤</span>
+      <span class="band__k">سنة التأسيس المعلنة</span>
+    </div><div class="band__cell">
+      <span class="band__n">٤٨</span>
+      <span class="band__k">مشروع منشور على موقعهم</span>
+    </div><div class="band__cell">
+      <span class="band__n">٦</span>
+      <span class="band__k">منتج في قائمتهم</span>
+    </div><div class="band__cell">
+      <span class="band__n">٦</span>
+      <span class="band__k">شهادة واعتماد</span>
+    </div>
+  </div></div></section>
 
 
 
 <section class="sec"><div class="wrap">
-    <h2 class="sec__h">نبذة عن الشركة</h2><p class="sec__h-en"><bdi dir="ltr">About</bdi></p>
-    <p>«أركونز» شركة مصرية مسجّلة، مقرها الرئيسى بالقاهرة، تأسست سنة ١٩٩٤، ومتخصصة فى المنشآت المعدنية والحلول الميكانيكية للتطبيقات الصناعية الثقيلة.</p><p>تخصّصنا تركيب المنشآت المعدنية والخزانات وأوعية الضغط وأعمال المواسير للتطبيقات الصناعية المتوسطة والثقيلة، مع الالتزام بأكواد <bdi dir="ltr" class="nb">ISO</bdi> و<bdi dir="ltr" class="nb">ASME</bdi> وبمعايير الجودة والسلامة والصحة المهنية الدولية وبأداء تنافسى.</p><p>ومنذ التأسيس سنة ١٩٩٤ صارت أركونز متخصصة فى هندسة وتصنيع الإنشاءات المعدنية والمركبة، والكبارى، ومحطات معالجة المياه، ومواسير محطات الكهرباء، والمنشآت المعدنية الهيدروليكية، والغلايات وأوعية الضغط، وكذلك تركيب المعدات الميكانيكية والإنشاءات الخاصة لصناعة المعادن، وتركيب المنشآت الصناعية وخدمتها.</p><p>ولنا فى السنوات العشرين الماضية أعمال فى محطات الكهرباء، والكيماويات (الأمونيا والأسمدة)، والبتروكيماويات، ومشروعات المياه الكبرى، ومصانع الحديد، والمشروعات الصناعية الثقيلة، ومشروعات الموانئ والمطارات. وشاركنا شركات عالمية ولاعبين رئيسيين فى السوق فى أعمال تصنيع وتركيب لعدد من المشروعات الصناعية ومشروعات محطات الكهرباء فى مصر وفى عدد من الدول العربية والأفريقية.</p><p>مجالات التطبيق: محطات الكهرباء، وتطبيقات المياه والصرف، ومشروعات الطاقة المتجددة، ومشروعات البترول، والموانئ، والمطارات، والمصانع الصناعية الثقيلة.</p><p>وفى مواقع التنفيذ نعمل على تحسين السلامة مع مراعاة كل التحديثات الأخيرة فى لوائح <bdi dir="ltr" class="nb">OSHA</bdi>.</p>
-    <div class="caps" style="margin-top:22px"><div class="cap"><div class="cap__k">يعمل منذ</div><div class="cap__v">١٩٩٤</div></div><div class="cap"><div class="cap__k">المحافظة</div><div class="cap__v">القاهرة</div></div></div>
+    <h2 class="sec__h">أعمال منفّذة</h2><p class="sec__h-en"><bdi dir="ltr">Selected work</bdi></p>
+    <div class="rows"><div class="row">
+    <h3 class="row__t">شمندورات إرشاد</h3>
+    <span class="row__tag">٢٠٢٤</span>
+    <p class="row__b">أعلنت أركونز إتمام مشروع شمندورات الإرشاد لعميل بلجيكى، ووصفته بأنه أحدث مشروعاتها فى التصنيع المعدنى.</p>
+  </div><div class="row">
+    <h3 class="row__t">منطقة الحرف <bdi dir="ltr" class="nb">Craft Zone</bdi> — مدينتى</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ATRIUM</bdi> · ٢٠٢٢</span>
+    <p class="row__b">وقّعت أركونز عقداً مع <bdi dir="ltr" class="nb">ATRIUM</bdi> لتوريد وتصنيع وتركيب أعمال المنشآت المعدنية لحوامل إطارات الواجهات المعدنية والمظلات بمشروع منطقة الحرف بمدينتى.</p>
+  </div><div class="row">
+    <h3 class="row__t">تركيب المنشآت المعدنية بمحطة قطار بشتيل</h3>
+    <span class="row__tag"><bdi dir="ltr">Hassan Allam Construction</bdi> (<bdi dir="ltr" class="nb">HAC</bdi>) – <bdi dir="ltr" class="nb">Steel Division</bdi> · ٢٠٢٢</span>
+    <div class="row__spec"><div><span class="k">الموقع</span><span class="v">بشتيل، الجيزة</span></div><div><span class="k">مدة المشروع</span><span class="v">٢٠٢٢ – ٢٠٢٢</span></div><div><span class="k">نطاق العمل</span><span class="v">تنفيذ الورش المركزية بمحطة قطار بشتيل بالجيزة، تحت إشراف وزارة النقل والهيئة القومية لسكك حديد مصر، و<bdi dir="ltr" class="nb">HAC</bdi></span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">خزانات تخزين الخام، رأس بدران، سيناء</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Petrojet</bdi> · ٢٠٢١</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">GPC</bdi> (<bdi dir="ltr">General Petroleum Company</bdi>) – <bdi dir="ltr" class="nb">Consultant: ENPPI</bdi></span></div><div><span class="k">الكمية</span><span class="v">٦٨٨٤ طناً</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ٧/٢٠٢٠ – ٧/٢٠٢١</span></div></div>
+      <p class="row__b">قطر الخزان ١١٠ أمتار والارتفاع ٢٢ متراً، ونوع السقف عائم. تجميع ورفع ولحام ألواح القاع والسقف العائم لخزانين <bdi dir="ltr" class="nb">TK1</bdi> و<bdi dir="ltr" class="nb">TK5</bdi>: إجمالى وزن ألواح القاع والسقف العائم للخزانين ٣٣٨٤ طناً، وسُمك اللوح الحلقى ١٩ مم، والقاع ٧٫٦ مم، والسقف ٥ مم. واستُخدمت سقالات مؤقتة وكمرات <bdi dir="ltr" class="nb">UPN</bdi> فى تجميع ألواح السقف العائم وأجزاء المنشأ المعدنى (الحلقات الداخلية والخارجية والحواجز وغيرها)، وفُكّت كل الكمرات المؤقتة قبل بدء اختبار الضغط المائى، بونش زاحف سعة ٢٥٠ طناً لإتمام الأعمال. وتجميع ورفع ألواح البدن لثلاثة خزانات <bdi dir="ltr" class="nb">TK1</bdi> و<bdi dir="ltr" class="nb">TK2</bdi> و<bdi dir="ltr" class="nb">TK5</bdi>: إجمالى وزن ألواح البدن للخزانات الثلاثة ٣٥٠٠ طن، وسُمك ألواح البدن من ٤٥ مم إلى ١٠ مم بعرض ٢٫٤ متر، بأعمال تجميع على الأرض ثم الرفع بالروافع الهيدروليكية. وكل أعمال اللحام نُفِّذت بماكينات لحام آلية.</p>
+  </div><div class="row">
+    <h3 class="row__t">مترو القاهرة الكبرى — محور عدلى منصور</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Arab Contractors</bdi> · ٢٠٢١</span>
+    <p class="row__b">وقّعت أركونز عقداً مع <bdi dir="ltr" class="nb">Arab Contractors</bdi> لأعمال التصنيع والتجميع للجمالون الفراغى <bdi dir="ltr" class="nb">Hub Space Truss</bdi> بمحطة محور عدلى منصور، الخط الثالث لمترو القاهرة الكبرى، المرحلة <bdi dir="ltr" class="nb">4B</bdi>. ونطاق العمل هو تصنيع وتجميع الجمالون الفراغى فى الساحة قبل تركيبه بمظلة محطة عدلى منصور.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة غاز الوطنية العلمين ٣</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi> · ٢٠١٩</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">ELWATANYA for the sale and distribution of petroleum products</bdi></span></div><div><span class="k">الكمية</span><span class="v">أعمال مدنية و١٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٦ شهور، ١/٢٠١٩ – ٧/٢٠١٩</span></div></div>
+      <p class="row__b">توريد وتنفيذ الأعمال المدنية والميكانيكية وأعمال المنشآت المعدنية لمحطة الغاز، مشروع تسليم مفتاح.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء غرب القاهرة (<bdi dir="ltr" class="nb">١×٦٥٠</bdi> ميجاوات)</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">HAC</bdi> · ٢٠١٨</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Cairo Electricity Production Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٤١٦٤ طن حديد، ٣٨٠٠٠ متر مربع تكسية</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ٢٠١٨</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب المنشآت المعدنية وأعمال التكسية</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">محطة حاويات ميناء السخنة</h3>
+    <span class="row__tag"><bdi dir="ltr">China Harbor Engineering Co</bdi> · ٢٠١٨</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">Port of shokhna</bdi></span></div><div><span class="k">الكمية</span><span class="v">٨٥٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٣ شهور، ٢٠١٨</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">التوريد والتصنيع والدهان والنقل للموقع لمشغولات الصلب الكربونى الأسود (الشدات، شدات جهة البحر، مسامير التثبيت، مرابط التثبيت ضد العواصف، مصدات الإيقاف، الجمالونات، شدات كمرات السكة)</span></div></div>
+      
+  </div></div>
+    <details class="more">
+      <summary>وباقي المشروعات (٤٠)</summary>
+      <div class="rows"><div class="row">
+    <h3 class="row__t">مشروع خزانات توليد الكهرباء بأنجولا</h3>
+    <span class="row__tag"><bdi dir="ltr">El Sewedy Electric Transmission &amp; Distribution</bdi> · ٢٠١٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Angola Ministry of Energy and Water</bdi></span></div><div><span class="k">الكمية</span><span class="v">٦ خزانات</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٤ شهور، من ٣/٢٠١٧ إلى ٦/٢٠١٧</span></div></div>
+      <p class="row__b">التوريد والتصنيع ومعالجة الأسطح والفحص والسفع الرملى والضمان والاختبارات على أساس <bdi dir="ltr" class="nb">FCA</bdi> من مخزن البائع، والتركيب والدهان فى مواقع المشترى بأنجولا.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء بنى سويف ٤٨٠٠ ميجاوات</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">HAC / SIEMENS</bdi> · ٢٠١٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Upper Egypt Electricity Production Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٥٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٤ شهور، ١٢/٢٠١٦ – ٠٣/٢٠١٧</span></div></div>
+      <p class="row__b">تركيب المنشآت المعدنية وأعمال التكسية لكل مبانى المحطة.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء البرلس — المنشآت المعدنية</h3>
+    <span class="row__tag"><bdi dir="ltr">IMAGRO CONSTRUCTION S.r.l</bdi> · ٢٠١٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Egyptian Electricity Holding Company</bdi> (<bdi dir="ltr" class="nb">EEHC</bdi>)</span></div><div><span class="k">الكمية</span><span class="v">٢٢٤٠ طن حديد، ١٧٠٥٠ متر مربع تكسية</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٦ شهور، ١٠/٢٠١٦ – ٠٣/٢٠١٧</span></div></div>
+      <p class="row__b">تركيب المنشآت المعدنية وأعمال التكسية للتوربينين البخاريين <bdi dir="ltr" class="nb">STG 1</bdi> و<bdi dir="ltr" class="nb">STG 3</bdi> بمشروع محطة البرلس للدورة المركبة ٤٨٠٠ ميجاوات.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء البرلس — غلايات الاسترجاع الحرارى <bdi dir="ltr" class="nb">HRSG</bdi></h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">IREM S.p.A. SA Ltd</bdi> · ٢٠١٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Egyptian Electricity Holding Company</bdi> (<bdi dir="ltr" class="nb">EEHC</bdi>)</span></div><div><span class="k">الكمية</span><span class="v">٩٣٥٦ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ١٠/٢٠١٦ – ٩/٢٠١٧</span></div></div>
+      <p class="row__b">تركيب المنشآت المعدنية والألواح والحزم، وطبول الضغط المنخفض والضغط العالى، شاملة أعمال المواسير الداخلية وغيرها، لعدد ٢ غلاية استرجاع حرارى فى الوحدة ٢ بمشروع محطة البرلس للدورة المركبة ٤٨٠٠ ميجاوات.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء جنوب حلوان <bdi dir="ltr" class="nb">٣×٦٥٠</bdi> ميجاوات</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">HAC / PGESCO</bdi> · ٢٠١٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Upper Egypt Electricity Production Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٨٥٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٧ شهور، ١٠/٢٠١٦ – ٠٤/٢٠١٧</span></div></div>
+      <p class="row__b">تركيب المنشآت المعدنية للتوربينين البخاريين <bdi dir="ltr" class="nb">STG 2</bdi> و<bdi dir="ltr" class="nb">STG 3</bdi> وأعمال التكسية.</p>
+  </div><div class="row">
+    <h3 class="row__t">مشروع الطاقة الطارئة <bdi dir="ltr" class="nb">٢٠ × TM2500</bdi>+</h3>
+    <span class="row__tag"><bdi dir="ltr">El Sewedy Electric &amp; GE Packaged Power</bdi> · ٢٠١٥</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Egypt Ministry of Electricity &amp; Energy</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٦ خزاناً سعة ١٠٠ متر مكعب</span></div><div><span class="k">مدة التنفيذ</span><span class="v">شهران، ٣/٢٠١٥ – ٥/٢٠١٥</span></div></div>
+      <p class="row__b">رسومات الورشة والتوريد والتصنيع ومعالجة الأسطح والفحص واختبار التسريب والسفع الرملى والدهان والاختبارات وضمان ٣٦ خزان وقود سعة ١٠٠ متر مكعب، على أساس التسليم من مخزن البائع.</p>
+  </div><div class="row">
+    <h3 class="row__t">مشروع الدورة البسيطة لتوليد الكهرباء — أسيوط</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ORASCOM/ PGESCO</bdi> · ٢٠١٥</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Government of Egypt</bdi></span></div><div><span class="k">الكمية</span><span class="v">٩ خزانات / ١٣٤٨ طناً</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٥ شهور، ٢/٢٠١٥ – ٦/٢٠١٥</span></div></div>
+      <p class="row__b">التركيب فى الموقع لخزانات المازوت والسولار، بإجمالى ٩ خزانات.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء السويس</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Arabcont / PGESCO</bdi> · ٢٠١٤</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">East Delta Electricity Production Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٣٠٧ طن، ١٠٤٣٠ متر مربع</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ١٠/٢٠١٣ – ٠٩/٢٠١٤</span></div></div>
+      <p class="row__b">تركيب التوربين البخارى وحامل المواسير مع أعمال البلاطات المعدنية.</p>
+  </div><div class="row">
+    <h3 class="row__t">مبنى الركاب <bdi dir="ltr" class="nb">TB2</bdi> بمطار القاهرة الدولى</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">NSF</bdi> · ٢٠١٤</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">Cairo Airport</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٧٢٣ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٦ شهور، ١٢/٢٠١٣ – ٥/٢٠١٤</span></div></div>
+      <p class="row__b">تركيب المنشآت المعدنية للمبنى <bdi dir="ltr" class="nb">A</bdi> وكوبرى منظومة مناولة الحقائب، والمظلة الخارجية لمبنى الركاب رقم ٢، وأعمال تقوية الـ <bdi dir="ltr" class="nb">sky wall</bdi> والـ <bdi dir="ltr" class="nb">skyway</bdi> عند المنسوب ١٩٫٧٠٠.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء الخليج، سرت، ليبيا</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">NSF / GAMA</bdi> · ٢٠١٣</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">Libya Government</bdi></span></div><div><span class="k">الكمية</span><span class="v">١٤٩٦٥ طن منشآت معدنية وخزانات</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٦ شهراً، ٢٠١١ وامتدت حتى ٢٠١٣</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب المنشآت المعدنية والخزانات</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء شمال الجيزة</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">NSF / PGESCO</bdi> · ٢٠١٣</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Cairo Electricity Production Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٠٠٠ طن، ٣٤٠٠٠ متر مربع</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ٠٦/٢٠١٢ – ٠٥/٢٠١٣</span></div></div>
+      <p class="row__b">أعمال المنشآت المعدنية وتركيبها وأعمال التكسية وأعمال معدنية متنوعة أخرى.</p>
+  </div><div class="row">
+    <h3 class="row__t">توريد وتركيب صوامع وفلاتر هواء ومجارى هواء</h3>
+    <span class="row__tag"><bdi dir="ltr">Knauf Limited and Partner</bdi> · ٢٠١٢</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Knauf Limited and Partner</bdi></span></div><div><span class="k">الكمية</span><span class="v">صوامع وفلاتر هواء ومجارى هواء</span></div><div><span class="k">مدة التنفيذ</span><span class="v">شهران، ٢٠١٢</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">التصميم والتوريد والتصنيع والتركيب والدهان للصوامع وفلاتر الهواء ومجارى الهواء</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">خزانات الشركة المصرية الهندية للبوليستر</h3>
+    <span class="row__tag"><bdi dir="ltr">Energya for Engineering &amp; Construction</bdi> · ٢٠١٢</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Egyptian Indian Polyester Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٤ خزانات</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٥ شهور، ٢٠١٢</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب كل المشغولات المعدنية لخزانات التخزين</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">محطة العين السخنة الحرارية فوق الحرجة</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ASF / PGESCO</bdi> · ٢٠١٢</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">East Delta Electricity Production Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٤٥ طن، ٦٠٣٠٠ متر مربع، ١٢١٠٠٠ عدد، ٢٠٠٠ متر طولى</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ٣/٢٠١١ – ٢/٢٠١٢</span></div></div>
+      <p class="row__b">أعمال المنشآت المعدنية وتركيبها وأعمال معدنية متنوعة أخرى.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء أبو قير</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ORASCOM/ PGESCO</bdi> · ٢٠١٠</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">West Delta Electricity Production Company</bdi> (<bdi dir="ltr" class="nb">WDEPC</bdi>)</span></div><div><span class="k">الكمية</span><span class="v">٧٥٠٠ طن، ٢٠٠٠٠ متر مربع</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٨ شهور، ٢٠١٠</span></div></div>
+      <p class="row__b">تركيب مبنى التوربين الغازى ومبنى التوربين البخارى ومبنى الطلمبات وغيرها.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء الكريمات — المرحلة الثالثة</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">CMI - PGESCo</bdi> · ٢٠١٠</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">UEEPC</bdi> (<bdi dir="ltr">Upper Egypt Electricity Production Company</bdi>)</span></div><div><span class="k">الكمية</span><span class="v">٦٢٥ طناً، ٢٤ وحدة موديول، طبول الضغط العالى والمتوسط والمنخفض</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٦ شهراً، ٢٠٠٩–٢٠١٠</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب الغلاية ٣ والغلاية ٤ (المنشآت المعدنية والوحدات والمداخن) بمحطة الكريمات الثالثة للدورة المركبة <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مصنع سان جوبان للزجاج، العين السخنة</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Hassan Allam Sons</bdi> (<bdi dir="ltr" class="nb">HAS</bdi>) · ٢٠١٠</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">Saint Gobain</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٠٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٦ شهور، ٢٠٠٩–٢٠١٠</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب المنشآت المعدنية والتكسية لمبانٍ مختلفة، هى: مبنى الفرن، ومبنى حوض التعويم، ومبنى فرن التبريد التدريجى، ومبنى المخازن، ومبنى خلط الخامات</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">برج المراقبة الجوية</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Vinci /OEA</bdi> · ٢٠٠٩</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Government of Libya</bdi></span></div><div><span class="k">الكمية</span><span class="v">٣٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">شهران، ٢٠٠٩</span></div></div>
+      <p class="row__b">تصميم وتصنيع وتوريد المنشآت المعدنية لبرج المراقبة الجوية بمشروع مطار طرابلس الدولى.</p>
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء النوبارية ٣ — <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات دورة مركبة</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">HAS &amp; CCC</bdi> «<bdi dir="ltr" class="nb">MSD</bdi>» · ٢٠٠٩</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">West Delta Electricity Production Company</bdi> (<bdi dir="ltr" class="nb">WDEPC</bdi>)</span></div><div><span class="k">الكمية</span><span class="v">٣٥٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٦ شهور، ٢٠٠٨–٢٠٠٩</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب المنشآت المعدنية لغلايات الاسترجاع الحرارى ومبنى التوربين الغازى ومبنى التوربين البخارى ومبنى الطلمبات وغيرها، لمشروع الدورة المركبة <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مصنع أتلانتيك إيجيبت للسخانات</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">DSD</bdi> · ٢٠٠٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Group Atlantic ECET 2</bdi></span></div><div><span class="k">الكمية</span><span class="v">٢٤٤ طناً، ١٠٠٠٠ متر مكعب، ١٠٠٠٠٠ حديد تسليح</span></div><div><span class="k">مدة التنفيذ</span><span class="v">شهران، ٢٠٠٧</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تصنيع وتركيب وتنفيذ المنشآت المعدنية شاملة كل الأعمال المدنية، بالعاشر من رمضان</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">صومعة التكييف — مشروع مكرر الشركة المتحدة للسكر</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ACMB France</bdi> · ٢٠٠٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>»</span></div><div><span class="k">الكمية</span><span class="v">٣٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٣ شهور، ٢٠٠٧</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب صومعة التكييف لمشروع مكرر السكر</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">السيور الناقلة — مشروع مكرر الشركة المتحدة للسكر</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Steel Tec</bdi> · ٢٠٠٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>»</span></div><div><span class="k">الكمية</span><span class="v">٧٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">شهران، ٢٠٠٧</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب المنشآت المعدنية والمعدات الميكانيكية والدرابزينات والمشايات المبشورة بين ميناء السخنة ومخزن السكر السائب</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">حامل المواسير — مشروع مكرر الشركة المتحدة للسكر</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi> · ٢٠٠٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>»</span></div><div><span class="k">الكمية</span><span class="v">٢٤٤ طناً</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٣ شهور، ٢٠٠٧</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">توريد وتصنيع ودهان وتركيب المنشآت المعدنية لحامل المواسير بمصنع السكر</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">خزانات الخدمات — مشروع مكرر الشركة المتحدة للسكر</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">HAS</bdi> «<bdi dir="ltr" class="nb">Hassan Allam Sons</bdi>» · ٢٠٠٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>»</span></div><div><span class="k">الكمية</span><span class="v">٦ خزانات</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٦ شهور، ٢٠٠٧</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">توريد وتصنيع وتركيب وعزل ودهان ٦ خزانات خدمات بسعات ومقاسات مختلفة بمصنع السكر</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">المعدات الميكانيكية — مشروع مكرر الشركة المتحدة للسكر</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi> · ٢٠٠٧</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>»</span></div><div><span class="k">الكمية</span><span class="v">٢٣٧ قطعة</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٦ شهور، ٢٠٠٧</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب المعدات الميكانيكية بمبنى المكرر بمصنع السكر</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">أبو قير للأسمدة</h3>
+    <span class="row__tag"><bdi dir="ltr">Peiniger international Egypt</bdi> · ٢٠٠٦</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Alexandria Company for fertilizer</bdi></span></div><div><span class="k">الكمية</span><span class="v">٤٠٠٠٠ متر مربع</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٠ شهور، ٢٠٠٥–٢٠٠٦</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب ٤٠٠٠٠ متر مربع تكسية حوائط وأسقف بأبو قير للأسمدة</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">قناطر ومحطة كهرباء نجع حمادى الجديدة</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">D.S.D - NOELL</bdi> · ٢٠٠٦</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Ministry of Irrigation and Water Resources</bdi></span></div><div><span class="k">الكمية</span><span class="v">٤٤٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١١ شهراً، ٢٠٠٦</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب مبنى التوليد وأهوسة الملاحة ومجرى التصريف</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">محطة كهرباء النوبارية ١ و٢ — <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات دورة مركبة</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ALSTOM - DSD</bdi> · ٢٠٠٦</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">West Delta Electricity Production Company</bdi> (<bdi dir="ltr" class="nb">WDEPC</bdi>)</span></div><div><span class="k">الكمية</span><span class="v">٤٥٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٤ شهراً، ١/٢٠٠٥ – ٣/٢٠٠٦</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب الحزم والحواجز ومجارى الدخول والخروج، وأربع غلايات استرجاع حرارى، والكسوة والمنشآت المعدنية، لمشروع الدورة المركبة <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">أساسات خزانات كرامة ١ و٢</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Petrojet</bdi> · ٢٠٠٦</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Qroon Petroleum Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٢٠٠ متر مكعب</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٣ شهور، ٢٠٠٥ / شهر واحد، ٢٠٠٦</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تنفيذ الخرسانة العادية والمسلحة والكمرات الحلقية لعدد ١٠ خزانات</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مخزن السكر السائب — الشركة المتحدة للسكر</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Steel Tec</bdi> · ٢٠٠٦</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">United Sugar Company of Egypt</bdi></span></div><div><span class="k">الكمية</span><span class="v">١٣٥٠ طناً</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٣ شهور، ٢٠٠٦</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب مخزن السكر السائب بأعمال التكسية وبرج النقل إلى مصنع السكر، طبقاً لمواصفات العميل والكود أو المعيار المطبَّق المطلوب فى مواصفات المشروع</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مبنى المكرر — الشركة المتحدة للسكر</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">El-Sweedy</bdi> «<bdi dir="ltr" class="nb">ASF</bdi>» · ٢٠٠٦</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">United Sugar Company of Egypt</bdi></span></div><div><span class="k">الكمية</span><span class="v">٢٠٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٤ شهور، ٢٠٠٦</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب منشأ معدنى متعدد الطوابق بألواح مبشورة بمشروع مكرر السكر</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مركز المؤتمرات الدولى بشرم الشيخ</h3>
+    <span class="row__tag"><bdi dir="ltr">D.S.D - Ferrometalco</bdi> · ٢٠٠٥</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Nemaa Golf Investment Tourist Company</bdi></span></div><div><span class="k">الكمية</span><span class="v">٢١٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">شهران، ٢٠٠٥</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب المنشآت المعدنية مع أعمال التكسية بمركز المؤتمرات الدولى بشرم الشيخ</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">خزان الغاز جبل الأصفر ٢</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">Degremont</bdi> · ٢٠٠٤</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">C.A.C</bdi></span></div></div>
+      <p class="row__b"><bdi dir="ltr" class="nb">DEGREMONT</bdi>. الكمية: خزان واحد. مدة التنفيذ: ٥ شهور، ٢٠٠٤. نطاق عمل أركونز: تركيب وتعديل خزان الغاز الدوّار.</p>
+  </div><div class="row">
+    <h3 class="row__t">مصنع ١٠٠ الحربى أبو زعبل — الأجزاء المدفونة</h3>
+    <span class="row__tag"><bdi dir="ltr">DSD - Arab Contractors</bdi> · ٢٠٠٣</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Factory 100 Military - Abou Zaabal</bdi></span></div><div><span class="k">الكمية</span><span class="v">٩٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ٢٠٠٣</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">توريد وتصنيع وتركيب الأجزاء المعدنية المدفونة بصناديق مرساة المطرقة والمواسير والأكمام والألواح المدفونة، مع الاستقامة والضبط</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مصنع ١٠٠ الحربى أبو زعبل — الأعمال الميكانيكية</h3>
+    <span class="row__tag"><bdi dir="ltr">D.S.D - Arab Contractors</bdi> · ٢٠٠٣</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Factory 100 Military - Abou Zaabal</bdi></span></div><div><span class="k">الكمية</span><span class="v">٩٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ٢٠٠٣</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">التركيب الميكانيكى لخط القص ومنضدة الدرفلة بالمواسير وأجهزة القياس؛ والتركيب الميكانيكى لمحطة المعالجة الحرارية بالمواسير؛ والتركيب الميكانيكى لست وحدات تلدين بالمواسير</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">خزان الغاز جبل الأصفر ١</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ANSCO</bdi> · ٢٠٠٢</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">C.A.C</bdi></span></div></div>
+      <p class="row__b"><bdi dir="ltr" class="nb">DEGREMONT</bdi>. الكمية: خزان واحد. مدة التنفيذ: ٨ شهور، ٢٠٠٢. نطاق عمل أركونز: تركيب وتعديل خزان الغاز الدوّار.</p>
+  </div><div class="row">
+    <h3 class="row__t">مصنع الزيوت المعدنية بالإسكندرية <bdi dir="ltr" class="nb">AMOC</bdi></h3>
+    <span class="row__tag"><bdi dir="ltr">Foster Wheeler France</bdi> · ٢٠٠١</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">AMOC</bdi></span></div><div><span class="k">الكمية</span><span class="v">٨٥٠ طن حديد، ٢٤٠٠ متر مواسير، ١٢٠ طن سلالم، ٤٠٠ متر مشايات مبشورة</span></div><div><span class="k">مدة التنفيذ</span><span class="v">١٢ شهراً، ٢٠٠٠–٢٠٠١</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب ٤٠ خزاناً بأقطار مختلفة من ٦ إلى ٢٤ متراً، مع المواسير والطلمبات والسفع الرملى والدهان</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">درفلة الدخيلة <bdi dir="ltr" class="nb">ANSDK</bdi></h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ANSDK - DSD</bdi> · ١٩٩٩</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr">Alexandria National Steel Fabrication Company in DEKHELA</bdi></span></div><div><span class="k">الكمية</span><span class="v">١٤٠٠ طن</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٥ شهور، ١٩٩٩</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب مبنى التوليد وأهوسة الملاحة ومجرى التصريف</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مصنع مصر كندا للزيوت — العاشر من رمضان</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">M.C.L</bdi> · ١٩٩٩</span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">Misr Canada Oils</bdi></span></div><div><span class="k">الكمية</span><span class="v">٧٠٠ طن حديد، ٢٠٠٠ متر مواسير، ١٠٠ طن سلالم، ٣٠٠ متر مشايات مبشورة</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٧ شهور، ١٩٩٩</span></div><div><span class="k">نطاق عمل أركونز</span><span class="v">تركيب ٢٧ خزاناً بأقطار مختلفة، مع المواسير والطلمبات والسفع الرملى والدهان</span></div></div>
+      
+  </div><div class="row">
+    <h3 class="row__t">مصنع <bdi dir="ltr" class="nb">BASF</bdi> لكيماويات البناء</h3>
+    <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi></span>
+    <div class="row__spec"><div><span class="k">المالك</span><span class="v"><bdi dir="ltr" class="nb">BASF</bdi></span></div><div><span class="k">الكمية</span><span class="v">١٠ خزانات</span></div><div><span class="k">مدة التنفيذ</span><span class="v">٧ شهور</span></div></div>
+      <p class="row__b">توريد وتصنيع وتركيب ١٠ خزانات من الصلب المقاوم للصدأ بمصنع <bdi dir="ltr" class="nb">BASF</bdi> لكيماويات البناء.</p>
+  </div></div>
+    </details>
   </div></section>
-<section class="sec sec--tint"><div class="wrap">
+<section class="sec"><div class="wrap">
     <h2 class="sec__h">القدرات والمواصفات</h2><p class="sec__h-en"><bdi dir="ltr">Capabilities</bdi></p>
-    <div class="caps"><div class="cap">
-        <div class="cap__k">مساحة مصنع إنشاص</div>
-        <div class="cap__v">٢١٠٠٠ متر مربع</div>
-        <div class="cap__v-en"><bdi dir="ltr">21,000 m²</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">الطاقة التصنيعية</div>
-        <div class="cap__v">٧٠٠٠ طن سنوياً</div>
-        <div class="cap__v-en"><bdi dir="ltr">7,000 ton/yr</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">ماكينة درفلة ألواح</div>
-        <div class="cap__v"><bdi dir="ltr" class="nb">AHS ٣٠/٣٠</bdi> مم</div>
-        <div class="cap__v-en"><bdi dir="ltr">AHS 30/30 mm</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">ماكينة قص بالشعلة <bdi dir="ltr" class="nb">CNC</bdi></div>
-        <div class="cap__v"><bdi dir="ltr" class="nb">٣٠٠٠ × ١٢٠٠٠</bdi> مم</div>
-        <div class="cap__v-en"><bdi dir="ltr">3,000 x 12,000 mm</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">ماكينات اللحام</div>
-        <div class="cap__v">آلية ونصف آلية ويدوية</div>
-        <div class="cap__v-en"><bdi dir="ltr">automatic and half automatic and normal</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">مشروعات منفَّذة</div>
-        <div class="cap__v">٦٤ مشروعاً</div>
-        <div class="cap__v-en"><bdi dir="ltr">64</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">مشروعات كبرى</div>
-        <div class="cap__v">٢٠ مشروعاً</div>
-        <div class="cap__v-en"><bdi dir="ltr">20</bdi></div>
+    <div class="facts"><div class="fact">
+        <div class="fact__k">مساحة مصنع إنشاص</div>
+        <div class="fact__v">٢١٠٠٠ متر مربع<span class="fact__v-en"><bdi dir="ltr">21,000 m²</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">الطاقة التصنيعية</div>
+        <div class="fact__v">٧٠٠٠ طن سنوياً<span class="fact__v-en"><bdi dir="ltr">7,000 ton/yr</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">ماكينة درفلة ألواح</div>
+        <div class="fact__v"><bdi dir="ltr" class="nb">AHS ٣٠/٣٠</bdi> مم<span class="fact__v-en"><bdi dir="ltr">AHS 30/30 mm</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">ماكينة قص بالشعلة <bdi dir="ltr" class="nb">CNC</bdi></div>
+        <div class="fact__v"><bdi dir="ltr" class="nb">٣٠٠٠ × ١٢٠٠٠</bdi> مم<span class="fact__v-en"><bdi dir="ltr">3,000 x 12,000 mm</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">ماكينات اللحام</div>
+        <div class="fact__v">آلية ونصف آلية ويدوية<span class="fact__v-en"><bdi dir="ltr">automatic and half automatic and normal</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">مشروعات منفَّذة</div>
+        <div class="fact__v">٦٤ مشروعاً<span class="fact__v-en"><bdi dir="ltr">64</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">مشروعات كبرى</div>
+        <div class="fact__v">٢٠ مشروعاً<span class="fact__v-en"><bdi dir="ltr">20</bdi></span></div>
       </div></div>
   </div></section>
 <section class="sec"><div class="wrap">
-    <h2 class="sec__h">المنتجات</h2><p class="sec__h-en"><bdi dir="ltr">Products</bdi></p>
-    <div class="grid"><article class="card">
-      
-      <div class="card__body">
-        <h3 class="card__t">أوعية الضغط</h3>
-        <div class="card__t-en"><bdi dir="ltr">Pressure Vessels</bdi></div>
-        <p class="card__s">طبقاً لكود <bdi dir="ltr" class="nb">ASME</bdi> ومختومة ومعتمدة</p>
-      </div>
-    </article><article class="card">
-      
-      <div class="card__body">
-        <h3 class="card__t">الخزانات</h3>
-        <div class="card__t-en"><bdi dir="ltr">Tanks</bdi></div>
-        <p class="card__s">خزانات زيت، وخزانات غاز، وخزانات خدمات، وخزانات مياه وغيرها</p>
-      </div>
-    </article><article class="card">
-      
-      <div class="card__body">
-        <h3 class="card__t">وصلات المواسير وقطع الاختراق</h3>
-        <div class="card__t-en"><bdi dir="ltr">Piping Spools &amp; Wall pieces</bdi></div>
-        
-      </div>
-    </article><article class="card">
-      
-      <div class="card__body">
-        <h3 class="card__t">المنشآت المعدنية</h3>
-        <div class="card__t-en"><bdi dir="ltr">Steel Structure</bdi></div>
-        <p class="card__s">شاملة الحديد لأغراض معمارية، والدرابزينات، والمخازن والمصانع ومخازن السائب والورش</p>
-      </div>
-    </article><article class="card">
-      
-      <div class="card__body">
-        <h3 class="card__t">الكسوة ومجارى الدخول والخروج والحزم والمنصات وغلايات الاسترجاع الحرارى</h3>
-        <div class="card__t-en"><bdi dir="ltr">Casing, Inlet Duct, Outlet Duct, Harps, Platforms and Heat Recovery Steam Generator</bdi></div>
-        
-      </div>
-    </article><article class="card">
-      
-      <div class="card__body">
-        <h3 class="card__t">المداخن</h3>
-        <div class="card__t-en"><bdi dir="ltr">Smoke Stacks &amp; chimneys</bdi></div>
-        
-      </div>
-    </article></div>
-  </div></section>
-<section class="sec sec--tint"><div class="wrap">
+        <h2 class="sec__h">عملاء</h2><p class="sec__h-en"><bdi dir="ltr">Clients</bdi></p>
+        <ul class="list"><li><bdi dir="ltr" class="nb">ALSTOM</bdi></li><li><bdi dir="ltr" class="nb">CMI</bdi></li><li><bdi dir="ltr" class="nb">A.C.M.B</bdi>.</li><li><bdi dir="ltr" class="nb">Petrojet</bdi></li><li><bdi dir="ltr" class="nb">Arab Contractors</bdi></li><li><bdi dir="ltr" class="nb">IREM S.p.A</bdi>.</li><li><bdi dir="ltr" class="nb">El Sewedy Electric</bdi></li><li><bdi dir="ltr">Hassan Allam Construction</bdi> (<bdi dir="ltr" class="nb">HAC</bdi>)</li><li><bdi dir="ltr" class="nb">PGESCo</bdi></li><li><bdi dir="ltr" class="nb">Saint Gobain</bdi></li><li><bdi dir="ltr" class="nb">BASF</bdi></li><li><bdi dir="ltr">China Harbor Engineering Co</bdi>.</li></ul>
+      </div></section><section class="sec"><div class="wrap">
+        <h2 class="sec__h">تسجيلات وشهادات</h2><p class="sec__h-en"><bdi dir="ltr">Registrations</bdi></p>
+        <ul class="list"><li>ختم <bdi dir="ltr" class="nb">ASME</bdi> طراز «<bdi dir="ltr" class="nb">U</bdi>» — تصنيع أوعية الضغط<small><bdi dir="ltr" class="nb">ASME</bdi> — الجمعية الأمريكية للهندسة الميكانيكية</small></li><li>ختم <bdi dir="ltr" class="nb">ASME</bdi> طراز «<bdi dir="ltr" class="nb">S</bdi>» — تصنيع وتجميع غلايات الطاقة<small><bdi dir="ltr" class="nb">ASME</bdi> — الجمعية الأمريكية للهندسة الميكانيكية</small></li><li>ختم <bdi dir="ltr" class="nb">ASME</bdi> طراز «<bdi dir="ltr" class="nb">R</bdi>» — الإصلاح المعدنى<small><bdi dir="ltr" class="nb">ASME</bdi> — الجمعية الأمريكية للهندسة الميكانيكية</small></li><li><bdi dir="ltr" class="nb">ISO 9001:2015</bdi></li><li><bdi dir="ltr" class="nb">ISO 14001:2015</bdi></li><li><bdi dir="ltr" class="nb">OHSAS 18001:2007</bdi></li></ul>
+      </div></section>
+<section class="sec"><div class="wrap">
     <h2 class="sec__h">الخدمات</h2><p class="sec__h-en"><bdi dir="ltr">Services</bdi></p>
     <div class="rows"><div class="row">
       <h3 class="row__t">المنشآت المعدنية والمواسير وأعمال ألواح الخزانات</h3>
@@ -341,209 +630,45 @@ bdi.nb { white-space: nowrap; }
     </div></div>
   </div></section>
 <section class="sec"><div class="wrap">
-    <h2 class="sec__h">أعمال منفّذة</h2><p class="sec__h-en"><bdi dir="ltr">Selected work</bdi></p>
-    <div class="rows"><div class="row">
-      <h3 class="row__t">شمندورات إرشاد</h3>
-      <p class="row__b">أعلنت أركونز إتمام مشروع شمندورات الإرشاد لعميل بلجيكى، ووصفته بأنه أحدث مشروعاتها فى التصنيع المعدنى.</p>
-      <span class="row__tag">٢٠٢٤</span>
-    </div><div class="row">
-      <h3 class="row__t">منطقة الحرف <bdi dir="ltr" class="nb">Craft Zone</bdi> — مدينتى</h3>
-      <p class="row__b">وقّعت أركونز عقداً مع <bdi dir="ltr" class="nb">ATRIUM</bdi> لتوريد وتصنيع وتركيب أعمال المنشآت المعدنية لحوامل إطارات الواجهات المعدنية والمظلات بمشروع منطقة الحرف بمدينتى.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ATRIUM</bdi> · ٢٠٢٢</span>
-    </div><div class="row">
-      <h3 class="row__t">تركيب المنشآت المعدنية بمحطة قطار بشتيل</h3>
-      <p class="row__b">الموقع: بشتيل، الجيزة. مدة المشروع: ٢٠٢٢ – ٢٠٢٢. نطاق العمل: تنفيذ الورش المركزية بمحطة قطار بشتيل بالجيزة، تحت إشراف وزارة النقل والهيئة القومية لسكك حديد مصر، و<bdi dir="ltr" class="nb">HAC</bdi>.</p>
-      <span class="row__tag"><bdi dir="ltr">Hassan Allam Construction</bdi> (<bdi dir="ltr" class="nb">HAC</bdi>) – <bdi dir="ltr" class="nb">Steel Division</bdi> · ٢٠٢٢</span>
-    </div><div class="row">
-      <h3 class="row__t">خزانات تخزين الخام، رأس بدران، سيناء</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">GPC</bdi> (<bdi dir="ltr">General Petroleum Company</bdi>) – <bdi dir="ltr" class="nb">Consultant: ENPPI</bdi>. الكمية: ٦٨٨٤ طناً. مدة التنفيذ: ١٢ شهراً، ٧/٢٠٢٠ – ٧/٢٠٢١. قطر الخزان ١١٠ أمتار والارتفاع ٢٢ متراً، ونوع السقف عائم. تجميع ورفع ولحام ألواح القاع والسقف العائم لخزانين <bdi dir="ltr" class="nb">TK1</bdi> و<bdi dir="ltr" class="nb">TK5</bdi>: إجمالى وزن ألواح القاع والسقف العائم للخزانين ٣٣٨٤ طناً، وسُمك اللوح الحلقى ١٩ مم، والقاع ٧٫٦ مم، والسقف ٥ مم. واستُخدمت سقالات مؤقتة وكمرات <bdi dir="ltr" class="nb">UPN</bdi> فى تجميع ألواح السقف العائم وأجزاء المنشأ المعدنى (الحلقات الداخلية والخارجية والحواجز وغيرها)، وفُكّت كل الكمرات المؤقتة قبل بدء اختبار الضغط المائى، بونش زاحف سعة ٢٥٠ طناً لإتمام الأعمال. وتجميع ورفع ألواح البدن لثلاثة خزانات <bdi dir="ltr" class="nb">TK1</bdi> و<bdi dir="ltr" class="nb">TK2</bdi> و<bdi dir="ltr" class="nb">TK5</bdi>: إجمالى وزن ألواح البدن للخزانات الثلاثة ٣٥٠٠ طن، وسُمك ألواح البدن من ٤٥ مم إلى ١٠ مم بعرض ٢٫٤ متر، بأعمال تجميع على الأرض ثم الرفع بالروافع الهيدروليكية. وكل أعمال اللحام نُفِّذت بماكينات لحام آلية.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Petrojet</bdi> · ٢٠٢١</span>
-    </div><div class="row">
-      <h3 class="row__t">مترو القاهرة الكبرى — محور عدلى منصور</h3>
-      <p class="row__b">وقّعت أركونز عقداً مع <bdi dir="ltr" class="nb">Arab Contractors</bdi> لأعمال التصنيع والتجميع للجمالون الفراغى <bdi dir="ltr" class="nb">Hub Space Truss</bdi> بمحطة محور عدلى منصور، الخط الثالث لمترو القاهرة الكبرى، المرحلة <bdi dir="ltr" class="nb">4B</bdi>. ونطاق العمل هو تصنيع وتجميع الجمالون الفراغى فى الساحة قبل تركيبه بمظلة محطة عدلى منصور.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Arab Contractors</bdi> · ٢٠٢١</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة غاز الوطنية العلمين ٣</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">ELWATANYA for the sale and distribution of petroleum products</bdi>. الكمية: أعمال مدنية و١٠٠ طن. مدة التنفيذ: ٦ شهور، ١/٢٠١٩ – ٧/٢٠١٩. توريد وتنفيذ الأعمال المدنية والميكانيكية وأعمال المنشآت المعدنية لمحطة الغاز، مشروع تسليم مفتاح.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi> · ٢٠١٩</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء غرب القاهرة (<bdi dir="ltr" class="nb">١×٦٥٠</bdi> ميجاوات)</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Cairo Electricity Production Company</bdi>. الكمية: ٤١٦٤ طن حديد، ٣٨٠٠٠ متر مربع تكسية. مدة التنفيذ: ١٢ شهراً، ٢٠١٨. نطاق عمل أركونز: تركيب المنشآت المعدنية وأعمال التكسية.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">HAC</bdi> · ٢٠١٨</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة حاويات ميناء السخنة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">Port of shokhna</bdi>. الكمية: ٨٥٠ طن. مدة التنفيذ: ٣ شهور، ٢٠١٨. نطاق عمل أركونز: التوريد والتصنيع والدهان والنقل للموقع لمشغولات الصلب الكربونى الأسود (الشدات، شدات جهة البحر، مسامير التثبيت، مرابط التثبيت ضد العواصف، مصدات الإيقاف، الجمالونات، شدات كمرات السكة).</p>
-      <span class="row__tag"><bdi dir="ltr">China Harbor Engineering Co</bdi> · ٢٠١٨</span>
-    </div><div class="row">
-      <h3 class="row__t">مشروع خزانات توليد الكهرباء بأنجولا</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Angola Ministry of Energy and Water</bdi>. الكمية: ٦ خزانات. مدة التنفيذ: ٤ شهور، من ٣/٢٠١٧ إلى ٦/٢٠١٧. التوريد والتصنيع ومعالجة الأسطح والفحص والسفع الرملى والضمان والاختبارات على أساس <bdi dir="ltr" class="nb">FCA</bdi> من مخزن البائع، والتركيب والدهان فى مواقع المشترى بأنجولا.</p>
-      <span class="row__tag"><bdi dir="ltr">El Sewedy Electric Transmission &amp; Distribution</bdi> · ٢٠١٧</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء بنى سويف ٤٨٠٠ ميجاوات</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Upper Egypt Electricity Production Company</bdi>. الكمية: ٣٥٠٠ طن. مدة التنفيذ: ٤ شهور، ١٢/٢٠١٦ – ٠٣/٢٠١٧. تركيب المنشآت المعدنية وأعمال التكسية لكل مبانى المحطة.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">HAC / SIEMENS</bdi> · ٢٠١٧</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء البرلس — المنشآت المعدنية</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Egyptian Electricity Holding Company</bdi> (<bdi dir="ltr" class="nb">EEHC</bdi>). الكمية: ٢٢٤٠ طن حديد، ١٧٠٥٠ متر مربع تكسية. مدة التنفيذ: ٦ شهور، ١٠/٢٠١٦ – ٠٣/٢٠١٧. تركيب المنشآت المعدنية وأعمال التكسية للتوربينين البخاريين <bdi dir="ltr" class="nb">STG 1</bdi> و<bdi dir="ltr" class="nb">STG 3</bdi> بمشروع محطة البرلس للدورة المركبة ٤٨٠٠ ميجاوات.</p>
-      <span class="row__tag"><bdi dir="ltr">IMAGRO CONSTRUCTION S.r.l</bdi> · ٢٠١٧</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء البرلس — غلايات الاسترجاع الحرارى <bdi dir="ltr" class="nb">HRSG</bdi></h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Egyptian Electricity Holding Company</bdi> (<bdi dir="ltr" class="nb">EEHC</bdi>). الكمية: ٩٣٥٦ طن. مدة التنفيذ: ١٢ شهراً، ١٠/٢٠١٦ – ٩/٢٠١٧. تركيب المنشآت المعدنية والألواح والحزم، وطبول الضغط المنخفض والضغط العالى، شاملة أعمال المواسير الداخلية وغيرها، لعدد ٢ غلاية استرجاع حرارى فى الوحدة ٢ بمشروع محطة البرلس للدورة المركبة ٤٨٠٠ ميجاوات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">IREM S.p.A. SA Ltd</bdi> · ٢٠١٧</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء جنوب حلوان <bdi dir="ltr" class="nb">٣×٦٥٠</bdi> ميجاوات</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Upper Egypt Electricity Production Company</bdi>. الكمية: ٨٥٠٠ طن. مدة التنفيذ: ٧ شهور، ١٠/٢٠١٦ – ٠٤/٢٠١٧. تركيب المنشآت المعدنية للتوربينين البخاريين <bdi dir="ltr" class="nb">STG 2</bdi> و<bdi dir="ltr" class="nb">STG 3</bdi> وأعمال التكسية.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">HAC / PGESCO</bdi> · ٢٠١٧</span>
-    </div><div class="row">
-      <h3 class="row__t">مشروع الطاقة الطارئة <bdi dir="ltr" class="nb">٢٠ × TM2500</bdi>+</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Egypt Ministry of Electricity &amp; Energy</bdi>. الكمية: ٣٦ خزاناً سعة ١٠٠ متر مكعب. مدة التنفيذ: شهران، ٣/٢٠١٥ – ٥/٢٠١٥. رسومات الورشة والتوريد والتصنيع ومعالجة الأسطح والفحص واختبار التسريب والسفع الرملى والدهان والاختبارات وضمان ٣٦ خزان وقود سعة ١٠٠ متر مكعب، على أساس التسليم من مخزن البائع.</p>
-      <span class="row__tag"><bdi dir="ltr">El Sewedy Electric &amp; GE Packaged Power</bdi> · ٢٠١٥</span>
-    </div><div class="row">
-      <h3 class="row__t">مشروع الدورة البسيطة لتوليد الكهرباء — أسيوط</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Government of Egypt</bdi>. الكمية: ٩ خزانات / ١٣٤٨ طناً. مدة التنفيذ: ٥ شهور، ٢/٢٠١٥ – ٦/٢٠١٥. التركيب فى الموقع لخزانات المازوت والسولار، بإجمالى ٩ خزانات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ORASCOM/ PGESCO</bdi> · ٢٠١٥</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء السويس</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">East Delta Electricity Production Company</bdi>. الكمية: ٣٣٠٧ طن، ١٠٤٣٠ متر مربع. مدة التنفيذ: ١٢ شهراً، ١٠/٢٠١٣ – ٠٩/٢٠١٤. تركيب التوربين البخارى وحامل المواسير مع أعمال البلاطات المعدنية.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Arabcont / PGESCO</bdi> · ٢٠١٤</span>
-    </div><div class="row">
-      <h3 class="row__t">مبنى الركاب <bdi dir="ltr" class="nb">TB2</bdi> بمطار القاهرة الدولى</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">Cairo Airport</bdi>. الكمية: ٣٧٢٣ طن. مدة التنفيذ: ٦ شهور، ١٢/٢٠١٣ – ٥/٢٠١٤. تركيب المنشآت المعدنية للمبنى <bdi dir="ltr" class="nb">A</bdi> وكوبرى منظومة مناولة الحقائب، والمظلة الخارجية لمبنى الركاب رقم ٢، وأعمال تقوية الـ <bdi dir="ltr" class="nb">sky wall</bdi> والـ <bdi dir="ltr" class="nb">skyway</bdi> عند المنسوب ١٩٫٧٠٠.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">NSF</bdi> · ٢٠١٤</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء الخليج، سرت، ليبيا</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">Libya Government</bdi>. الكمية: ١٤٩٦٥ طن منشآت معدنية وخزانات. مدة التنفيذ: ١٦ شهراً، ٢٠١١ وامتدت حتى ٢٠١٣. نطاق عمل أركونز: تركيب المنشآت المعدنية والخزانات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">NSF / GAMA</bdi> · ٢٠١٣</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء شمال الجيزة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Cairo Electricity Production Company</bdi>. الكمية: ٣٠٠٠ طن، ٣٤٠٠٠ متر مربع. مدة التنفيذ: ١٢ شهراً، ٠٦/٢٠١٢ – ٠٥/٢٠١٣. أعمال المنشآت المعدنية وتركيبها وأعمال التكسية وأعمال معدنية متنوعة أخرى.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">NSF / PGESCO</bdi> · ٢٠١٣</span>
-    </div><div class="row">
-      <h3 class="row__t">توريد وتركيب صوامع وفلاتر هواء ومجارى هواء</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Knauf Limited and Partner</bdi>. الكمية: صوامع وفلاتر هواء ومجارى هواء. مدة التنفيذ: شهران، ٢٠١٢. نطاق عمل أركونز: التصميم والتوريد والتصنيع والتركيب والدهان للصوامع وفلاتر الهواء ومجارى الهواء.</p>
-      <span class="row__tag"><bdi dir="ltr">Knauf Limited and Partner</bdi> · ٢٠١٢</span>
-    </div><div class="row">
-      <h3 class="row__t">خزانات الشركة المصرية الهندية للبوليستر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Egyptian Indian Polyester Company</bdi>. الكمية: ٤ خزانات. مدة التنفيذ: ٥ شهور، ٢٠١٢. نطاق عمل أركونز: تركيب كل المشغولات المعدنية لخزانات التخزين.</p>
-      <span class="row__tag"><bdi dir="ltr">Energya for Engineering &amp; Construction</bdi> · ٢٠١٢</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة العين السخنة الحرارية فوق الحرجة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">East Delta Electricity Production Company</bdi>. الكمية: ٣٤٥ طن، ٦٠٣٠٠ متر مربع، ١٢١٠٠٠ عدد، ٢٠٠٠ متر طولى. مدة التنفيذ: ١٢ شهراً، ٣/٢٠١١ – ٢/٢٠١٢. أعمال المنشآت المعدنية وتركيبها وأعمال معدنية متنوعة أخرى.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ASF / PGESCO</bdi> · ٢٠١٢</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء أبو قير</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">West Delta Electricity Production Company</bdi> (<bdi dir="ltr" class="nb">WDEPC</bdi>). الكمية: ٧٥٠٠ طن، ٢٠٠٠٠ متر مربع. مدة التنفيذ: ٨ شهور، ٢٠١٠. تركيب مبنى التوربين الغازى ومبنى التوربين البخارى ومبنى الطلمبات وغيرها.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ORASCOM/ PGESCO</bdi> · ٢٠١٠</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء الكريمات — المرحلة الثالثة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">UEEPC</bdi> (<bdi dir="ltr">Upper Egypt Electricity Production Company</bdi>). الكمية: ٦٢٥ طناً، ٢٤ وحدة موديول، طبول الضغط العالى والمتوسط والمنخفض. مدة التنفيذ: ١٦ شهراً، ٢٠٠٩–٢٠١٠. نطاق عمل أركونز: تركيب الغلاية ٣ والغلاية ٤ (المنشآت المعدنية والوحدات والمداخن) بمحطة الكريمات الثالثة للدورة المركبة <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">CMI - PGESCo</bdi> · ٢٠١٠</span>
-    </div><div class="row">
-      <h3 class="row__t">مصنع سان جوبان للزجاج، العين السخنة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">Saint Gobain</bdi>. الكمية: ٣٠٠٠ طن. مدة التنفيذ: ٦ شهور، ٢٠٠٩–٢٠١٠. نطاق عمل أركونز: تركيب المنشآت المعدنية والتكسية لمبانٍ مختلفة، هى: مبنى الفرن، ومبنى حوض التعويم، ومبنى فرن التبريد التدريجى، ومبنى المخازن، ومبنى خلط الخامات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Hassan Allam Sons</bdi> (<bdi dir="ltr" class="nb">HAS</bdi>) · ٢٠١٠</span>
-    </div><div class="row">
-      <h3 class="row__t">برج المراقبة الجوية</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Government of Libya</bdi>. الكمية: ٣٠٠ طن. مدة التنفيذ: شهران، ٢٠٠٩. تصميم وتصنيع وتوريد المنشآت المعدنية لبرج المراقبة الجوية بمشروع مطار طرابلس الدولى.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Vinci /OEA</bdi> · ٢٠٠٩</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء النوبارية ٣ — <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات دورة مركبة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">West Delta Electricity Production Company</bdi> (<bdi dir="ltr" class="nb">WDEPC</bdi>). الكمية: ٣٥٠٠ طن. مدة التنفيذ: ٦ شهور، ٢٠٠٨–٢٠٠٩. نطاق عمل أركونز: تركيب المنشآت المعدنية لغلايات الاسترجاع الحرارى ومبنى التوربين الغازى ومبنى التوربين البخارى ومبنى الطلمبات وغيرها، لمشروع الدورة المركبة <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">HAS &amp; CCC</bdi> «<bdi dir="ltr" class="nb">MSD</bdi>» · ٢٠٠٩</span>
-    </div><div class="row">
-      <h3 class="row__t">مصنع أتلانتيك إيجيبت للسخانات</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Group Atlantic ECET 2</bdi>. الكمية: ٢٤٤ طناً، ١٠٠٠٠ متر مكعب، ١٠٠٠٠٠ حديد تسليح. مدة التنفيذ: شهران، ٢٠٠٧. نطاق عمل أركونز: تصنيع وتركيب وتنفيذ المنشآت المعدنية شاملة كل الأعمال المدنية، بالعاشر من رمضان.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">DSD</bdi> · ٢٠٠٧</span>
-    </div><div class="row">
-      <h3 class="row__t">صومعة التكييف — مشروع مكرر الشركة المتحدة للسكر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>». الكمية: ٣٠٠ طن. مدة التنفيذ: ٣ شهور، ٢٠٠٧. نطاق عمل أركونز: تركيب صومعة التكييف لمشروع مكرر السكر.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ACMB France</bdi> · ٢٠٠٧</span>
-    </div><div class="row">
-      <h3 class="row__t">السيور الناقلة — مشروع مكرر الشركة المتحدة للسكر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>». الكمية: ٧٠٠ طن. مدة التنفيذ: شهران، ٢٠٠٧. نطاق عمل أركونز: تركيب المنشآت المعدنية والمعدات الميكانيكية والدرابزينات والمشايات المبشورة بين ميناء السخنة ومخزن السكر السائب.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Steel Tec</bdi> · ٢٠٠٧</span>
-    </div><div class="row">
-      <h3 class="row__t">حامل المواسير — مشروع مكرر الشركة المتحدة للسكر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>». الكمية: ٢٤٤ طناً. مدة التنفيذ: ٣ شهور، ٢٠٠٧. نطاق عمل أركونز: توريد وتصنيع ودهان وتركيب المنشآت المعدنية لحامل المواسير بمصنع السكر.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi> · ٢٠٠٧</span>
-    </div><div class="row">
-      <h3 class="row__t">خزانات الخدمات — مشروع مكرر الشركة المتحدة للسكر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>». الكمية: ٦ خزانات. مدة التنفيذ: ٦ شهور، ٢٠٠٧. نطاق عمل أركونز: توريد وتصنيع وتركيب وعزل ودهان ٦ خزانات خدمات بسعات ومقاسات مختلفة بمصنع السكر.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">HAS</bdi> «<bdi dir="ltr" class="nb">Hassan Allam Sons</bdi>» · ٢٠٠٧</span>
-    </div><div class="row">
-      <h3 class="row__t">المعدات الميكانيكية — مشروع مكرر الشركة المتحدة للسكر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">United Sugar Company of Egypt</bdi> «<bdi dir="ltr" class="nb">USCE</bdi>». الكمية: ٢٣٧ قطعة. مدة التنفيذ: ٦ شهور، ٢٠٠٧. نطاق عمل أركونز: تركيب المعدات الميكانيكية بمبنى المكرر بمصنع السكر.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi> · ٢٠٠٧</span>
-    </div><div class="row">
-      <h3 class="row__t">أبو قير للأسمدة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Alexandria Company for fertilizer</bdi>. الكمية: ٤٠٠٠٠ متر مربع. مدة التنفيذ: ١٠ شهور، ٢٠٠٥–٢٠٠٦. نطاق عمل أركونز: تركيب ٤٠٠٠٠ متر مربع تكسية حوائط وأسقف بأبو قير للأسمدة.</p>
-      <span class="row__tag"><bdi dir="ltr">Peiniger international Egypt</bdi> · ٢٠٠٦</span>
-    </div><div class="row">
-      <h3 class="row__t">قناطر ومحطة كهرباء نجع حمادى الجديدة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Ministry of Irrigation and Water Resources</bdi>. الكمية: ٤٤٠٠ طن. مدة التنفيذ: ١١ شهراً، ٢٠٠٦. نطاق عمل أركونز: تركيب مبنى التوليد وأهوسة الملاحة ومجرى التصريف.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">D.S.D - NOELL</bdi> · ٢٠٠٦</span>
-    </div><div class="row">
-      <h3 class="row__t">محطة كهرباء النوبارية ١ و٢ — <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات دورة مركبة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">West Delta Electricity Production Company</bdi> (<bdi dir="ltr" class="nb">WDEPC</bdi>). الكمية: ٤٥٠٠ طن. مدة التنفيذ: ١٤ شهراً، ١/٢٠٠٥ – ٣/٢٠٠٦. نطاق عمل أركونز: تركيب الحزم والحواجز ومجارى الدخول والخروج، وأربع غلايات استرجاع حرارى، والكسوة والمنشآت المعدنية، لمشروع الدورة المركبة <bdi dir="ltr" class="nb">٢×٧٥٠</bdi> ميجاوات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ALSTOM - DSD</bdi> · ٢٠٠٦</span>
-    </div><div class="row">
-      <h3 class="row__t">أساسات خزانات كرامة ١ و٢</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Qroon Petroleum Company</bdi>. الكمية: ٢٠٠ متر مكعب. مدة التنفيذ: ٣ شهور، ٢٠٠٥ / شهر واحد، ٢٠٠٦. نطاق عمل أركونز: تنفيذ الخرسانة العادية والمسلحة والكمرات الحلقية لعدد ١٠ خزانات.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Petrojet</bdi> · ٢٠٠٦</span>
-    </div><div class="row">
-      <h3 class="row__t">مخزن السكر السائب — الشركة المتحدة للسكر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">United Sugar Company of Egypt</bdi>. الكمية: ١٣٥٠ طناً. مدة التنفيذ: ٣ شهور، ٢٠٠٦. نطاق عمل أركونز: تركيب مخزن السكر السائب بأعمال التكسية وبرج النقل إلى مصنع السكر، طبقاً لمواصفات العميل والكود أو المعيار المطبَّق المطلوب فى مواصفات المشروع.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Steel Tec</bdi> · ٢٠٠٦</span>
-    </div><div class="row">
-      <h3 class="row__t">مبنى المكرر — الشركة المتحدة للسكر</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">United Sugar Company of Egypt</bdi>. الكمية: ٢٠٠٠ طن. مدة التنفيذ: ٤ شهور، ٢٠٠٦. نطاق عمل أركونز: تركيب منشأ معدنى متعدد الطوابق بألواح مبشورة بمشروع مكرر السكر.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">El-Sweedy</bdi> «<bdi dir="ltr" class="nb">ASF</bdi>» · ٢٠٠٦</span>
-    </div><div class="row">
-      <h3 class="row__t">مركز المؤتمرات الدولى بشرم الشيخ</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Nemaa Golf Investment Tourist Company</bdi>. الكمية: ٢١٠٠ طن. مدة التنفيذ: شهران، ٢٠٠٥. نطاق عمل أركونز: تركيب المنشآت المعدنية مع أعمال التكسية بمركز المؤتمرات الدولى بشرم الشيخ.</p>
-      <span class="row__tag"><bdi dir="ltr">D.S.D - Ferrometalco</bdi> · ٢٠٠٥</span>
-    </div><div class="row">
-      <h3 class="row__t">خزان الغاز جبل الأصفر ٢</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">C.A.C. DEGREMONT</bdi>. الكمية: خزان واحد. مدة التنفيذ: ٥ شهور، ٢٠٠٤. نطاق عمل أركونز: تركيب وتعديل خزان الغاز الدوّار.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">Degremont</bdi> · ٢٠٠٤</span>
-    </div><div class="row">
-      <h3 class="row__t">مصنع ١٠٠ الحربى أبو زعبل — الأجزاء المدفونة</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Factory 100 Military - Abou Zaabal</bdi>. الكمية: ٩٠٠ طن. مدة التنفيذ: ١٢ شهراً، ٢٠٠٣. نطاق عمل أركونز: توريد وتصنيع وتركيب الأجزاء المعدنية المدفونة بصناديق مرساة المطرقة والمواسير والأكمام والألواح المدفونة، مع الاستقامة والضبط.</p>
-      <span class="row__tag"><bdi dir="ltr">DSD - Arab Contractors</bdi> · ٢٠٠٣</span>
-    </div><div class="row">
-      <h3 class="row__t">مصنع ١٠٠ الحربى أبو زعبل — الأعمال الميكانيكية</h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Factory 100 Military - Abou Zaabal</bdi>. الكمية: ٩٠٠ طن. مدة التنفيذ: ١٢ شهراً، ٢٠٠٣. نطاق عمل أركونز: التركيب الميكانيكى لخط القص ومنضدة الدرفلة بالمواسير وأجهزة القياس؛ والتركيب الميكانيكى لمحطة المعالجة الحرارية بالمواسير؛ والتركيب الميكانيكى لست وحدات تلدين بالمواسير.</p>
-      <span class="row__tag"><bdi dir="ltr">D.S.D - Arab Contractors</bdi> · ٢٠٠٣</span>
-    </div><div class="row">
-      <h3 class="row__t">خزان الغاز جبل الأصفر ١</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">C.A.C. DEGREMONT</bdi>. الكمية: خزان واحد. مدة التنفيذ: ٨ شهور، ٢٠٠٢. نطاق عمل أركونز: تركيب وتعديل خزان الغاز الدوّار.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ANSCO</bdi> · ٢٠٠٢</span>
-    </div><div class="row">
-      <h3 class="row__t">مصنع الزيوت المعدنية بالإسكندرية <bdi dir="ltr" class="nb">AMOC</bdi></h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">AMOC</bdi>. الكمية: ٨٥٠ طن حديد، ٢٤٠٠ متر مواسير، ١٢٠ طن سلالم، ٤٠٠ متر مشايات مبشورة. مدة التنفيذ: ١٢ شهراً، ٢٠٠٠–٢٠٠١. نطاق عمل أركونز: تركيب ٤٠ خزاناً بأقطار مختلفة من ٦ إلى ٢٤ متراً، مع المواسير والطلمبات والسفع الرملى والدهان.</p>
-      <span class="row__tag"><bdi dir="ltr">Foster Wheeler France</bdi> · ٢٠٠١</span>
-    </div><div class="row">
-      <h3 class="row__t">درفلة الدخيلة <bdi dir="ltr" class="nb">ANSDK</bdi></h3>
-      <p class="row__b">المالك: <bdi dir="ltr">Alexandria National Steel Fabrication Company in DEKHELA</bdi>. الكمية: ١٤٠٠ طن. مدة التنفيذ: ٥ شهور، ١٩٩٩. نطاق عمل أركونز: تركيب مبنى التوليد وأهوسة الملاحة ومجرى التصريف.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ANSDK - DSD</bdi> · ١٩٩٩</span>
-    </div><div class="row">
-      <h3 class="row__t">مصنع مصر كندا للزيوت — العاشر من رمضان</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">Misr Canada Oils</bdi>. الكمية: ٧٠٠ طن حديد، ٢٠٠٠ متر مواسير، ١٠٠ طن سلالم، ٣٠٠ متر مشايات مبشورة. مدة التنفيذ: ٧ شهور، ١٩٩٩. نطاق عمل أركونز: تركيب ٢٧ خزاناً بأقطار مختلفة، مع المواسير والطلمبات والسفع الرملى والدهان.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">M.C.L</bdi> · ١٩٩٩</span>
-    </div><div class="row">
-      <h3 class="row__t">مصنع <bdi dir="ltr" class="nb">BASF</bdi> لكيماويات البناء</h3>
-      <p class="row__b">المالك: <bdi dir="ltr" class="nb">BASF</bdi>. الكمية: ١٠ خزانات. مدة التنفيذ: ٧ شهور. توريد وتصنيع وتركيب ١٠ خزانات من الصلب المقاوم للصدأ بمصنع <bdi dir="ltr" class="nb">BASF</bdi> لكيماويات البناء.</p>
-      <span class="row__tag"><bdi dir="ltr" class="nb">ARCONS</bdi></span>
-    </div></div>
+    <h2 class="sec__h">المنتجات</h2><p class="sec__h-en"><bdi dir="ltr">Products</bdi></p>
+    <div class="grid"><article class="card">
+      
+      <h3 class="card__t">أوعية الضغط</h3>
+      <div class="card__t-en"><bdi dir="ltr">Pressure Vessels</bdi></div>
+      <p class="card__s">طبقاً لكود <bdi dir="ltr" class="nb">ASME</bdi> ومختومة ومعتمدة</p>
+    </article><article class="card">
+      
+      <h3 class="card__t">الخزانات</h3>
+      <div class="card__t-en"><bdi dir="ltr">Tanks</bdi></div>
+      <p class="card__s">خزانات زيت، وخزانات غاز، وخزانات خدمات، وخزانات مياه وغيرها</p>
+    </article><article class="card">
+      
+      <h3 class="card__t">وصلات المواسير وقطع الاختراق</h3>
+      <div class="card__t-en"><bdi dir="ltr">Piping Spools &amp; Wall pieces</bdi></div>
+      
+    </article><article class="card">
+      
+      <h3 class="card__t">المنشآت المعدنية</h3>
+      <div class="card__t-en"><bdi dir="ltr">Steel Structure</bdi></div>
+      <p class="card__s">شاملة الحديد لأغراض معمارية، والدرابزينات، والمخازن والمصانع ومخازن السائب والورش</p>
+    </article><article class="card">
+      
+      <h3 class="card__t">الكسوة ومجارى الدخول والخروج والحزم والمنصات وغلايات الاسترجاع الحرارى</h3>
+      <div class="card__t-en"><bdi dir="ltr">Casing, Inlet Duct, Outlet Duct, Harps, Platforms and Heat Recovery Steam Generator</bdi></div>
+      
+    </article><article class="card">
+      
+      <h3 class="card__t">المداخن</h3>
+      <div class="card__t-en"><bdi dir="ltr">Smoke Stacks &amp; chimneys</bdi></div>
+      
+    </article></div>
   </div></section>
-<section class="sec sec--tint"><div class="wrap">
-        <h2 class="sec__h">عملاء</h2><p class="sec__h-en"><bdi dir="ltr">Clients</bdi></p>
-        <ul class="chips"><li class="chip"><bdi dir="ltr" class="nb">ALSTOM</bdi></li><li class="chip"><bdi dir="ltr" class="nb">CMI</bdi></li><li class="chip"><bdi dir="ltr" class="nb">A.C.M.B</bdi>.</li><li class="chip"><bdi dir="ltr" class="nb">Petrojet</bdi></li><li class="chip"><bdi dir="ltr" class="nb">Arab Contractors</bdi></li><li class="chip"><bdi dir="ltr" class="nb">IREM S.p.A</bdi>.</li><li class="chip"><bdi dir="ltr" class="nb">El Sewedy Electric</bdi></li><li class="chip"><bdi dir="ltr">Hassan Allam Construction</bdi> (<bdi dir="ltr" class="nb">HAC</bdi>)</li><li class="chip"><bdi dir="ltr" class="nb">PGESCo</bdi></li><li class="chip"><bdi dir="ltr" class="nb">Saint Gobain</bdi></li><li class="chip"><bdi dir="ltr" class="nb">BASF</bdi></li><li class="chip"><bdi dir="ltr">China Harbor Engineering Co</bdi>.</li></ul>
-      </div></section><section class="sec"><div class="wrap">
-        <h2 class="sec__h">تسجيلات وشهادات</h2><p class="sec__h-en"><bdi dir="ltr">Registrations</bdi></p>
-        <ul class="chips"><li class="chip">ختم <bdi dir="ltr" class="nb">ASME</bdi> طراز «<bdi dir="ltr" class="nb">U</bdi>» — تصنيع أوعية الضغط<small><bdi dir="ltr" class="nb">ASME</bdi> — الجمعية الأمريكية للهندسة الميكانيكية</small></li><li class="chip">ختم <bdi dir="ltr" class="nb">ASME</bdi> طراز «<bdi dir="ltr" class="nb">S</bdi>» — تصنيع وتجميع غلايات الطاقة<small><bdi dir="ltr" class="nb">ASME</bdi> — الجمعية الأمريكية للهندسة الميكانيكية</small></li><li class="chip">ختم <bdi dir="ltr" class="nb">ASME</bdi> طراز «<bdi dir="ltr" class="nb">R</bdi>» — الإصلاح المعدنى<small><bdi dir="ltr" class="nb">ASME</bdi> — الجمعية الأمريكية للهندسة الميكانيكية</small></li><li class="chip"><bdi dir="ltr" class="nb">ISO 9001:2015</bdi></li><li class="chip"><bdi dir="ltr" class="nb">ISO 14001:2015</bdi></li><li class="chip"><bdi dir="ltr" class="nb">OHSAS 18001:2007</bdi></li></ul>
-      </div></section>
-<section class="sec sec--tint" id="contact"><div class="wrap">
+<section class="sec"><div class="wrap">
+    <h2 class="sec__h">نبذة عن الشركة</h2><p class="sec__h-en"><bdi dir="ltr">About</bdi></p>
+    <p>«أركونز» شركة مصرية مسجّلة، مقرها الرئيسى بالقاهرة، تأسست سنة ١٩٩٤، ومتخصصة فى المنشآت المعدنية والحلول الميكانيكية للتطبيقات الصناعية الثقيلة.</p><p>تخصّصنا تركيب المنشآت المعدنية والخزانات وأوعية الضغط وأعمال المواسير للتطبيقات الصناعية المتوسطة والثقيلة، مع الالتزام بأكواد <bdi dir="ltr" class="nb">ISO</bdi> و<bdi dir="ltr" class="nb">ASME</bdi> وبمعايير الجودة والسلامة والصحة المهنية الدولية وبأداء تنافسى.</p><p>ومنذ التأسيس سنة ١٩٩٤ صارت أركونز متخصصة فى هندسة وتصنيع الإنشاءات المعدنية والمركبة، والكبارى، ومحطات معالجة المياه، ومواسير محطات الكهرباء، والمنشآت المعدنية الهيدروليكية، والغلايات وأوعية الضغط، وكذلك تركيب المعدات الميكانيكية والإنشاءات الخاصة لصناعة المعادن، وتركيب المنشآت الصناعية وخدمتها.</p><p>ولنا فى السنوات العشرين الماضية أعمال فى محطات الكهرباء، والكيماويات (الأمونيا والأسمدة)، والبتروكيماويات، ومشروعات المياه الكبرى، ومصانع الحديد، والمشروعات الصناعية الثقيلة، ومشروعات الموانئ والمطارات. وشاركنا شركات عالمية ولاعبين رئيسيين فى السوق فى أعمال تصنيع وتركيب لعدد من المشروعات الصناعية ومشروعات محطات الكهرباء فى مصر وفى عدد من الدول العربية والأفريقية.</p><p>مجالات التطبيق: محطات الكهرباء، وتطبيقات المياه والصرف، ومشروعات الطاقة المتجددة، ومشروعات البترول، والموانئ، والمطارات، والمصانع الصناعية الثقيلة.</p><p>وفى مواقع التنفيذ نعمل على تحسين السلامة مع مراعاة كل التحديثات الأخيرة فى لوائح <bdi dir="ltr" class="nb">OSHA</bdi>.</p>
+    <div class="facts" style="margin-top:26px"><div class="fact"><div class="fact__k">يعمل منذ</div><div class="fact__v">١٩٩٤</div></div><div class="fact"><div class="fact__k">المحافظة</div><div class="fact__v">القاهرة</div></div></div>
+  </div></section>
+<section class="sec" id="contact"><div class="wrap">
     <h2 class="sec__h">للتواصل</h2><p class="sec__h-en"><bdi dir="ltr">Contact</bdi></p>
     <div class="facts"><div class="fact"><div class="fact__k">البريد</div><div class="fact__v"><a href="mailto:arcons@arconsegypt.com"><bdi dir="ltr">arcons@arconsegypt.com</bdi></a></div></div><div class="fact"><div class="fact__k">الموقع</div><div class="fact__v"><bdi dir="ltr">arconsegypt.com</bdi></div></div><div class="fact"><div class="fact__k">العنوان</div><div class="fact__v">١١٤ عمار بن ياسر، مصر الجديدة، القاهرة</div></div></div>
   </div></section>

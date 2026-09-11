@@ -54,17 +54,27 @@
 }
 
 :root {
+  /* The firm's own colour. Overridden per page in the inlined <style>. */
   --brand: #123b5e;
   --brand-ink: #ffffff;
   --brand-text: #123b5e;
-  --ink: #14181d;
-  --ink-2: #55606c;
-  --rule: #dfe3e8;
-  --ground: #ffffff;
-  --ground-2: #f5f7f9;
-  --bar: 62px;                 /* height of the sticky call bar on phones */
-  --gutter: 20px;
-  --measure: 68ch;
+
+  /* A WARM ground, not white. The pages these firms have today are cold
+   * default-white bootstrap templates; a warm paper is the cheapest single
+   * signal that someone chose it. */
+  --paper: #fbfaf8;
+  --paper-2: #f2f0ec;
+  --ink: #16171a;
+  --ink-2: #55585f;
+  /* The faint ink still has to clear 4.5:1 — on the FOOTER's darker ground,
+   * not just on paper. #8a8d94 read at 3.2:1 and the gate caught it on all
+   * three pages. "Muted" is a tone, not a licence to be unreadable. */
+  --ink-3: #66696f;
+  --rule: #e3e0da;
+
+  --measure: 44rem;
+  --gutter: 22px;
+  --bar: 56px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -73,141 +83,210 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--ground);
-  color: var(--ink);
-  font-family: 'Waraq Arabic Text', 'Noto Naskh Arabic', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Waraq Arabic Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 17px;
-  line-height: 1.75;
-  /* room for the sticky bar so the last line is never sat on */
+  line-height: 1.85;
+  color: var(--ink);
+  background: var(--paper);
   padding-bottom: calc(var(--bar) + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
 }
 @media (min-width: 820px) { body { padding-bottom: 0; } }
 
-img { max-width: 100%; height: auto; display: block; }
-a { color: inherit; }
+.wrap { max-width: var(--measure); margin-inline: auto; padding-inline: var(--gutter); }
 
-.wrap { max-width: 960px; margin-inline: auto; padding-inline: var(--gutter); }
+a { color: var(--brand-text); }
 
-/* --- masthead ------------------------------------------------------------ */
+/* --- the masthead --------------------------------------------------------
+ *
+ * NO COLOURED SLAB. The firm's colour appears here as a 5px rule across the
+ * very top and nowhere else at size. A full-bleed block of a company's brand
+ * colour with white text on it is the single fastest way to make a page look
+ * like a free template, which is exactly what this page must not look like.
+ * The name carries the page; the colour only marks it. */
 
-.top { background: var(--brand); color: var(--brand-ink); padding-block: 30px 26px; }
-.top__name { margin: 0; font-size: clamp(26px, 7vw, 40px); font-weight: 600; line-height: 1.25; }
+.top { padding-block: 30px 26px; border-bottom: 1px solid var(--rule); }
+.top::before {
+  content: ''; display: block; height: 5px; background: var(--brand);
+  position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 30;
+}
+
+/* The eyebrow is the only place a fact appears before the name: where they
+ * are and since when. Both come from the record or the line is not printed. */
+.top__eyebrow {
+  margin: 0 0 14px; font-size: 13px; font-weight: 600; color: var(--ink-3);
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.top__eyebrow span + span::before {
+  content: ''; display: inline-block; width: 3px; height: 3px; border-radius: 50%;
+  background: currentColor; vertical-align: middle; margin-inline-end: 10px;
+}
+
+.top__name {
+  margin: 0; font-weight: 600; color: var(--ink);
+  font-size: clamp(2.05rem, 8.6vw, 3.3rem);
+  line-height: 1.14;
+  /* Arabic is never letter-spaced. Tightening the tracking of an Arabic
+   * display line closes the joins and is the same mistake wearing a minus. */
+  letter-spacing: 0;
+}
 .top__name-en {
-  margin: 6px 0 0; font-size: clamp(13px, 3.2vw, 15px); font-weight: 400;
-  letter-spacing: .04em; opacity: .8;
+  margin: 10px 0 0; color: var(--ink-3);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: .13em; text-transform: uppercase; /* Latin only */
 }
-.top__line { margin: 14px 0 0; font-size: clamp(15px, 4vw, 18px); opacity: .92; max-width: var(--measure); }
-.top__meta {
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.22);
-  display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 14px; opacity: .85;
+.top__line {
+  margin: 20px 0 0; color: var(--ink-2);
+  font-size: clamp(1.06rem, 4.3vw, 1.24rem); line-height: 1.72;
+  max-width: 34ch;
 }
 
-/* --- the call row: the only thing on this page that has to work ---------- */
+/* --- the facts band ------------------------------------------------------
+ *
+ * Counts of what the firm PUBLISHES, never a claim we make on its behalf.
+ * Each cell is labelled with what it counts, so "48" can never be read as a
+ * number we invented about their business. */
+.band { border-bottom: 1px solid var(--rule); }
+.band__grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 700px) { .band__grid { grid-template-columns: repeat(4, 1fr); } }
+.band__cell { padding-block: 22px 24px; padding-inline-end: 18px; }
+.band__cell + .band__cell { border-inline-start: 1px solid var(--rule); padding-inline-start: 18px; }
+@media (max-width: 699px) {
+  .band__cell:nth-child(odd) { border-inline-start: 0; padding-inline-start: 0; }
+  .band__cell:nth-child(n+3) { border-block-start: 1px solid var(--rule); }
+  /* An odd third cell left alone in a two-column grid looks like a mistake,
+   * so it takes the whole row. Records publish what they publish; the band
+   * is never padded with a fourth figure to make the grid come out even. */
+  .band__grid > .band__cell:nth-child(3):last-child { grid-column: 1 / -1; }
+}
+.band__n {
+  display: block; font-weight: 600; color: var(--brand-text);
+  font-size: clamp(1.75rem, 7.2vw, 2.3rem); line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.band__k { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-3); line-height: 1.5; }
 
-.calls { display: grid; gap: 10px; margin-block: 22px; }
-@media (min-width: 560px) { .calls { grid-auto-flow: column; grid-auto-columns: 1fr; } }
+/* --- sections ------------------------------------------------------------
+ *
+ * One ground throughout. The old file alternated a tinted background per
+ * section, which chopped the page into slabs and made every record look the
+ * same regardless of what it contained. Structure is carried by hairlines
+ * and space. */
+.sec { padding-block: 40px 44px; }
+.sec + .sec { border-block-start: 1px solid var(--rule); }
+
+.sec__h { margin: 0 0 4px; font-size: 1.16rem; font-weight: 600; line-height: 1.4; }
+.sec__h-en {
+  margin: 0 0 24px; color: var(--ink-3);
+  font-size: 11.5px; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase; /* Latin only */
+}
+.sec > .wrap > p { margin: 0 0 1.1em; }
+.sec > .wrap > p:last-child { margin-bottom: 0; }
+
+/* --- label / value rows, the spine of the whole page --------------------- */
+.facts { display: grid; gap: 0; }
+.fact { display: grid; grid-template-columns: 8.5rem 1fr; gap: 14px; padding-block: 13px; }
+.fact + .fact { border-block-start: 1px solid var(--rule); }
+.fact__k { color: var(--ink-3); font-size: 14px; line-height: 1.6; }
+.fact__v { line-height: 1.65; overflow-wrap: anywhere; }
+.fact__v-en { display: block; color: var(--ink-3); font-size: 13px; letter-spacing: .04em; /* Latin only */ }
+@media (max-width: 419px) { .fact { grid-template-columns: 1fr; gap: 2px; } }
+
+/* --- record rows: services, projects ------------------------------------- */
+.rows { display: grid; }
+.row { padding-block: 22px; }
+.row + .row { border-block-start: 1px solid var(--rule); }
+.row__t { margin: 0; font-size: 1.06rem; font-weight: 600; line-height: 1.5; }
+.row__t-en {
+  margin-top: 5px; color: var(--ink-3); font-size: 11.5px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; /* Latin only */
+}
+.row__b { margin: 10px 0 0; color: var(--ink-2); line-height: 1.8; }
+.row__spec { margin-top: 12px; display: grid; gap: 0; }
+.row__spec div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding-block: 7px; font-size: 15px; }
+.row__spec div + div { border-block-start: 1px dotted var(--rule); }
+.row__spec dt, .row__spec .k { color: var(--ink-3); }
+.row__spec .v { color: var(--ink); }
+@media (max-width: 419px) { .row__spec div { grid-template-columns: 1fr; gap: 0; } }
+.row__tag { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+
+details.more { margin-top: 4px; }
+details.more > summary {
+  cursor: pointer; padding-block: 16px; font-weight: 600; font-size: 15px;
+  color: var(--brand-text); border-block-start: 1px solid var(--rule);
+}
+details.more[open] > summary { border-block-end: 1px solid var(--rule); }
+
+/* --- the catalogue grid --------------------------------------------------
+ * Used when the record's weight is in its PRODUCTS. A part number and a
+ * material code are what a maintenance engineer scans for, so they lead. */
+.grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
+.card { padding-block: 16px; border-block-start: 1px solid var(--rule); }
+.card__img {
+  display: block; width: 100%; height: auto; margin-bottom: 12px;
+  background: var(--paper-2); aspect-ratio: 4 / 3; object-fit: cover;
+}
+.card__t { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.5; }
+.card__t-en {
+  margin-top: 4px; color: var(--ink-3); font-size: 12px;
+  letter-spacing: .06em; /* Latin only */
+}
+.card__s { margin: 6px 0 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.65; }
+
+/* --- plain lists: clients, certifications -------------------------------
+ * A two-column list of names, not a cloud of pills. Pills read as tags on a
+ * blog; a purchasing officer reads a list. */
+.list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .list { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
+.list li { padding-block: 11px; border-block-start: 1px solid var(--rule); line-height: 1.6; }
+.list li small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
+
+/* --- the call row -------------------------------------------------------- */
+.calls { display: grid; gap: 10px; padding-block: 22px; }
+@media (min-width: 480px) { .calls { grid-auto-flow: column; grid-auto-columns: 1fr; } }
 .call {
   display: flex; align-items: center; justify-content: center; gap: 9px;
-  min-height: 52px; padding-inline: 16px; border-radius: 6px;
-  font-size: 17px; font-weight: 600; text-decoration: none;
-  border: 1.5px solid var(--brand); color: var(--brand-text); background: #fff;
+  min-height: 52px; padding-inline: 18px;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+  border: 1px solid var(--rule); color: var(--brand-text); background: transparent;
 }
-.call--fill { background: var(--brand); color: var(--brand-ink); }
-.call svg { width: 20px; height: 20px; flex: none; fill: currentColor; }
+/* THE PRIMARY CALL IS INK, NOT THE BRAND COLOUR.
+ *
+ * A full-width slab of a firm's own colour was the loudest thing on the page
+ * and the first thing that read as a free template — a bright chartreuse
+ * green filling the width says "generated" before a word is read. Ink is
+ * quiet, works under every brand colour a record can carry, and still reads
+ * as the one button on the page. The colour survives where it means
+ * something: the rule across the top, the figures, and the links. */
+.call--fill { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.call svg { width: 19px; height: 19px; flex: none; fill: currentColor; }
 
-/* --- sections ------------------------------------------------------------ */
-
-.sec { padding-block: 32px; border-top: 1px solid var(--rule); }
-.sec--tint { background: var(--ground-2); border-top: 0; }
-.sec__h { margin: 0 0 4px; font-size: clamp(20px, 5vw, 25px); font-weight: 600; line-height: 1.3; }
-.sec__h-en { margin: 0 0 20px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
-.sec p { margin: 0 0 1em; max-width: var(--measure); }
-.sec p:last-child { margin-bottom: 0; }
-
-/* --- capability numbers: what a purchasing manager actually compares ----- */
-
-/* auto-fit, not a fixed column count. The grid paints its own 1px rules by
- * showing its background through the gaps, so a fixed `repeat(3, 1fr)` holding
- * one cell leaves two empty tracks — a bare grey slab beside the only fact a
- * sparse record has. auto-fit collapses the empty tracks instead. A sparse
- * record has to look deliberate, not broken: it is the one we will send to the
- * firms with the least public material, which is most of them. */
-.caps {
-  display: grid; gap: 1px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  background: var(--rule); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+/* --- footer -------------------------------------------------------------- */
+.foot {
+  background: var(--paper-2); border-block-start: 1px solid var(--rule);
+  padding-block: 30px 34px; font-size: 14px; color: var(--ink-2); line-height: 1.8;
 }
-.cap { background: #fff; padding: 16px 18px; }
-.cap__k { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
-.cap__v { font-size: clamp(19px, 5vw, 23px); font-weight: 600; line-height: 1.35; margin-top: 4px; }
-.cap__v-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
-
-/* --- products ------------------------------------------------------------ */
-
-.grid { display: grid; gap: 18px; }
-@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 820px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-
-.card { border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; background: #fff; }
-.card__img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; background: var(--ground-2); }
-.card__body { padding: 14px 16px 16px; }
-.card__t { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4; }
-.card__t-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; line-height: 1.5; }
-.card__s { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-2); line-height: 1.6; }
-
-/* --- services and projects as rows -------------------------------------- */
-
-.rows { display: grid; gap: 0; }
-.row { padding-block: 18px; border-top: 1px solid var(--rule); }
-.row:first-child { border-top: 0; padding-top: 0; }
-.row__t { margin: 0; font-size: 17.5px; font-weight: 600; line-height: 1.45; }
-.row__t-en { font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
-.row__b { margin: 7px 0 0; font-size: 15.5px; color: var(--ink-2); max-width: var(--measure); }
-.row__tag {
-  display: inline-block; margin-top: 8px; font-size: 12.5px; color: var(--ink-2);
-  border: 1px solid var(--rule); border-radius: 3px; padding: 2px 9px;
-}
-
-/* --- plain lists (clients, certifications) ------------------------------- */
-
-.chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
-.chip {
-  border: 1px solid var(--rule); border-radius: 3px; padding: 7px 13px;
-  font-size: 14.5px; background: #fff;
-}
-.chip small { display: block; font-size: 12px; color: var(--ink-2); }
-
-/* --- contact ------------------------------------------------------------- */
-
-.facts { margin: 0; display: grid; gap: 14px; }
-@media (min-width: 560px) { .facts { grid-template-columns: 1fr 1fr; } }
-.fact__k { font-size: 13px; color: var(--ink-2); }
-.fact__v { font-size: 16.5px; margin-top: 2px; }
-.fact__v a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+.foot p { margin: 0 0 .8em; max-width: var(--measure); }
+.foot p:last-child { margin-bottom: 0; }
+.foot a { color: var(--brand-text); }
 
 /* --- the sticky bar ------------------------------------------------------ */
-
 .bar {
   position: fixed; inset-inline: 0; bottom: 0; z-index: 20;
   display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
-  background: #fff; border-top: 1px solid var(--rule);
+  background: var(--paper); border-block-start: 1px solid var(--rule);
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 0 -2px 14px rgba(0,0,0,.07);
 }
 .bar a {
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  height: var(--bar); font-size: 16px; font-weight: 600; text-decoration: none; color: var(--brand-text);
+  height: var(--bar); font-size: 15px; font-weight: 600; text-decoration: none;
+  color: var(--brand-text);
 }
 .bar a + a { border-inline-start: 1px solid var(--rule); }
-.bar a svg { width: 19px; height: 19px; fill: currentColor; }
+.bar a svg { width: 18px; height: 18px; fill: currentColor; }
 @media (min-width: 820px) { .bar { display: none; } }
-
-/* --- footer -------------------------------------------------------------- */
-
-.foot { background: var(--ground-2); border-top: 1px solid var(--rule); padding-block: 26px 30px; font-size: 13.5px; color: var(--ink-2); }
-.foot p { margin: 0 0 .7em; max-width: var(--measure); }
-.foot p:last-child { margin-bottom: 0; }
-.foot a { color: var(--brand-text); }
 
 /* --- bidi plumbing, shared with the press -------------------------------- */
 
@@ -229,37 +308,30 @@ bdi.nb { white-space: nowrap; }
 <body>
 
 <header class="top"><div class="wrap">
+  <p class="top__eyebrow"><span>منذ ٢٠١٣</span></p>
   <h1 class="top__name">اوبك للصناعات الهندسيه</h1>
   <p class="top__name-en"><bdi dir="ltr">Opec</bdi></p>
   <p class="top__line">تصنيع خطوط إنتاج لشركات الأدوية والأغذية، ومواسير بترول، وأنظمة إطفاء حريق — منذ ٢٠١٣</p>
-  <div class="top__meta"><span>تأسست ٢٠١٣</span></div>
 </div></header>
+
+<section class="band"><div class="wrap"><div class="band__grid">
+    <div class="band__cell">
+      <span class="band__n">٢٠١٣</span>
+      <span class="band__k">سنة التأسيس المعلنة</span>
+    </div><div class="band__cell">
+      <span class="band__n">٤</span>
+      <span class="band__k">خدمة معلنة</span>
+    </div>
+  </div></div></section>
 
 <div class="wrap"><div class="calls"><a class="call call--fill" href="tel:+201013066222"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل بنا</span></a></div></div>
 
 <section class="sec"><div class="wrap">
     <h2 class="sec__h">نبذة عن الشركة</h2><p class="sec__h-en"><bdi dir="ltr">About</bdi></p>
     <p>«اوبك» شركة مصرية تأسست سنة ٢٠١٣ باسم «<bdi dir="ltr">Al-Gamal for Industries</bdi>» كما نشرته هي، ومتخصصة في تصنيع خطوط الإنتاج لشركات الأدوية والأغذية، وكذلك مواسير البترول. والشركة تقول عن نفسها إنها تسعى إلى أعلى معايير الجودة والدقة في تصميم الخطوط وتصنيعها، بما يوافق احتياجات عملائها ومتطلبات السوق.</p><p>والشركة تعمل كذلك في تصميم وتصنيع أنظمة إطفاء الحريق، وتقول إنها حريصة على حلول مبتكرة وفعّالة تساعد عملاءها على حماية ممتلكاتهم وتفادي الحرائق.</p><p>وبعد أكثر من عشر سنوات في السوق المصري، تصف «اوبك» نفسها بأنها صارت من الشركات الرائدة في مجال تصنيع خطوط الإنتاج وأنظمة إطفاء الحريق، وتقول إنها تخدم أكثر من ٥٠٠ عميل بأفضل الحلول والخدمات المبتكرة.</p>
-    <div class="caps" style="margin-top:22px"><div class="cap"><div class="cap__k">يعمل منذ</div><div class="cap__v">٢٠١٣</div></div></div>
+    <div class="facts" style="margin-top:26px"><div class="fact"><div class="fact__k">يعمل منذ</div><div class="fact__v">٢٠١٣</div></div></div>
   </div></section>
-<section class="sec sec--tint"><div class="wrap">
-    <h2 class="sec__h">القدرات والمواصفات</h2><p class="sec__h-en"><bdi dir="ltr">Capabilities</bdi></p>
-    <div class="caps"><div class="cap">
-        <div class="cap__k">سنوات في السوق المصري</div>
-        <div class="cap__v">أكثر من ١٠</div>
-        <div class="cap__v-en"><bdi dir="ltr">More than 10</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">عملاء خدمتهم الشركة</div>
-        <div class="cap__v">أكثر من ٥٠٠</div>
-        <div class="cap__v-en"><bdi dir="ltr">More than 500</bdi></div>
-      </div><div class="cap">
-        <div class="cap__k">افتتاح مكتب العاشر من رمضان</div>
-        <div class="cap__v">٢٠٢٠</div>
-        <div class="cap__v-en"><bdi dir="ltr">2020</bdi></div>
-      </div></div>
-  </div></section>
-
-<section class="sec sec--tint"><div class="wrap">
+<section class="sec"><div class="wrap">
     <h2 class="sec__h">الخدمات</h2><p class="sec__h-en"><bdi dir="ltr">Services</bdi></p>
     <div class="rows"><div class="row">
       <h3 class="row__t">خطوط إنتاج لشركات الأدوية والأغذية</h3>
@@ -279,9 +351,22 @@ bdi.nb { white-space: nowrap; }
       <p class="row__b">الشركة تعمل في تصميم وتصنيع أنظمة إطفاء الحريق، لمساعدة العملاء على حماية ممتلكاتهم وتفادي الحرائق.</p>
     </div></div>
   </div></section>
+<section class="sec"><div class="wrap">
+    <h2 class="sec__h">القدرات والمواصفات</h2><p class="sec__h-en"><bdi dir="ltr">Capabilities</bdi></p>
+    <div class="facts"><div class="fact">
+        <div class="fact__k">سنوات في السوق المصري</div>
+        <div class="fact__v">أكثر من ١٠<span class="fact__v-en"><bdi dir="ltr">More than 10</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">عملاء خدمتهم الشركة</div>
+        <div class="fact__v">أكثر من ٥٠٠<span class="fact__v-en"><bdi dir="ltr">More than 500</bdi></span></div>
+      </div><div class="fact">
+        <div class="fact__k">افتتاح مكتب العاشر من رمضان</div>
+        <div class="fact__v">٢٠٢٠<span class="fact__v-en"><bdi dir="ltr">2020</bdi></span></div>
+      </div></div>
+  </div></section>
 
 
-<section class="sec sec--tint" id="contact"><div class="wrap">
+<section class="sec" id="contact"><div class="wrap">
     <h2 class="sec__h">للتواصل</h2><p class="sec__h-en"><bdi dir="ltr">Contact</bdi></p>
     <div class="facts"><div class="fact"><div class="fact__k">تليفون</div><div class="fact__v"><a href="tel:+201013066222"><bdi dir="ltr" class="tel">+201013066222</bdi></a></div></div><div class="fact"><div class="fact__k">البريد</div><div class="fact__v"><a href="mailto:info@opec-eg.com"><bdi dir="ltr">info@opec-eg.com</bdi></a></div></div><div class="fact"><div class="fact__k">الموقع</div><div class="fact__v"><bdi dir="ltr">opec-eg.com</bdi></div></div></div>
   </div></section>
