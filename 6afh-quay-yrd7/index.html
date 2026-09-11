@@ -3,730 +3,859 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<!-- Not a public listing: this page exists for one firm, at an unguessable
-     address, and is removed on request or on expiry. Keep it out of indexes. -->
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>شركة المسابك الحديثة — ABD Modern Foundries Company</title>
 <meta name="description" content="قطع إحلال مصبوبة من السبائك الحديدية للمحاجر والمناجم والطرق والأسمنت والكيماويات">
 <meta name="theme-color" content="#6FAF03">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2">
-<style>/* -----------------------------------------------------------------------------
- * site.css — the free one-page site we hand a prospect.
- *
- * THE WHOLE PITCH IS THAT THIS DOES NOT BREAK ON A PHONE. The firms we write to
- * were ranked partly on having no site or a site that collapses at 360px, and
- * the email says so implicitly by handing them a working one. So every rule
- * here is written mobile-first and the desktop layout is the enhancement, not
- * the other way round. If this file ever needs a horizontal scrollbar to look
- * right, the argument is lost before it is made.
- *
- * It is INLINED into every page rather than linked. Six kilobytes inline costs
- * less on an Egyptian 3G connection than one extra blocking round trip, and it
- * makes each published page a single self-contained file that the 21-day
- * expiry job can delete without leaving a broken reference behind.
- *
- * DIRECTION. The page is RTL. Logical properties are used throughout EXCEPT on
- * elements that carry their own dir — a Latin phone number, an English gloss —
- * where a logical property resolves against THAT element's direction and not
- * the page's. Those few places use physical properties and are marked
- * /* dir-safe *​/. This is the same trap that put a year badge on top of a
- * heading in the press; it is written down here so it is not rediscovered.
- * -------------------------------------------------------------------------- */
-
-/* FAMILY NAME. These faces are IBM Plex Sans Arabic with the Arabic
- * presentation-form cmap entries removed — the press's modified build, reused
- * here rather than duplicated. IBM Plex declares the Reserved Font Name "Plex"
- * and OFL 1.1 clause 3 forbids a modified version from carrying it, so the
- * family is Waraq Arabic Text, which is also what the files themselves declare
- * in their name tables. Calling it "Plex Arabic" here would put a licence
- * violation on the one repository we point customers at. */
-@font-face {
-  font-family: 'Waraq Arabic Text';
-  src: url('/assets/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2') format('woff2');
-  font-weight: 400; font-display: swap;
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200F, U+061C;
+<style>@font-face {
+font-family: 'Waraq Arabic Text';
+src: url('/assets/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2') format('woff2');
+font-weight: 400; font-display: swap;
+unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200F, U+061C;
 }
 @font-face {
-  font-family: 'Waraq Arabic Text';
-  src: url('/assets/fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2') format('woff2');
-  font-weight: 600; font-display: swap;
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200F, U+061C;
+font-family: 'Waraq Arabic Text';
+src: url('/assets/fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2') format('woff2');
+font-weight: 600; font-display: swap;
+unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200F, U+061C;
 }
-
 :root {
-  /* The firm's own colour. Overridden per page in the inlined <style>. */
-  --brand: #123b5e;
-  --brand-ink: #ffffff;
-  --brand-text: #123b5e;
-
-  /* A WARM ground, not white. The pages these firms have today are cold
-   * default-white bootstrap templates; a warm paper is the cheapest single
-   * signal that someone chose it. */
-  --paper: #fbfaf8;
-  --paper-2: #f2f0ec;
-  --ink: #16171a;
-  --ink-2: #55585f;
-  /* The faint ink still has to clear 4.5:1 — on the FOOTER's darker ground,
-   * not just on paper. #8a8d94 read at 3.2:1 and the gate caught it on all
-   * three pages. "Muted" is a tone, not a licence to be unreadable. */
-  --ink-3: #66696f;
-  --rule: #e3e0da;
-
-  --measure: 44rem;
-  --gutter: 22px;
-  --bar: 56px;
+--brand: #123b5e;
+--brand-ink: #ffffff;
+--brand-text: #123b5e;
+--paper: #fbfaf8;
+--paper-2: #f2f0ec;
+--ink: #16171a;
+--ink-2: #55585f;
+--ink-3: #66696f;
+--rule: #e3e0da;
+--night: #14161a;
+--night-2: #1d2026;
+--on-night: #f4f2ee;
+--on-night-2: #a9aeb6;
+--gut: clamp(20px, 5.2vw, 68px);
+--col: 1160px;
+--ease: cubic-bezier(.22, .61, .36, 1);
 }
-
 *, *::before, *::after { box-sizing: border-box; }
-
 html { -webkit-text-size-adjust: 100%; }
-
 body {
-  margin: 0;
-  font-family: 'Waraq Arabic Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  font-size: 17px;
-  line-height: 1.85;
-  color: var(--ink);
-  background: var(--paper);
-  padding-bottom: calc(var(--bar) + env(safe-area-inset-bottom, 0px));
-  -webkit-font-smoothing: antialiased;
+margin: 0;
+background: var(--paper);
+color: var(--ink);
+font-family: 'Waraq Arabic Text', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+font-size: 17px;
+line-height: 1.95;          
+overflow-x: hidden;          
+-webkit-font-smoothing: antialiased;
 }
-@media (min-width: 820px) { body { padding-bottom: 0; } }
-
-.wrap { max-width: var(--measure); margin-inline: auto; padding-inline: var(--gutter); }
-
+img { max-width: 100%; display: block; }
 a { color: var(--brand-text); }
-
-/* --- the masthead --------------------------------------------------------
- *
- * NO COLOURED SLAB. The firm's colour appears here as a 5px rule across the
- * very top and nowhere else at size. A full-bleed block of a company's brand
- * colour with white text on it is the single fastest way to make a page look
- * like a free template, which is exactly what this page must not look like.
- * The name carries the page; the colour only marks it. */
-
-.top { padding-block: 30px 26px; border-bottom: 1px solid var(--rule); }
-.top::before {
-  content: ''; display: block; height: 5px; background: var(--brand);
-  position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 30;
+.wrap { max-width: var(--col); margin-inline: auto; padding-inline: var(--gut); }
+.anim [data-r] {
+opacity: 0;
+transform: translateY(16px);
+transition: opacity .7s var(--ease), transform .7s var(--ease);
+transition-delay: calc(var(--i, 0) * 55ms);
 }
-
-/* The eyebrow is the only place a fact appears before the name: where they
- * are and since when. Both come from the record or the line is not printed. */
-.top__eyebrow {
-  margin: 0 0 14px; font-size: 13px; font-weight: 600; color: var(--ink-3);
-  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+.anim [data-r].in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+.anim [data-r] { opacity: 1; transform: none; transition: none; }
+* { animation: none !important; }
 }
-.top__eyebrow span + span::before {
-  content: ''; display: inline-block; width: 3px; height: 3px; border-radius: 50%;
-  background: currentColor; vertical-align: middle; margin-inline-end: 10px;
+.demo {
+background: #8a1c1c; color: #fff; padding: 9px 16px;
+font-size: 13.5px; text-align: center; line-height: 1.55;
 }
-
-.top__name {
-  margin: 0; font-weight: 600; color: var(--ink);
-  font-size: clamp(2.05rem, 8.6vw, 3.3rem);
-  line-height: 1.14;
-  /* Arabic is never letter-spaced. Tightening the tracking of an Arabic
-   * display line closes the joins and is the same mistake wearing a minus. */
-  letter-spacing: 0;
+.dock {
+position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 40;
+display: flex; align-items: center; gap: 14px;
+padding: 9px var(--gut);
+background: var(--paper);
+border-block-end: 1px solid var(--rule);
+transform: translateY(-101%);
+transition: transform .35s var(--ease);
 }
-.top__name-en {
-  margin: 10px 0 0; color: var(--ink-3);
-  font-size: 13px; font-weight: 600;
-  letter-spacing: .13em; text-transform: uppercase; /* Latin only */
+.dock--on { transform: none; }
+.dock__name { font-weight: 600; font-size: 15px; margin: 0; }
+.dock__call {
+margin-inline-start: auto; display: inline-flex; align-items: center; gap: 7px;
+background: var(--ink); color: var(--paper); text-decoration: none;
+padding: 7px 15px; border-radius: 2px; font-size: 14px; font-weight: 600;
 }
-.top__line {
-  margin: 20px 0 0; color: var(--ink-2);
-  font-size: clamp(1.06rem, 4.3vw, 1.24rem); line-height: 1.72;
-  max-width: 34ch;
+.dock__call svg { width: 15px; height: 15px; fill: currentColor; }
+.hero { position: relative; isolation: isolate; }
+.hero--shot {
+background: var(--night); color: var(--on-night);
+min-height: min(86vh, 640px);
+display: flex; flex-direction: column; justify-content: flex-end;
 }
-
-/* --- the facts band ------------------------------------------------------
- *
- * Counts of what the firm PUBLISHES, never a claim we make on its behalf.
- * Each cell is labelled with what it counts, so "48" can never be read as a
- * number we invented about their business. */
-.band { border-bottom: 1px solid var(--rule); }
-.band__grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-@media (min-width: 700px) { .band__grid { grid-template-columns: repeat(4, 1fr); } }
-.band__cell { padding-block: 22px 24px; padding-inline-end: 18px; }
-.band__cell + .band__cell { border-inline-start: 1px solid var(--rule); padding-inline-start: 18px; }
-@media (max-width: 699px) {
-  .band__cell:nth-child(odd) { border-inline-start: 0; padding-inline-start: 0; }
-  .band__cell:nth-child(n+3) { border-block-start: 1px solid var(--rule); }
-  /* An odd third cell left alone in a two-column grid looks like a mistake,
-   * so it takes the whole row. Records publish what they publish; the band
-   * is never padded with a fourth figure to make the grid come out even. */
-  .band__grid > .band__cell:nth-child(3):last-child { grid-column: 1 / -1; }
+.hero--shot .hero__media {
+position: absolute; inset: 0; z-index: -2; overflow: hidden;
+background-size: cover; background-position: center;
 }
-.band__n {
-  display: block; font-weight: 600; color: var(--brand-text);
-  font-size: clamp(1.75rem, 7.2vw, 2.3rem); line-height: 1.15;
-  font-variant-numeric: tabular-nums;
+.hero--shot .hero__img { width: 100%; height: 100%; object-fit: cover; }
+.anim .hero--shot .hero__img { opacity: 0; transition: opacity .9s var(--ease); }
+.anim .hero--shot .hero__img.ready { opacity: 1; }
+.anim .hero--shot .hero__img { animation: drift 22s var(--ease) both; }
+@keyframes drift { from { transform: scale(1.09); } to { transform: scale(1); } }
+.hero--shot::before {
+content: ''; position: absolute; inset: 0; z-index: -1;
+background: linear-gradient(to top,
+rgba(15,17,20,.95) 0%,
+rgba(15,17,20,.92) 40%,
+rgba(15,17,20,.58) 68%,
+rgba(15,17,20,.22) 100%);
 }
-.band__k { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-3); line-height: 1.5; }
-
-/* --- sections ------------------------------------------------------------
- *
- * One ground throughout. The old file alternated a tinted background per
- * section, which chopped the page into slabs and made every record look the
- * same regardless of what it contained. Structure is carried by hairlines
- * and space. */
-.sec { padding-block: 40px 44px; }
-.sec + .sec { border-block-start: 1px solid var(--rule); }
-
-.sec__h { margin: 0 0 4px; font-size: 1.16rem; font-weight: 600; line-height: 1.4; }
-.sec__h-en {
-  margin: 0 0 24px; color: var(--ink-3);
-  font-size: 11.5px; font-weight: 600;
-  letter-spacing: .15em; text-transform: uppercase; /* Latin only */
+.hero--shot .hero__in { padding-block: clamp(40px, 12vw, 90px) clamp(22px, 4vw, 38px); }
+.hero--shot .eyebrow { color: var(--on-night-2); }
+.hero--shot .eyebrow span + span::before { background: var(--on-night-2); }
+.hero--shot .hero__en { color: var(--on-night-2); }
+.hero--shot .hero__line { color: var(--on-night); }
+.hero--object { background: var(--paper); padding-block-start: clamp(26px, 5vw, 52px); }
+.hero--object .hero__obj { display: grid; gap: clamp(10px, 3vw, 30px); align-items: center; }
+.hero--object .hero__in { padding: 0; }
+.hero--object .hero__objshot { order: 2; }
+.hero--object .hero__in { order: 1; }
+.hero--object .hero__img {
+width: 100%; height: auto; mix-blend-mode: multiply;
 }
-.sec > .wrap > p { margin: 0 0 1.1em; }
-.sec > .wrap > p:last-child { margin-bottom: 0; }
-
-/* --- label / value rows, the spine of the whole page --------------------- */
-.facts { display: grid; gap: 0; }
-.fact { display: grid; grid-template-columns: 8.5rem 1fr; gap: 14px; padding-block: 13px; }
-.fact + .fact { border-block-start: 1px solid var(--rule); }
-.fact__k { color: var(--ink-3); font-size: 14px; line-height: 1.6; }
-.fact__v { line-height: 1.65; overflow-wrap: anywhere; }
-.fact__v-en { display: block; color: var(--ink-3); font-size: 13px; letter-spacing: .04em; /* Latin only */ }
-@media (max-width: 419px) { .fact { grid-template-columns: 1fr; gap: 2px; } }
-
-/* --- record rows: services, projects ------------------------------------- */
-.rows { display: grid; }
-.row { padding-block: 22px; }
-.row + .row { border-block-start: 1px solid var(--rule); }
-.row__t { margin: 0; font-size: 1.06rem; font-weight: 600; line-height: 1.5; }
-.row__t-en {
-  margin-top: 5px; color: var(--ink-3); font-size: 11.5px; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase; /* Latin only */
+.anim .hero--object .hero__img { animation: lift 1.1s var(--ease) both; }
+@keyframes lift {
+from { opacity: 0; transform: translateY(22px) scale(.97); }
+to { opacity: 1; transform: none; }
 }
-.row__b { margin: 10px 0 0; color: var(--ink-2); line-height: 1.8; }
-.row__spec { margin-top: 12px; display: grid; gap: 0; }
-.row__spec div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding-block: 7px; font-size: 15px; }
-.row__spec div + div { border-block-start: 1px dotted var(--rule); }
-.row__spec dt, .row__spec .k { color: var(--ink-3); }
-.row__spec .v { color: var(--ink); }
-@media (max-width: 419px) { .row__spec div { grid-template-columns: 1fr; gap: 0; } }
-.row__tag { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--ink-3); }
-
-details.more { margin-top: 4px; }
-details.more > summary {
-  cursor: pointer; padding-block: 16px; font-weight: 600; font-size: 15px;
-  color: var(--brand-text); border-block-start: 1px solid var(--rule);
+@media (min-width: 860px) {
+.hero--object .hero__obj { grid-template-columns: 1.1fr 1fr; gap: clamp(24px, 4vw, 56px); }
 }
-details.more[open] > summary { border-block-end: 1px solid var(--rule); }
-
-/* --- the catalogue grid --------------------------------------------------
- * Used when the record's weight is in its PRODUCTS. A part number and a
- * material code are what a maintenance engineer scans for, so they lead. */
-.grid { display: grid; grid-template-columns: 1fr; gap: 0; }
-@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
-.card { padding-block: 16px; border-block-start: 1px solid var(--rule); }
-.card__img {
-  display: block; width: 100%; height: auto; margin-bottom: 12px;
-  background: var(--paper-2); aspect-ratio: 4 / 3; object-fit: cover;
+.hero--type { background: var(--paper); padding-block-start: clamp(30px, 7vw, 64px); }
+.hero--type .hero__in { padding-block: clamp(18px, 4vw, 34px) clamp(24px, 5vw, 40px); }
+.hero--type::before {
+content: ''; display: block; height: 6px; background: var(--brand);
+max-width: var(--col); margin-inline: auto;
+margin-inline-start: max(var(--gut), calc((100% - var(--col)) / 2 + var(--gut)));
+width: min(190px, 42vw);
 }
-.card__t { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.5; }
-.card__t-en {
-  margin-top: 4px; color: var(--ink-3); font-size: 12px;
-  letter-spacing: .06em; /* Latin only */
+.hero__in { position: relative; }
+.hero__name {
+font-size: clamp(36px, 9.4vw, 74px);
+line-height: 1.12; font-weight: 600; margin: 0;
+letter-spacing: 0;           
 }
-.card__s { margin: 6px 0 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.65; }
-
-/* --- plain lists: clients, certifications -------------------------------
- * A two-column list of names, not a cloud of pills. Pills read as tags on a
- * blog; a purchasing officer reads a list. */
-.list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr; }
-@media (min-width: 560px) { .list { grid-template-columns: 1fr 1fr; column-gap: 26px; } }
-.list li { padding-block: 11px; border-block-start: 1px solid var(--rule); line-height: 1.6; }
-.list li small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
-
-/* --- the call row -------------------------------------------------------- */
-.calls { display: grid; gap: 10px; padding-block: 22px; }
-@media (min-width: 480px) { .calls { grid-auto-flow: column; grid-auto-columns: 1fr; } }
+.hero__en {
+margin: 12px 0 0; color: var(--ink-3);
+font-size: 12.5px; letter-spacing: .18em; text-transform: uppercase; line-height: 1.7;
+}
+.hero__line {
+margin: 18px 0 0; max-width: 44ch;
+font-size: clamp(16.5px, 2.4vw, 20px); line-height: 1.75; color: var(--ink-2);
+}
+.hero--shot .hero__line { color: var(--on-night); }
+.eyebrow {
+margin: 0 0 18px; font-size: 13px; color: var(--ink-3);
+display: flex; flex-wrap: wrap; align-items: center; gap: 0 14px;
+}
+.eyebrow span + span { display: inline-flex; align-items: center; gap: 14px; }
+.eyebrow span + span::before {
+content: ''; width: 16px; height: 1px; background: var(--ink-3); display: inline-block;
+}
+.calls { display: flex; flex-wrap: wrap; gap: 10px; margin-block-start: clamp(22px, 4vw, 32px); }
 .call {
-  display: flex; align-items: center; justify-content: center; gap: 9px;
-  min-height: 52px; padding-inline: 18px;
-  font-size: 16px; font-weight: 600; text-decoration: none;
-  border: 1px solid var(--rule); color: var(--brand-text); background: transparent;
+display: inline-flex; align-items: center; gap: 9px;
+padding: 12px 20px; border-radius: 2px; text-decoration: none;
+font-weight: 600; font-size: 15.5px;
+border: 1.5px solid currentColor; color: var(--ink);
+transition: transform .25s var(--ease), background-color .25s var(--ease), color .25s var(--ease);
 }
-/* THE PRIMARY CALL IS INK, NOT THE BRAND COLOUR.
- *
- * A full-width slab of a firm's own colour was the loudest thing on the page
- * and the first thing that read as a free template — a bright chartreuse
- * green filling the width says "generated" before a word is read. Ink is
- * quiet, works under every brand colour a record can carry, and still reads
- * as the one button on the page. The colour survives where it means
- * something: the rule across the top, the figures, and the links. */
-.call--fill { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.call svg { width: 19px; height: 19px; flex: none; fill: currentColor; }
-
-/* --- footer -------------------------------------------------------------- */
+.call svg { width: 18px; height: 18px; fill: currentColor; }
+.call--fill { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.call:hover { transform: translateY(-2px); }
+.hero--shot .call { color: var(--on-night); }
+.hero--shot .call--fill { background: var(--on-night); border-color: var(--on-night); color: var(--night); }
+.band { border-block: 1px solid var(--rule); background: var(--paper-2); }
+.band__grid {
+display: grid; grid-template-columns: repeat(2, 1fr);
+border-inline-start: 1px solid var(--rule);
+}
+.band__cell {
+padding: 20px 18px;
+border-inline-end: 1px solid var(--rule);
+border-block-end: 1px solid var(--rule);
+}
+.band__grid .band__cell:nth-last-child(-n+2) { border-block-end: 0; }
+.band__n { display: block; font-size: clamp(26px, 6vw, 38px); font-weight: 600; line-height: 1.2; }
+.band__k { display: block; font-size: 12.5px; color: var(--ink-2); line-height: 1.6; margin-block-start: 4px; }
+.hero--shot .band { background: transparent; border-block-end: 0; border-block-start: 1px solid rgba(255,255,255,.16); }
+.hero--shot .band__grid { border-inline-start: 0; }
+.hero--shot .band__cell { border-color: rgba(255,255,255,.16); border-inline-end: 0; padding-inline: 0; }
+.hero--shot .band__n { color: var(--on-night); }
+.hero--shot .band__k { color: var(--on-night-2); }
+@media (min-width: 720px) {
+.band__grid { grid-template-columns: repeat(var(--n, 4), 1fr); }
+.band__cell { border-block-end: 0; }
+.hero--shot .band__cell { border-inline-end: 1px solid rgba(255,255,255,.16); padding-inline: 18px; }
+.hero--shot .band__cell:first-child { padding-inline-start: 0; }
+.hero--shot .band__cell:last-child { border-inline-end: 0; }
+}
+.sec { padding-block: clamp(46px, 9vw, 96px); }
+.sec + .sec { border-block-start: 1px solid var(--rule); }
+.sec--plate { background: var(--paper-2); border-block-start: 0; }
+.sec--night {
+background: var(--night); color: var(--on-night); border-block-start: 0;
+}
+.sec--night .sec__t { color: var(--on-night); }
+.sec--night .sec__n, .sec--night .rows--num .row::before { color: var(--paper); }
+.sec--night .sec__en { color: var(--on-night-2); }
+.sec--night .row { border-block-start-color: rgba(255,255,255,.16); }
+.sec--night .row__t { color: var(--on-night); }
+.sec--night .row__t-en { color: var(--on-night-2); }
+.sec--night .row__b { color: var(--on-night-2); }
+.sec__head { margin-block-end: clamp(26px, 5vw, 44px); }
+.sec__n {
+display: block; font-size: 12px; letter-spacing: .2em; color: var(--brand-text);
+font-weight: 600; margin: 0 0 10px;
+}
+.sec__t { font-size: clamp(23px, 4.4vw, 34px); font-weight: 600; line-height: 1.3; margin: 0; }
+.sec__en {
+display: block; margin: 7px 0 0; color: var(--ink-3);
+font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase;
+}
+.sec__body { min-width: 0; }
+@media (min-width: 1000px) {
+.sec__grid { display: grid; grid-template-columns: 250px 1fr; gap: 0 56px; align-items: start; }
+.sec__head { margin-block-end: 0; position: sticky; inset-block-start: 76px; }
+}
+.cat { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+@media (min-width: 520px) { .cat { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .cat { grid-template-columns: repeat(3, 1fr); } }
+.part { background: var(--paper); padding: 0 0 18px; display: flex; flex-direction: column; }
+.part__shot {
+position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+background: var(--paper-2);
+display: flex; align-items: center; justify-content: center;
+}
+.part__shot img {
+width: 100%; height: 100%; object-fit: contain; padding: 12px;
+transition: transform .6s var(--ease);
+}
+.part__shot--cut img { mix-blend-mode: multiply; }
+.part:hover .part__shot img { transform: scale(1.04); }
+.part__t { font-size: 16px; font-weight: 600; line-height: 1.5; margin: 16px 18px 0; }
+.part__s { font-size: 13.5px; color: var(--ink-2); margin: 6px 18px 0; line-height: 1.7; }
+.part__en {
+margin: 4px 18px 0; color: var(--ink-3); font-size: 11.5px; letter-spacing: .1em;
+}
+.part--bare .part__shot { display: none; }
+.part--bare { padding-block-start: 18px; }
+.works { list-style: none; margin: 0; padding: 0; }
+.work {
+display: grid; grid-template-columns: 44px 1fr; gap: 0 14px;
+padding-block: 24px; border-block-start: 1px solid var(--rule);
+}
+.work:first-child { border-block-start: 0; padding-block-start: 0; }
+.work__n {
+font-size: 12px; font-weight: 600; color: var(--brand-text); letter-spacing: .1em;
+padding-top: 7px;
+}
+.work__t { font-size: 18.5px; font-weight: 600; line-height: 1.5; margin: 0; }
+.work__tag { display: block; font-size: 13px; color: var(--ink-3); margin-block-start: 3px; }
+.work__b { font-size: 15.5px; color: var(--ink-2); margin: 12px 0 0; line-height: 1.85; }
+.spec { display: grid; gap: 1px; margin: 14px 0 0; background: var(--rule); border: 1px solid var(--rule); }
+@media (min-width: 620px) { .spec { grid-template-columns: repeat(2, 1fr); } }
+.spec > div { background: var(--paper); padding: 10px 13px; display: flex; gap: 10px; flex-wrap: wrap; }
+.spec .k { color: var(--ink-3); font-size: 13px; min-width: 88px; }
+.spec .v { font-size: 14.5px; font-weight: 600; }
+.more { margin-block-start: 22px; }
+.more > summary {
+cursor: pointer; font-weight: 600; font-size: 15px; color: var(--brand-text);
+padding: 12px 0; border-block-start: 1px solid var(--rule);
+}
+.more[open] > summary { border-block-end: 1px solid var(--rule); margin-block-end: 18px; }
+.rows { display: grid; gap: 0; }
+.row { padding-block: 22px; border-block-start: 1px solid var(--rule); }
+.row:first-child { border-block-start: 0; padding-block-start: 0; }
+.row__t { font-size: 18px; font-weight: 600; margin: 0; line-height: 1.5; }
+.row__t-en {
+margin: 4px 0 0; color: var(--ink-3); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase;
+}
+.row__b { margin: 10px 0 0; color: var(--ink-2); font-size: 15.5px; line-height: 1.85; }
+.rows--num { counter-reset: r; }
+.rows--num .row { position: relative; padding-inline-start: 46px; counter-increment: r; }
+.rows--num .row::before {
+content: counter(r, arabic-indic);
+position: absolute; inset-inline-start: 0; inset-block-start: 22px;
+font-size: 13px; font-weight: 600; color: var(--brand-text);
+}
+.rows--num .row:first-child::before { inset-block-start: 0; }
+.facts {
+display: grid;
+border-block-start: 1px solid var(--rule);
+border-inline-end: 1px solid var(--rule);
+}
+@media (min-width: 640px) { .facts { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
+.fact {
+padding: 15px 16px;
+border-block-end: 1px solid var(--rule);
+border-inline-start: 1px solid var(--rule);
+}
+.fact__k { font-size: 12.5px; color: var(--ink-3); line-height: 1.6; }
+.fact__v { font-size: 16px; font-weight: 600; line-height: 1.7; margin-block-start: 2px; }
+.fact__v-en {
+display: block; font-weight: 400; color: var(--ink-3);
+font-size: 11.5px; letter-spacing: .1em; margin: 2px 0 0;
+}
+.list { list-style: none; margin: 0; padding: 0; columns: 1; }
+@media (min-width: 640px) { .list { columns: 2; column-gap: 40px; } }
+.list li {
+padding-block: 11px; border-block-end: 1px solid var(--rule);
+font-size: 15.5px; break-inside: avoid;
+}
+.list small { display: block; color: var(--ink-3); font-size: 12.5px; }
+.gal { padding-block-end: clamp(46px, 9vw, 96px); }
+.gal__grid {
+display: grid; gap: 3px;
+grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 760px) { .gal__grid { grid-template-columns: repeat(4, 1fr); } }
+.gal__f { margin: 0; position: relative; overflow: hidden; background: var(--paper-2); aspect-ratio: 1; }
+@media (min-width: 760px) { .gal__f--lead { grid-column: span 2; grid-row: span 2; } }
+.gal__f img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.gal__f:hover img { transform: scale(1.05); }
+.gal__note { margin: 16px 0 0; font-size: 13px; color: var(--ink-3); }
+.prose p { margin: 0 0 16px; max-width: 62ch; font-size: 16.5px; line-height: 1.95; }
+.prose p:last-child { margin-block-end: 0; }
 .foot {
-  background: var(--paper-2); border-block-start: 1px solid var(--rule);
-  padding-block: 30px 34px; font-size: 14px; color: var(--ink-2); line-height: 1.8;
+background: var(--paper-2); border-block-start: 1px solid var(--rule);
+padding-block: clamp(34px, 6vw, 56px) calc(clamp(34px, 6vw, 56px) + env(safe-area-inset-bottom, 0px));
+font-size: 14.5px; color: var(--ink-2); line-height: 1.85;
 }
-.foot p { margin: 0 0 .8em; max-width: var(--measure); }
-.foot p:last-child { margin-bottom: 0; }
-.foot a { color: var(--brand-text); }
-
-/* --- the sticky bar ------------------------------------------------------ */
+.foot p { margin: 0 0 12px; max-width: 60ch; }
+.foot p:last-child { margin-block-end: 0; }
+.foot strong { color: var(--ink); }
+.foot__reach { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; font-weight: 600; }
+.foot__sep { color: var(--ink-3); }
+@media (max-width: 719px) { .foot { padding-block-end: calc(84px + env(safe-area-inset-bottom, 0px)); } }
 .bar {
-  position: fixed; inset-inline: 0; bottom: 0; z-index: 20;
-  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
-  background: var(--paper); border-block-start: 1px solid var(--rule);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 50;
+display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+background: var(--ink); padding-block-end: env(safe-area-inset-bottom, 0px);
 }
 .bar a {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  height: var(--bar); font-size: 15px; font-weight: 600; text-decoration: none;
-  color: var(--brand-text);
+display: flex; align-items: center; justify-content: center; gap: 8px;
+padding: 14px 8px; color: var(--paper); text-decoration: none;
+font-size: 15px; font-weight: 600;
 }
-.bar a + a { border-inline-start: 1px solid var(--rule); }
-.bar a svg { width: 18px; height: 18px; fill: currentColor; }
-@media (min-width: 820px) { .bar { display: none; } }
-
-/* --- bidi plumbing, shared with the press -------------------------------- */
-
-bdi[dir='ltr'] { font-family: 'Waraq Arabic Text', system-ui, sans-serif; }
-.tel, .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
-bdi.nb { white-space: nowrap; }
-
-/* Arabic is never letter-spaced, never hyphenated and never faux-bolded. */
-[lang='ar'], body { -webkit-hyphens: none; hyphens: none; }
-
-@media print {
-  .bar, .calls { display: none; }
-  body { padding-bottom: 0; font-size: 11pt; }
-  .sec { break-inside: avoid; }
-}
-
-:root { --brand: #6FAF03; --brand-ink: #14181d; --brand-text: #507e02; }</style>
+.bar a + a { border-inline-start: 1px solid rgba(255,255,255,.18); }
+.bar svg { width: 18px; height: 18px; fill: currentColor; }
+@media (min-width: 720px) { .bar { display: none; } }
+:root { --brand: #6FAF03; --brand-ink: #14181d; --brand-text: #4b7702; }</style>
+<script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.className='anim'}catch(e){}</script>
 </head>
 <body>
 
-<header class="top"><div class="wrap">
-  <p class="top__eyebrow"><span>القاهرة</span><span>منذ ١٩٧٦</span></p>
-  <h1 class="top__name">شركة المسابك الحديثة</h1>
-  <p class="top__name-en"><bdi dir="ltr">ABD Modern Foundries Company</bdi></p>
-  <p class="top__line">قطع إحلال مصبوبة من السبائك الحديدية للمحاجر والمناجم والطرق والأسمنت والكيماويات</p>
-</div></header>
+<div class="dock">
+<p class="dock__name">شركة المسابك الحديثة</p>
+<a class="dock__call" href="tel:+20023891005253"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل</span></a>
+</div>
 
-<section class="band"><div class="wrap"><div class="band__grid">
-    <div class="band__cell">
-      <span class="band__n">١٩٧٦</span>
-      <span class="band__k">سنة التأسيس المعلنة</span>
-    </div><div class="band__cell">
-      <span class="band__n">٥٧</span>
-      <span class="band__k">منتج في قائمتهم</span>
-    </div><div class="band__cell">
-      <span class="band__n">٩</span>
-      <span class="band__k">خدمة معلنة</span>
-    </div>
-  </div></div></section>
+<header class="hero hero--object">
 
-<div class="wrap"><div class="calls"><a class="call call--fill" href="tel:+20023891005253"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل بنا</span></a></div></div>
+<div class="hero__obj wrap">
+<div class="hero__objshot"><img class="hero__img" src="44-9771ed90.webp" alt="شركة المسابك الحديثة" width="1280" height="960" loading="eager" decoding="async" fetchpriority="high"></div>
+<div class="hero__in">
+<p class="eyebrow" data-r><span>القاهرة</span><span>منذ ١٩٧٦</span></p>
+<h1 class="hero__name" data-r style="--i:1">شركة المسابك الحديثة</h1>
+<p class="hero__en" data-r style="--i:2"><bdi dir="ltr">ABD Modern Foundries Company</bdi></p>
+<p class="hero__line" data-r style="--i:3">قطع إحلال مصبوبة من السبائك الحديدية للمحاجر والمناجم والطرق والأسمنت والكيماويات</p>
+<div class="calls" data-r style="--i:4"><a class="call call--fill" href="tel:+20023891005253"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل بنا</span></a></div>
+</div>
+</div>
+<div class="wrap"><div class="band"><div class="band__grid" style="--n:3">
+<div class="band__cell" data-r style="--i:0">
+<span class="band__n">١٩٧٦</span>
+<span class="band__k">سنة التأسيس المعلنة</span>
+</div><div class="band__cell" data-r style="--i:1">
+<span class="band__n">٥٧</span>
+<span class="band__k">منتج في قائمتهم</span>
+</div><div class="band__cell" data-r style="--i:2">
+<span class="band__n">٩</span>
+<span class="band__k">خدمة معلنة</span>
+</div>
+</div></div></div>
+</header>
 
-<section class="sec"><div class="wrap">
-    <h2 class="sec__h">المنتجات</h2><p class="sec__h-en"><bdi dir="ltr">Products</bdi></p>
-    <div class="grid"><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Lifter Liner Plate</bdi></h3>
-      
-      <p class="card__s">الأسمنت</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Boltless Lifter Classifier Liner Plate</bdi></h3>
-      
-      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR72/WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Wet Process Liner Plate</bdi></h3>
-      
-      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Cooler Plate</bdi></h3>
-      
-      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Clinker Crusher Hammer</bdi></h3>
-      
-      <p class="card__s">الأسمنت</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Diaphragm Plate</bdi></h3>
-      
-      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR57</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Protection Segment</bdi></h3>
-      
-      <p class="card__s">الأسمنت</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Peter Pump End Flight</bdi></h3>
-      
-      <p class="card__s">الأسمنت</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Nozzle</bdi></h3>
-      
-      <p class="card__s">الأسمنت</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Nosering</bdi></h3>
-      
-      <p class="card__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Liner Plate</bdi></h3>
-      
-      <p class="card__s">الأسمنت</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Impeller Casing</bdi></h3>
-      
-      <p class="card__s">الكيماويات</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Sulfuric Acid Furnace Mixer</bdi></h3>
-      
-      <p class="card__s">الكيماويات</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Water Pump Casing</bdi></h3>
-      
-      <p class="card__s">الكيماويات</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Asphalt Mixer Blade</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR91</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">CAT 966H Bucket Loader Tip/Adapter</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55/WIR56</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">CAT Grader Shank</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR56</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Cement Pump</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Loader Bucket Tip</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Loader Tip</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Mixer Blade</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Mixer Arm</bdi></h3>
-      
-      <p class="card__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Hammer</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Fixed Hammer</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Wear Plate</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Impact Plate</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">AMMAN Crusher Hammer</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">HAZMAG Crusher Hammer</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Rotating Crusher Drum</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR57 / WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Fixed Jaw Plate</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Moveable Jaw Plate</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Cone Crusher</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Svedala Crusher Hammer</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Blow Bar</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Sandvik Blow Bar</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Metso Blow Bar</bdi></h3>
-      
-      <p class="card__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Roller</bdi></h3>
-      
-      <p class="card__s">الميكانيكا</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Roller Drum</bdi></h3>
-      
-      <p class="card__s">الميكانيكا</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Under Carriage Gear</bdi></h3>
-      
-      <p class="card__s">الميكانيكا</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Sprocket</bdi></h3>
-      
-      <p class="card__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">GS-52</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Sprocket Gear</bdi></h3>
-      
-      <p class="card__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Tractor Trailer Joint</bdi></h3>
-      
-      <p class="card__s">الميكانيكا</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Wire Sheave</bdi></h3>
-      
-      <p class="card__s">الميكانيكا</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Dredge Impeller</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Feet Bench Side</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">GG25</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Heat Treatment Pier</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Carbon Treatment Tray</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Recycling Mill Hammer Tray</bdi></h3>
-      
-      <p class="card__s">منوعات</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Steel Heat Treatment Tray</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD18/38</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Street Bollard</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Power Station Grate Bar</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD17</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Recycling Mill Liner</bdi></h3>
-      
-      <p class="card__s">منوعات</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Dredger Wearing Sheet</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Heat Treatment Furnace Roller</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Recycling Mill Hammer</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr" class="nb">Garden Seat Bench</bdi></h3>
-      
-      <p class="card__s">منوعات</p>
-    </article><article class="card">
-      
-      <h3 class="card__t"><bdi dir="ltr">Recycling Rotor Shredder</bdi></h3>
-      
-      <p class="card__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
-    </article></div>
-  </div></section>
-<section class="sec"><div class="wrap">
-    <h2 class="sec__h">القدرات والمواصفات</h2><p class="sec__h-en"><bdi dir="ltr">Capabilities</bdi></p>
-    <div class="facts"><div class="fact">
-        <div class="fact__k">أرضيات السباكة</div>
-        <div class="fact__v">٣ أرضيات بتقنيات مختلفة<span class="fact__v-en"><bdi dir="ltr">3 floors, different techniques</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">طاقة الصهر</div>
-        <div class="fact__v">حتى ٣ طن/ساعة<span class="fact__v-en"><bdi dir="ltr">Up to 3 tons/hr</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">أقصى مقاس قالب — الأرضية اليدوية</div>
-        <div class="fact__v"><bdi dir="ltr" class="nb">٤×٤</bdi> متر<span class="fact__v-en"><bdi dir="ltr">4x4 metres</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">إنتاج الخط الآلي</div>
-        <div class="fact__v">أكثر من ١٥٠ قالباً في الوردية، لقطع أقل من ٤٠ كجم<span class="fact__v-en"><bdi dir="ltr">Over 150 molds per shift, parts under 40 kg</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">إنتاج الخط نصف الآلي</div>
-        <div class="fact__v">٨٠ قالباً في الوردية، لصبّات حتى ٣٠٠ كجم<span class="fact__v-en"><bdi dir="ltr">80 molds per shift, castings up to 300 kg</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">أفران المعالجة الحرارية</div>
-        <div class="fact__v">أربعة أفران بتحكم <bdi dir="ltr" class="nb">SCR</bdi><span class="fact__v-en"><bdi dir="ltr">Four, SCR controlled</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">خلاط الرمل المستمر</div>
-        <div class="fact__v">٢٠ طن/ساعة (<bdi dir="ltr" class="nb">AlphaSet</bdi>)<span class="fact__v-en"><bdi dir="ltr">20 tons/hour (AlphaSet)</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">أكبر قالب ووزن صبّة منشوران</div>
-        <div class="fact__v">قالب <bdi dir="ltr" class="nb">Blow Bar ١</bdi>٫<bdi dir="ltr" class="nb">٨ × ١ × ٠</bdi>٫٥/٠٫٥ متر، وزن صبّة صافٍ ٤١٥ كجم<span class="fact__v-en"><bdi dir="ltr">Blow Bar mold 1.8m x 1m x 0.5/0.5m, casting net weight 415 kg</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">نصيب التصدير من المبيعات السنوية</div>
-        <div class="fact__v">أكثر من ٣٠٪<span class="fact__v-en"><bdi dir="ltr">Over 30%</bdi></span></div>
-      </div><div class="fact">
-        <div class="fact__k">أسواق التصدير المنشورة</div>
-        <div class="fact__v">بلجيكا، ألمانيا، النمسا، السعودية، السودان، اليمن، تونس<span class="fact__v-en"><bdi dir="ltr">Belgium, Germany, Austria, Kingdom of Saudi Arabia, Republic of Sudan, Republic of Yemen, Tunisia</bdi></span></div>
-      </div></div>
-  </div></section>
-<section class="sec"><div class="wrap">
-    <h2 class="sec__h">الخدمات</h2><p class="sec__h-en"><bdi dir="ltr">Services</bdi></p>
-    <div class="rows"><div class="row">
-      <h3 class="row__t">قسم النوى (<bdi dir="ltr" class="nb">Core Shop</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Core Shop</bdi></div>
-      <p class="row__b">يخدم أرضيات الإنتاج كلها بطرق متعددة: راتنجات معالَجة بثاني أكسيد الكربون، وراتنجات <bdi dir="ltr" class="nb">No Bake</bdi>، وراتنجات الفيوران. ويُستخدم مدى واسع من الخامات وأنواع الرمل، منها رمل الكروميت ورمل الأوليفين.</p>
-    </div><div class="row">
-      <h3 class="row__t">السباكة اليدوية (<bdi dir="ltr" class="nb">Manual Molding</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Manual Molding</bdi></div>
-      <p class="row__b">للقطع المطلوبة بكميات صغيرة ومقاسات صغيرة، وحتى مقاس قالب <bdi dir="ltr" class="nb">٤×٤</bdi> متر. تُنفَّذ عليها قطع مثل ألواح الفكوك وكسّارات الكون والتروس والدرامات كبيرة الأقطار وقطع ميكانيكية أخرى. تُستخدم راتنجات الفيوران و<bdi dir="ltr" class="nb">AlphaSet</bdi> والمعالجة بثاني أكسيد الكربون؛ وراتنج <bdi dir="ltr" class="nb">AlphaSet</bdi> متاح عبر خلاط مستمر مفصلي طاقته ٢٠ طن/ساعة، وإضافة الراتنج للرمل مع الحفّاز مضبوطة بنظام طلمبات بتحكم <bdi dir="ltr" class="nb">PLC</bdi>.</p>
-    </div><div class="row">
-      <h3 class="row__t">السباكة الآلية (<bdi dir="ltr" class="nb">Automatic Molding</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Automatic Molding</bdi></div>
-      <p class="row__b">متخصص في القطع المطلوبة بكميات كبيرة ووزنها أقل من ٤٠ كجم. الخط آلي بالكامل ويستخدم قوالب الرمل الأخضر مع مرونة تغيير نوع الرمل حسب خامة الصبّة. يقدر القسم على إنتاج أكثر من ١٥٠ قالب في الوردية لمقاس قالب <bdi dir="ltr" class="nb">٥٠×٦٠×٢٠/٢٠</bdi> سم، والقالب الواحد يشيل أكثر من موديل حسب المقاس والوزن.</p>
-    </div><div class="row">
-      <h3 class="row__t">السباكة نصف الآلية (<bdi dir="ltr">Semi-Automatic Molding</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Semi-Automatic Molding</bdi></div>
-      <p class="row__b">خط سباكة موَرَّد من <bdi dir="ltr">Omega Foundry Machinery Ltd</bdi>، ويتكوّن من ترابيزة هزّاز، وكاروسيل لمقاس قالب <bdi dir="ltr" class="nb">١٠٠×١٢٠×٦٠/٦٠</bdi> سم، ووحدة قلب، وخط سباكة بمناوِل، وخط صبّ. الخط للقطع الأكبر مقاساً المطلوبة بكميات متوسطة وبوزن حتى ٣٠٠ كجم، واستخدام راتنجات <bdi dir="ltr" class="nb">AlphaSet</bdi> يعطي تشطيب سطح ممتازاً بعيوب غازات قليلة جداً. وبضمّ الخلاط المفصلي للخلاط الجديد تصير طاقة السباكة ٨٠ قالباً في الوردية لمقاس صبّة حتى ٣٠٠ كجم.</p>
-    </div><div class="row">
-      <h3 class="row__t">الصهر (<bdi dir="ltr" class="nb">Melting</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Melting</bdi></div>
-      <p class="row__b">قسم الصهر يخدم المسبك بطاقة صهر تصل إلى ٣ طن/ساعة، بوحدات أفران حث موَرَّدة من <bdi dir="ltr" class="nb">Inductotherm</bdi>.</p>
-    </div><div class="row">
-      <h3 class="row__t">التشطيب والتنظيف (<bdi dir="ltr">Finishing and Fettling</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Finishing and Fettling</bdi></div>
-      <p class="row__b">القسم فيه موتورات جلخ، وماكينات قطع، وماكينات تنظيف حواف، وماكينة سفع كرات لإزالة الرمل. وتُستعمل قوالب قياس كثيرة أثناء إجراءات التشطيب لضمان التطابق التام للقطع.</p>
-    </div><div class="row">
-      <h3 class="row__t">المعالجة الحرارية (<bdi dir="ltr" class="nb">Heat Treatment</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Heat Treatment</bdi></div>
-      <p class="row__b">قسم المعالجة الحرارية فيه أربعة أفران، كلها بتحكم <bdi dir="ltr" class="nb">SCR</bdi> وببرامج تناسب المدى الواسع من السبائك التي تُصبّ وتُسلَّم.</p>
-    </div><div class="row">
-      <h3 class="row__t">اختيار الخامة والتوصية بها</h3>
-      <div class="row__t-en"><bdi dir="ltr">Material selection and recommendation</bdi></div>
-      <p class="row__b">الشركة تقول إنها تقدر على توريد أي سبيكة حديدية، وإن فريقها لا يورّد قطع الإحلال فقط بل يوصي كذلك بتغيير الخامة المستعملة لرفع أداء الماكينة، وإنها تتحمّل مسؤولية حلّ مشاكل العميل في ما يخصّ تكنولوجيا الخامات. والفوائد التي تذكرها لذلك: إنتاجية أعلى، وصيانة أقل، وتكلفة أقل للوحدة، وتشغيل بلا مشاكل (بلا كسر أو تآكل زائد). ومدى الخامات الذي تذكره أربع عائلات: سبائك مقاومة للحرارة، وصلب لا يصدأ وسبائك مقاومة للتآكل الكيميائي، وسبائك مقاومة للبري والصدم، وصلب كربوني وسبائك صلب منخفضة.</p>
-    </div><div class="row">
-      <h3 class="row__t">ضبط الجودة (<bdi dir="ltr" class="nb">Quality Control</bdi>)</h3>
-      <div class="row__t-en"><bdi dir="ltr">Quality Control</bdi></div>
-      <p class="row__b">الأجهزة والاختبارات المنشورة: مطياف انبعاث ضوئي، وأجهزة اختبار رمل كاملة، واختبار صلادة برينل وروكويل، واختبار صدم (إيزود وشاربي)، واختبار شدّ، وفحص ميتالوجرافي، واختبار موجات فوق صوتية، واختبار السائل النافذ.</p>
-    </div></div>
-  </div></section>
-<section class="sec"><div class="wrap">
-    <h2 class="sec__h">نبذة عن الشركة</h2><p class="sec__h-en"><bdi dir="ltr">About</bdi></p>
-    <p>«شركة المسابك الحديثة» (<bdi dir="ltr">ABD Modern Foundries</bdi>) تأسست سنة ١٩٧٦، وتقول عن نفسها إن أخلاق العمل والمثابرة عندها متجذرة في جيلين من إنتاج الحديد والصلب. الشركة تصبّ قطع الإحلال من السبائك الحديدية، وتقول إن توريدها للسوق المصري من أواخر السبعينيات خلق مستخدماً نهائياً يقدر يعتمد على السوق المحلي في قطع الإحلال.</p><p>وفي التسعينيات وسّعت أسواقها لتغطي أمريكا الشمالية وغرب أوروبا وشمال أفريقيا والشرق الأوسط. والتوسّع — كما تكتب — استلزم استثمارات وخطوط إنتاج وتقنيات جديدة مع زيادة الطاقة الإنتاجية، ثم رُكّب خط سباكة يعمل بأحدث تكنولوجيا رابطات الرمل للوصول إلى أعلى إنتاجية وأفضل جودة.</p><p>والشركة تصف نفسها بأنها المورّد المصري الرائد لقطع الإحلال المصبوبة من السبائك الحديدية لصناعات المحاجر والمناجم وإنشاء الطرق والأسمنت والكيماويات وغيرها. والجودة عندها — بنصّهم — «حالة ذهنية من التصميم إلى التسليم». والعملاء الدوليون يساهمون حالياً بأكثر من ٣٠٪ من المبيعات السنوية.</p>
-    <div class="facts" style="margin-top:26px"><div class="fact"><div class="fact__k">يعمل منذ</div><div class="fact__v">١٩٧٦</div></div><div class="fact"><div class="fact__k">المحافظة</div><div class="fact__v">القاهرة</div></div></div>
-  </div></section>
+<main>
+<section class="sec">
+<div class="wrap">
+<div class="">
+<div class="sec__head" data-r>
+<span class="sec__n">٠١</span>
+<h2 class="sec__t">المنتجات</h2>
+<span class="sec__en"><bdi dir="ltr">Products</bdi></span>
+</div>
+<div class="sec__body"><div class="cat"><article class="part" data-r style="--i:0">
+<div class="part__shot part__shot--cut"><img src="07-92b75cc2.webp" alt="Lifter Liner Plate" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Lifter Liner Plate</bdi></h3>
 
-<section class="sec" id="contact"><div class="wrap">
-    <h2 class="sec__h">للتواصل</h2><p class="sec__h-en"><bdi dir="ltr">Contact</bdi></p>
-    <div class="facts"><div class="fact"><div class="fact__k">تليفون</div><div class="fact__v"><a href="tel:+20023891005253"><bdi dir="ltr" class="tel">+20-(0)2-38910052/53</bdi></a></div></div><div class="fact"><div class="fact__k">البريد</div><div class="fact__v"><a href="mailto:info@abdmodernfoundries.com"><bdi dir="ltr">info@abdmodernfoundries.com</bdi></a></div></div><div class="fact"><div class="fact__k">الموقع</div><div class="fact__v"><bdi dir="ltr">abdmodernfoundries.com</bdi></div></div><div class="fact"><div class="fact__k">العنوان</div><div class="fact__v">طناش طريق الوراق القناطر ص . ب <bdi dir="ltr" class="nb">167</bdi> امبابة</div></div></div>
-  </div></section>
+<p class="part__s">الأسمنت</p>
+</article><article class="part" data-r style="--i:1">
+<div class="part__shot part__shot--cut"><img src="08-8d20e16f.webp" alt="Boltless Lifter Classifier Liner Plate" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr">Boltless Lifter Classifier Liner Plate</bdi></h3>
+
+<p class="part__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR72/WIR82</bdi></p>
+</article><article class="part" data-r style="--i:2">
+<div class="part__shot part__shot--cut"><img src="09-bf72a437.webp" alt="Wet Process Liner Plate" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr">Wet Process Liner Plate</bdi></h3>
+
+<p class="part__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part" data-r style="--i:3">
+<div class="part__shot part__shot--cut"><img src="10-4c585b0e.webp" alt="Cooler Plate" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Cooler Plate</bdi></h3>
+
+<p class="part__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
+</article><article class="part" data-r style="--i:4">
+<div class="part__shot part__shot--cut"><img src="12-2d8ed428.webp" alt="Clinker Crusher Hammer" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr">Clinker Crusher Hammer</bdi></h3>
+
+<p class="part__s">الأسمنت</p>
+</article><article class="part" data-r style="--i:5">
+<div class="part__shot part__shot--cut"><img src="13-e3343a86.webp" alt="Diaphragm Plate" width="372" height="232" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Diaphragm Plate</bdi></h3>
+
+<p class="part__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">WIR57</bdi></p>
+</article><article class="part" data-r style="--i:6">
+<div class="part__shot part__shot--cut"><img src="17-708058db.webp" alt="Protection Segment" width="360" height="230" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Protection Segment</bdi></h3>
+
+<p class="part__s">الأسمنت</p>
+</article><article class="part" data-r style="--i:6">
+<div class="part__shot part__shot--cut"><img src="18-f0993edc.webp" alt="Peter Pump End Flight" width="263" height="359" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr">Peter Pump End Flight</bdi></h3>
+
+<p class="part__s">الأسمنت</p>
+</article><article class="part" data-r style="--i:6">
+<div class="part__shot part__shot--cut"><img src="19-29c1ec62.webp" alt="Nozzle" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Nozzle</bdi></h3>
+
+<p class="part__s">الأسمنت</p>
+</article><article class="part" data-r style="--i:6">
+<div class="part__shot part__shot--cut"><img src="20-4845f7b1.webp" alt="Nosering" width="315" height="438" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Nosering</bdi></h3>
+
+<p class="part__s">الأسمنت — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
+</article><article class="part" data-r style="--i:6">
+<div class="part__shot part__shot--cut"><img src="21-3175d52b.webp" alt="Liner Plate" width="307" height="288" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Liner Plate</bdi></h3>
+
+<p class="part__s">الأسمنت</p>
+</article><article class="part" data-r style="--i:6">
+<div class="part__shot part__shot--cut"><img src="24-f7c8d4cf.webp" alt="Impeller Casing" width="194" height="285" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Impeller Casing</bdi></h3>
+
+<p class="part__s">الكيماويات</p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="31-57c99b59.webp" alt="Sulfuric Acid Furnace Mixer" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr">Sulfuric Acid Furnace Mixer</bdi></h3>
+
+<p class="part__s">الكيماويات</p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="32-9e7a83b6.webp" alt="Water Pump Casing" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Water Pump Casing</bdi></h3>
+
+<p class="part__s">الكيماويات</p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="33-37b47019.webp" alt="Asphalt Mixer Blade" width="400" height="300" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr">Asphalt Mixer Blade</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR91</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="35-df05f4c3.webp" alt="CAT 966H Bucket Loader Tip/Adapter" width="400" height="300" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr">CAT 966H Bucket Loader Tip/Adapter</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55/WIR56</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="36-bf99ba14.webp" alt="CAT Grader Shank" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">CAT Grader Shank</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR56</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="38-59848c0f.webp" alt="Cement Pump" width="500" height="375" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Cement Pump</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Loader Bucket Tip</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="39-6feefc79.webp" alt="Loader Tip" width="500" height="333" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Loader Tip</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="40-f6284150.webp" alt="Mixer Blade" width="400" height="300" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Mixer Blade</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">WIR72 / WIR82</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="43-83df7cc3.webp" alt="Mixer Arm" width="400" height="490" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Mixer Arm</bdi></h3>
+
+<p class="part__s">الإنشاءات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="44-9771ed90.webp" alt="Hammer" width="1280" height="960" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Hammer</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article><article class="part">
+<div class="part__shot part__shot--cut"><img src="45-2eb9df43.webp" alt="Fixed Hammer" width="900" height="675" loading="lazy" decoding="async"></div>
+<h3 class="part__t"><bdi dir="ltr" class="nb">Fixed Hammer</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Wear Plate</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Impact Plate</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">AMMAN Crusher Hammer</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">HAZMAG Crusher Hammer</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Rotating Crusher Drum</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR57 / WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Fixed Jaw Plate</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Moveable Jaw Plate</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Cone Crusher</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Svedala Crusher Hammer</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Blow Bar</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Sandvik Blow Bar</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Metso Blow Bar</bdi></h3>
+
+<p class="part__s">التعدين والتكسير — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Roller</bdi></h3>
+
+<p class="part__s">الميكانيكا</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Roller Drum</bdi></h3>
+
+<p class="part__s">الميكانيكا</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Under Carriage Gear</bdi></h3>
+
+<p class="part__s">الميكانيكا</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Sprocket</bdi></h3>
+
+<p class="part__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">GS-52</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Sprocket Gear</bdi></h3>
+
+<p class="part__s">الميكانيكا — الخامة <bdi dir="ltr" class="nb">WIR55</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Tractor Trailer Joint</bdi></h3>
+
+<p class="part__s">الميكانيكا</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Wire Sheave</bdi></h3>
+
+<p class="part__s">الميكانيكا</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Dredge Impeller</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Feet Bench Side</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">GG25</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Heat Treatment Pier</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/12</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Carbon Treatment Tray</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Recycling Mill Hammer Tray</bdi></h3>
+
+<p class="part__s">منوعات</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Steel Heat Treatment Tray</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD18/38</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Street Bollard</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">GS-52/GGG50</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Power Station Grate Bar</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD17</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Recycling Mill Liner</bdi></h3>
+
+<p class="part__s">منوعات</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Dredger Wearing Sheet</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR82</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Heat Treatment Furnace Roller</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Recycling Mill Hammer</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">ABD25/20</bdi></p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr" class="nb">Garden Seat Bench</bdi></h3>
+
+<p class="part__s">منوعات</p>
+</article><article class="part part--bare">
+
+<h3 class="part__t"><bdi dir="ltr">Recycling Rotor Shredder</bdi></h3>
+
+<p class="part__s">منوعات — الخامة <bdi dir="ltr" class="nb">WIR39</bdi></p>
+</article></div></div>
+</div>
+</div>
+</section>
+<section class="sec sec--plate">
+<div class="wrap">
+<div class="">
+<div class="sec__head" data-r>
+<span class="sec__n">٠٢</span>
+<h2 class="sec__t">من أعمالهم</h2>
+<span class="sec__en"><bdi dir="ltr">From their work</bdi></span>
+</div>
+<div class="sec__body"><div class="gal__grid"><figure class="gal__f gal__f--lead" data-r style="--i:0">
+<img src="03-86ec27c3.webp" alt="ABD" width="1100" height="350" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:1">
+<img src="04-0c2e60fa.webp" alt="ABD" width="760" height="242" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:2">
+<img src="06-25de8119.webp" alt="products" width="760" height="164" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:3">
+<img src="02-5f6c7ec9.webp" alt="ABD" width="760" height="242" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:4">
+<img src="11-3a04f28a.webp" alt="Cooler Plate" width="500" height="375" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:5">
+<img src="16-aead852b.webp" alt="Lifter Liner Plate" width="500" height="375" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:6">
+<img src="22-3a8fab0a.webp" alt="Clinker Crusher Hammer" width="500" height="333" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:6">
+<img src="27-e840c8df.webp" alt="Impeller Casing" width="400" height="300" loading="lazy" decoding="async">
+</figure><figure class="gal__f" data-r style="--i:6">
+<img src="34-b9dd3dbf.webp" alt="Asphalt Mixer Blade" width="400" height="300" loading="lazy" decoding="async">
+</figure></div>
+<p class="gal__note">الصور منشورة على الموقع الرسمي للشركة. لم يُنسب أي منها إلى مشروع بعينه لأن مصدرها لا ينسبه.</p></div>
+</div>
+</div>
+</section>
+<section class="sec">
+<div class="wrap">
+<div class="sec__grid">
+<div class="sec__head" data-r>
+<span class="sec__n">٠٣</span>
+<h2 class="sec__t">القدرات والمواصفات</h2>
+<span class="sec__en"><bdi dir="ltr">Capabilities</bdi></span>
+</div>
+<div class="sec__body"><div class="facts"><div class="fact" data-r style="--i:0">
+<div class="fact__k">أرضيات السباكة</div>
+<div class="fact__v">٣ أرضيات بتقنيات مختلفة<span class="fact__v-en"><bdi dir="ltr">3 floors, different techniques</bdi></span></div>
+</div><div class="fact" data-r style="--i:1">
+<div class="fact__k">طاقة الصهر</div>
+<div class="fact__v">حتى ٣ طن/ساعة<span class="fact__v-en"><bdi dir="ltr">Up to 3 tons/hr</bdi></span></div>
+</div><div class="fact" data-r style="--i:2">
+<div class="fact__k">أقصى مقاس قالب — الأرضية اليدوية</div>
+<div class="fact__v"><bdi dir="ltr" class="nb">٤×٤</bdi> متر<span class="fact__v-en"><bdi dir="ltr">4x4 metres</bdi></span></div>
+</div><div class="fact" data-r style="--i:3">
+<div class="fact__k">إنتاج الخط الآلي</div>
+<div class="fact__v">أكثر من ١٥٠ قالباً في الوردية، لقطع أقل من ٤٠ كجم<span class="fact__v-en"><bdi dir="ltr">Over 150 molds per shift, parts under 40 kg</bdi></span></div>
+</div><div class="fact" data-r style="--i:4">
+<div class="fact__k">إنتاج الخط نصف الآلي</div>
+<div class="fact__v">٨٠ قالباً في الوردية، لصبّات حتى ٣٠٠ كجم<span class="fact__v-en"><bdi dir="ltr">80 molds per shift, castings up to 300 kg</bdi></span></div>
+</div><div class="fact" data-r style="--i:5">
+<div class="fact__k">أفران المعالجة الحرارية</div>
+<div class="fact__v">أربعة أفران بتحكم <bdi dir="ltr" class="nb">SCR</bdi><span class="fact__v-en"><bdi dir="ltr">Four, SCR controlled</bdi></span></div>
+</div><div class="fact" data-r style="--i:6">
+<div class="fact__k">خلاط الرمل المستمر</div>
+<div class="fact__v">٢٠ طن/ساعة (<bdi dir="ltr" class="nb">AlphaSet</bdi>)<span class="fact__v-en"><bdi dir="ltr">20 tons/hour (AlphaSet)</bdi></span></div>
+</div><div class="fact" data-r style="--i:6">
+<div class="fact__k">أكبر قالب ووزن صبّة منشوران</div>
+<div class="fact__v">قالب <bdi dir="ltr" class="nb">Blow Bar ١</bdi>٫<bdi dir="ltr" class="nb">٨ × ١ × ٠</bdi>٫٥/٠٫٥ متر، وزن صبّة صافٍ ٤١٥ كجم<span class="fact__v-en"><bdi dir="ltr">Blow Bar mold 1.8m x 1m x 0.5/0.5m, casting net weight 415 kg</bdi></span></div>
+</div><div class="fact" data-r style="--i:6">
+<div class="fact__k">نصيب التصدير من المبيعات السنوية</div>
+<div class="fact__v">أكثر من ٣٠٪<span class="fact__v-en"><bdi dir="ltr">Over 30%</bdi></span></div>
+</div><div class="fact" data-r style="--i:6">
+<div class="fact__k">أسواق التصدير المنشورة</div>
+<div class="fact__v">بلجيكا، ألمانيا، النمسا، السعودية، السودان، اليمن، تونس<span class="fact__v-en"><bdi dir="ltr">Belgium, Germany, Austria, Kingdom of Saudi Arabia, Republic of Sudan, Republic of Yemen, Tunisia</bdi></span></div>
+</div></div></div>
+</div>
+</div>
+</section>
+<section class="sec">
+<div class="wrap">
+<div class="sec__grid">
+<div class="sec__head" data-r>
+<span class="sec__n">٠٤</span>
+<h2 class="sec__t">الخدمات</h2>
+<span class="sec__en"><bdi dir="ltr">Services</bdi></span>
+</div>
+<div class="sec__body"><div class="rows rows--num"><div class="row" data-r style="--i:0">
+<h3 class="row__t">قسم النوى (<bdi dir="ltr" class="nb">Core Shop</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Core Shop</bdi></div>
+<p class="row__b">يخدم أرضيات الإنتاج كلها بطرق متعددة: راتنجات معالَجة بثاني أكسيد الكربون، وراتنجات <bdi dir="ltr" class="nb">No Bake</bdi>، وراتنجات الفيوران. ويُستخدم مدى واسع من الخامات وأنواع الرمل، منها رمل الكروميت ورمل الأوليفين.</p>
+</div><div class="row" data-r style="--i:1">
+<h3 class="row__t">السباكة اليدوية (<bdi dir="ltr" class="nb">Manual Molding</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Manual Molding</bdi></div>
+<p class="row__b">للقطع المطلوبة بكميات صغيرة ومقاسات صغيرة، وحتى مقاس قالب <bdi dir="ltr" class="nb">٤×٤</bdi> متر. تُنفَّذ عليها قطع مثل ألواح الفكوك وكسّارات الكون والتروس والدرامات كبيرة الأقطار وقطع ميكانيكية أخرى. تُستخدم راتنجات الفيوران و<bdi dir="ltr" class="nb">AlphaSet</bdi> والمعالجة بثاني أكسيد الكربون؛ وراتنج <bdi dir="ltr" class="nb">AlphaSet</bdi> متاح عبر خلاط مستمر مفصلي طاقته ٢٠ طن/ساعة، وإضافة الراتنج للرمل مع الحفّاز مضبوطة بنظام طلمبات بتحكم <bdi dir="ltr" class="nb">PLC</bdi>.</p>
+</div><div class="row" data-r style="--i:2">
+<h3 class="row__t">السباكة الآلية (<bdi dir="ltr" class="nb">Automatic Molding</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Automatic Molding</bdi></div>
+<p class="row__b">متخصص في القطع المطلوبة بكميات كبيرة ووزنها أقل من ٤٠ كجم. الخط آلي بالكامل ويستخدم قوالب الرمل الأخضر مع مرونة تغيير نوع الرمل حسب خامة الصبّة. يقدر القسم على إنتاج أكثر من ١٥٠ قالب في الوردية لمقاس قالب <bdi dir="ltr" class="nb">٥٠×٦٠×٢٠/٢٠</bdi> سم، والقالب الواحد يشيل أكثر من موديل حسب المقاس والوزن.</p>
+</div><div class="row" data-r style="--i:3">
+<h3 class="row__t">السباكة نصف الآلية (<bdi dir="ltr">Semi-Automatic Molding</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Semi-Automatic Molding</bdi></div>
+<p class="row__b">خط سباكة موَرَّد من <bdi dir="ltr">Omega Foundry Machinery Ltd</bdi>، ويتكوّن من ترابيزة هزّاز، وكاروسيل لمقاس قالب <bdi dir="ltr" class="nb">١٠٠×١٢٠×٦٠/٦٠</bdi> سم، ووحدة قلب، وخط سباكة بمناوِل، وخط صبّ. الخط للقطع الأكبر مقاساً المطلوبة بكميات متوسطة وبوزن حتى ٣٠٠ كجم، واستخدام راتنجات <bdi dir="ltr" class="nb">AlphaSet</bdi> يعطي تشطيب سطح ممتازاً بعيوب غازات قليلة جداً. وبضمّ الخلاط المفصلي للخلاط الجديد تصير طاقة السباكة ٨٠ قالباً في الوردية لمقاس صبّة حتى ٣٠٠ كجم.</p>
+</div><div class="row" data-r style="--i:4">
+<h3 class="row__t">الصهر (<bdi dir="ltr" class="nb">Melting</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Melting</bdi></div>
+<p class="row__b">قسم الصهر يخدم المسبك بطاقة صهر تصل إلى ٣ طن/ساعة، بوحدات أفران حث موَرَّدة من <bdi dir="ltr" class="nb">Inductotherm</bdi>.</p>
+</div><div class="row" data-r style="--i:5">
+<h3 class="row__t">التشطيب والتنظيف (<bdi dir="ltr">Finishing and Fettling</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Finishing and Fettling</bdi></div>
+<p class="row__b">القسم فيه موتورات جلخ، وماكينات قطع، وماكينات تنظيف حواف، وماكينة سفع كرات لإزالة الرمل. وتُستعمل قوالب قياس كثيرة أثناء إجراءات التشطيب لضمان التطابق التام للقطع.</p>
+</div><div class="row" data-r style="--i:6">
+<h3 class="row__t">المعالجة الحرارية (<bdi dir="ltr" class="nb">Heat Treatment</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Heat Treatment</bdi></div>
+<p class="row__b">قسم المعالجة الحرارية فيه أربعة أفران، كلها بتحكم <bdi dir="ltr" class="nb">SCR</bdi> وببرامج تناسب المدى الواسع من السبائك التي تُصبّ وتُسلَّم.</p>
+</div><div class="row" data-r style="--i:6">
+<h3 class="row__t">اختيار الخامة والتوصية بها</h3>
+<div class="row__t-en"><bdi dir="ltr">Material selection and recommendation</bdi></div>
+<p class="row__b">الشركة تقول إنها تقدر على توريد أي سبيكة حديدية، وإن فريقها لا يورّد قطع الإحلال فقط بل يوصي كذلك بتغيير الخامة المستعملة لرفع أداء الماكينة، وإنها تتحمّل مسؤولية حلّ مشاكل العميل في ما يخصّ تكنولوجيا الخامات. والفوائد التي تذكرها لذلك: إنتاجية أعلى، وصيانة أقل، وتكلفة أقل للوحدة، وتشغيل بلا مشاكل (بلا كسر أو تآكل زائد). ومدى الخامات الذي تذكره أربع عائلات: سبائك مقاومة للحرارة، وصلب لا يصدأ وسبائك مقاومة للتآكل الكيميائي، وسبائك مقاومة للبري والصدم، وصلب كربوني وسبائك صلب منخفضة.</p>
+</div><div class="row" data-r style="--i:6">
+<h3 class="row__t">ضبط الجودة (<bdi dir="ltr" class="nb">Quality Control</bdi>)</h3>
+<div class="row__t-en"><bdi dir="ltr">Quality Control</bdi></div>
+<p class="row__b">الأجهزة والاختبارات المنشورة: مطياف انبعاث ضوئي، وأجهزة اختبار رمل كاملة، واختبار صلادة برينل وروكويل، واختبار صدم (إيزود وشاربي)، واختبار شدّ، وفحص ميتالوجرافي، واختبار موجات فوق صوتية، واختبار السائل النافذ.</p>
+</div></div></div>
+</div>
+</div>
+</section>
+<section class="sec">
+<div class="wrap">
+<div class="sec__grid">
+<div class="sec__head" data-r>
+<span class="sec__n">٠٥</span>
+<h2 class="sec__t">نبذة عن الشركة</h2>
+<span class="sec__en"><bdi dir="ltr">About</bdi></span>
+</div>
+<div class="sec__body"><div class="prose" data-r><p>«شركة المسابك الحديثة» (<bdi dir="ltr">ABD Modern Foundries</bdi>) تأسست سنة ١٩٧٦، وتقول عن نفسها إن أخلاق العمل والمثابرة عندها متجذرة في جيلين من إنتاج الحديد والصلب. الشركة تصبّ قطع الإحلال من السبائك الحديدية، وتقول إن توريدها للسوق المصري من أواخر السبعينيات خلق مستخدماً نهائياً يقدر يعتمد على السوق المحلي في قطع الإحلال.</p><p>وفي التسعينيات وسّعت أسواقها لتغطي أمريكا الشمالية وغرب أوروبا وشمال أفريقيا والشرق الأوسط. والتوسّع — كما تكتب — استلزم استثمارات وخطوط إنتاج وتقنيات جديدة مع زيادة الطاقة الإنتاجية، ثم رُكّب خط سباكة يعمل بأحدث تكنولوجيا رابطات الرمل للوصول إلى أعلى إنتاجية وأفضل جودة.</p><p>والشركة تصف نفسها بأنها المورّد المصري الرائد لقطع الإحلال المصبوبة من السبائك الحديدية لصناعات المحاجر والمناجم وإنشاء الطرق والأسمنت والكيماويات وغيرها. والجودة عندها — بنصّهم — «حالة ذهنية من التصميم إلى التسليم». والعملاء الدوليون يساهمون حالياً بأكثر من ٣٠٪ من المبيعات السنوية.</p></div>
+<div class="facts" style="margin-block-start:26px" data-r><div class="fact"><div class="fact__k">يعمل منذ</div><div class="fact__v">١٩٧٦</div></div><div class="fact"><div class="fact__k">المحافظة</div><div class="fact__v">القاهرة</div></div></div></div>
+</div>
+</div>
+</section>
+<section class="sec sec--plate" id="contact">
+<div class="wrap">
+<div class="sec__grid">
+<div class="sec__head" data-r>
+<span class="sec__n">٠٦</span>
+<h2 class="sec__t">للتواصل</h2>
+<span class="sec__en"><bdi dir="ltr">Contact</bdi></span>
+</div>
+<div class="sec__body"><div class="facts" data-r><div class="fact"><div class="fact__k">تليفون</div><div class="fact__v"><a href="tel:+20023891005253"><bdi dir="ltr" class="tel">+20-(0)2-38910052/53</bdi></a></div></div><div class="fact"><div class="fact__k">البريد</div><div class="fact__v"><a href="mailto:info@abdmodernfoundries.com"><bdi dir="ltr">info@abdmodernfoundries.com</bdi></a></div></div><div class="fact"><div class="fact__k">الموقع</div><div class="fact__v"><bdi dir="ltr">abdmodernfoundries.com</bdi></div></div><div class="fact"><div class="fact__k">العنوان</div><div class="fact__v">طناش طريق الوراق القناطر ص . ب <bdi dir="ltr" class="nb">167</bdi> امبابة</div></div></div></div>
+</div>
+</div>
+</section>
+</main>
 
 <footer class="foot"><div class="wrap">
-  <p>أعدّت هذه الصفحة <bdi dir="ltr" class="nb">Sabry Dawood</bdi> مجاناً من المواد المنشورة علناً عن الشركة.</p>
-  <p><strong>الصفحة دي بتاعتك.</strong> هي ليك مجاناً سواء تعاملنا مع بعض أو لأ، ولو مش عايزها رد بكلمة واحدة وتتمسح في نفس اليوم.</p>
-  <!--
-    NO PHONE NUMBER HERE, AND THE FIELD IS NOT READ AT ALL.
-
-    The founder's mobile number is also his Vodafone Cash wallet number, and
-    that wallet is the company's only revenue rail. Hard rule 3 of CLAUDE.md:
-    the wallet number never appears on a public page — a personal number
-    printed beside a commercial offer is exactly the pattern that makes an
-    operator ask whether the wallet is personal or a business account.
-
-    This page is world-readable. A reply channel that costs nothing is right
-    here: the email address. The number belongs in the 1:1 letter, which is
-    not a public page. Refusing the field beats leaving it unset, because an
-    unset optional field is one env var away from being set by someone who
-    does not know why it was empty.
-  -->
-  <p><bdi dir="ltr">usbneran@gmail.com</bdi></p>
+<p>أعدّت هذه الصفحة <bdi dir="ltr" class="nb">Sabry Dawood</bdi> مجاناً من المواد المنشورة علناً عن الشركة.</p>
+<p><strong>الصفحة دي بتاعتك.</strong> هي ليك مجاناً سواء تعاملنا مع بعض أو لأ، ولو مش عايزها رد بكلمة واحدة وتتمسح في نفس اليوم.</p>
+<p class="foot__reach"><a href="tel:+201069017890"><bdi dir="ltr" class="tel">+20 106 901 7890</bdi></a><span class="foot__sep"> · </span><a href="mailto:usbneran@gmail.com"><bdi dir="ltr">usbneran@gmail.com</bdi></a></p>
 </div></footer>
 
 <nav class="bar" aria-label="تواصل">
-  <a href="tel:+20023891005253"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل</span></a>
-  
+<a href="tel:+20023891005253"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل</span></a>
+
 </nav>
+<script>(function(){
+var d=document,root=d.documentElement;
+var p=d.querySelector('.hero__img');
+if(p){var on=function(){p.classList.add('ready')};p.complete?on():p.addEventListener('load',on)}
+var show=function(el){el.classList.add('in')};
+var els=[].slice.call(d.querySelectorAll('[data-r]'));
+if(!root.classList.contains('anim')){els.forEach(show);return}
+if(!('IntersectionObserver' in window)){els.forEach(show);return}
+var io=new IntersectionObserver(function(en){en.forEach(function(e){
+if(e.isIntersecting){show(e.target);io.unobserve(e.target)}})},{rootMargin:'0px 0px -6% 0px',threshold:.04});
+els.forEach(function(el){io.observe(el)});
+setTimeout(function(){els.forEach(show)},2600);
+var h=d.querySelector('.hero'),k=d.querySelector('.dock');
+if(h&&k)new IntersectionObserver(function(en){
+k.classList.toggle('dock--on',!en[0].isIntersecting)},{threshold:0}).observe(h);
+})();</script>
 </body>
 </html>
