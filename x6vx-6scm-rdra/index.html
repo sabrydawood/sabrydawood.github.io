@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>مصنع حمَّاد للمعادن — Hammad Factory For Metals</title>
+<title>مصنع حمَّاد للمعادن — Hammad Factory For Metals</title>
 <meta name="description" content="إكسسوارات معمار وأطقم مقابض أبواب — صناعة مصرية منذ ١٩٦٠">
-<meta name="theme-color" content="#8c6b3f">
+<meta name="theme-color" content="#f7f5f1">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2">
 <style>@font-face {
 font-family: 'Waraq Arabic Text';
@@ -21,22 +21,15 @@ font-weight: 600; font-display: swap;
 unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200F, U+061C;
 }
 :root {
---brand: #123b5e;
---brand-ink: #ffffff;
---brand-text: #123b5e;
---paper: #fbfaf8;
---paper-2: #f2f0ec;
---ink: #16171a;
---ink-2: #55585f;
---ink-3: #66696f;
---rule: #e3e0da;
---night: #14161a;
---night-2: #1d2026;
---on-night: #f4f2ee;
---on-night-2: #a9aeb6;
---gut: clamp(20px, 5.2vw, 68px);
---col: 1160px;
---ease: cubic-bezier(.22, .61, .36, 1);
+--paper: #f7f5f1;
+--tile: #ffffff;
+--ink: #191512;
+--ink-2: #5d544b;
+--rule: #ddd6cb;
+--brass: #82633b;
+--gut: clamp(18px, 5vw, 56px);
+--col: 1080px;
+--lat: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -44,513 +37,462 @@ body {
 margin: 0;
 background: var(--paper);
 color: var(--ink);
-font-family: 'Waraq Arabic Text', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+font-family: 'Waraq Arabic Text', var(--lat);
 font-size: 17px;
-line-height: 1.95;          
-overflow-x: hidden;          
--webkit-font-smoothing: antialiased;
+line-height: 1.75;
+text-align: start;
+padding-block-end: 0;
 }
 img { max-width: 100%; display: block; }
-a { color: var(--brand-text); }
-.wrap { max-width: var(--col); margin-inline: auto; padding-inline: var(--gut); }
-.anim [data-r] {
-opacity: 0;
-transform: translateY(16px);
-transition: opacity .7s var(--ease), transform .7s var(--ease);
-transition-delay: calc(var(--i, 0) * 55ms);
-}
-.anim [data-r].in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-.anim [data-r] { opacity: 1; transform: none; transition: none; }
-* { animation: none !important; }
-}
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.2; }
+p { margin: 0; }
+dl, dd, dt { margin: 0; }
+.sheet { max-width: var(--col); margin-inline: auto; padding-inline: var(--gut); }
 .demo {
-background: #8a1c1c; color: #fff; padding: 9px 16px;
-font-size: 13.5px; text-align: center; line-height: 1.55;
+background: #7a1620; color: #fff;
+padding: 10px var(--gut);
+font-size: 13px; font-weight: 600;
+display: flex; flex-wrap: wrap; gap: 4px 16px;
 }
-.dock {
-position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 40;
-display: flex; align-items: center; gap: 14px;
-padding: 9px var(--gut);
-background: var(--paper);
-border-block-end: 1px solid var(--rule);
-transform: translateY(-101%);
-transition: transform .35s var(--ease);
-}
-.dock--on { transform: none; }
-.dock__name { font-weight: 600; font-size: 15px; margin: 0; }
-.dock__call {
-margin-inline-start: auto; display: inline-flex; align-items: center; gap: 7px;
-background: var(--ink); color: var(--paper); text-decoration: none;
-padding: 7px 15px; border-radius: 2px; font-size: 14px; font-weight: 600;
-}
-.dock__call svg { width: 15px; height: 15px; fill: currentColor; }
-.hero { position: relative; isolation: isolate; }
-.hero--shot {
-background: var(--night); color: var(--on-night);
-min-height: min(86vh, 640px);
-display: flex; flex-direction: column; justify-content: flex-end;
-}
-.hero--shot .hero__media {
-position: absolute; inset: 0; z-index: -2; overflow: hidden;
-background-size: cover; background-position: center;
-}
-.hero--shot .hero__img { width: 100%; height: 100%; object-fit: cover; }
-.anim .hero--shot .hero__img { opacity: 0; transition: opacity .9s var(--ease); }
-.anim .hero--shot .hero__img.ready { opacity: 1; }
-.anim .hero--shot .hero__img { animation: drift 22s var(--ease) both; }
-@keyframes drift { from { transform: scale(1.09); } to { transform: scale(1); } }
-.hero--shot::before {
-content: ''; position: absolute; inset: 0; z-index: -1;
-background: linear-gradient(to top,
-rgba(15,17,20,.95) 0%,
-rgba(15,17,20,.92) 40%,
-rgba(15,17,20,.58) 68%,
-rgba(15,17,20,.22) 100%);
-}
-.hero--shot .hero__in { padding-block: clamp(40px, 12vw, 90px) clamp(22px, 4vw, 38px); }
-.hero--shot .eyebrow { color: var(--on-night-2); }
-.hero--shot .eyebrow span + span::before { background: var(--on-night-2); }
-.hero--shot .hero__en { color: var(--on-night-2); }
-.hero--shot .hero__line { color: var(--on-night); }
-.hero--object { background: var(--paper); padding-block-start: clamp(26px, 5vw, 52px); }
-.hero--object .hero__obj { display: grid; gap: clamp(10px, 3vw, 30px); align-items: center; }
-.hero--object .hero__in { padding: 0; }
-.hero--object .hero__objshot { order: 2; }
-.hero--object .hero__in { order: 1; }
-.hero--object .hero__img {
-width: 100%; height: auto; mix-blend-mode: multiply;
-}
-.anim .hero--object .hero__img { animation: lift 1.1s var(--ease) both; }
-@keyframes lift {
-from { opacity: 0; transform: translateY(22px) scale(.97); }
-to { opacity: 1; transform: none; }
-}
-@media (min-width: 860px) {
-.hero--object .hero__obj { grid-template-columns: 1.1fr 1fr; gap: clamp(24px, 4vw, 56px); }
-}
-.hero--type { background: var(--paper); padding-block-start: clamp(30px, 7vw, 64px); }
-.hero--type .hero__in { padding-block: clamp(18px, 4vw, 34px) clamp(24px, 5vw, 40px); }
-.hero--type::before {
-content: ''; display: block; height: 6px; background: var(--brand);
-max-width: var(--col); margin-inline: auto;
-margin-inline-start: max(var(--gut), calc((100% - var(--col)) / 2 + var(--gut)));
-width: min(190px, 42vw);
-}
-.hero__in { position: relative; }
-.hero__name {
-font-size: clamp(36px, 9.4vw, 74px);
-line-height: 1.12; font-weight: 600; margin: 0;
-letter-spacing: 0;           
-}
-.hero__en {
-margin: 12px 0 0; color: var(--ink-3);
-font-size: 12.5px; letter-spacing: .18em; text-transform: uppercase; line-height: 1.7;
-}
-.hero__line {
-margin: 18px 0 0; max-width: 44ch;
-font-size: clamp(16.5px, 2.4vw, 20px); line-height: 1.75; color: var(--ink-2);
-}
-.hero--shot .hero__line { color: var(--on-night); }
-.eyebrow {
-margin: 0 0 18px; font-size: 13px; color: var(--ink-3);
-display: flex; flex-wrap: wrap; align-items: center; gap: 0 14px;
-}
-.eyebrow span + span { display: inline-flex; align-items: center; gap: 14px; }
-.eyebrow span + span::before {
-content: ''; width: 16px; height: 1px; background: var(--ink-3); display: inline-block;
-}
-.calls { display: flex; flex-wrap: wrap; gap: 10px; margin-block-start: clamp(22px, 4vw, 32px); }
-.call {
-display: inline-flex; align-items: center; gap: 9px;
-padding: 12px 20px; border-radius: 2px; text-decoration: none;
-font-weight: 600; font-size: 15.5px;
-border: 1.5px solid currentColor; color: var(--ink);
-transition: transform .25s var(--ease), background-color .25s var(--ease), color .25s var(--ease);
-}
-.call svg { width: 18px; height: 18px; fill: currentColor; }
-.call--fill { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-.call:hover { transform: translateY(-2px); }
-.hero--shot .call { color: var(--on-night); }
-.hero--shot .call--fill { background: var(--on-night); border-color: var(--on-night); color: var(--night); }
-.band { border-block: 1px solid var(--rule); background: var(--paper-2); }
-.band__grid {
-display: grid; grid-template-columns: repeat(2, 1fr);
-border-inline-start: 1px solid var(--rule);
-}
-.band__cell {
-padding: 20px 18px;
-border-inline-end: 1px solid var(--rule);
-border-block-end: 1px solid var(--rule);
-}
-.band__grid .band__cell:nth-last-child(-n+2) { border-block-end: 0; }
-.band__n { display: block; font-size: clamp(26px, 6vw, 38px); font-weight: 600; line-height: 1.2; }
-.band__k { display: block; font-size: 12.5px; color: var(--ink-2); line-height: 1.6; margin-block-start: 4px; }
-.hero--shot .band { background: transparent; border-block-end: 0; border-block-start: 1px solid rgba(255,255,255,.16); }
-.hero--shot .band__grid { border-inline-start: 0; }
-.hero--shot .band__cell { border-color: rgba(255,255,255,.16); border-inline-end: 0; padding-inline: 0; }
-.hero--shot .band__n { color: var(--on-night); }
-.hero--shot .band__k { color: var(--on-night-2); }
-@media (min-width: 720px) {
-.band__grid { grid-template-columns: repeat(var(--n, 4), 1fr); }
-.band__cell { border-block-end: 0; }
-.hero--shot .band__cell { border-inline-end: 1px solid rgba(255,255,255,.16); padding-inline: 18px; }
-.hero--shot .band__cell:first-child { padding-inline-start: 0; }
-.hero--shot .band__cell:last-child { border-inline-end: 0; }
-}
-.sec { padding-block: clamp(46px, 9vw, 96px); }
-.sec + .sec { border-block-start: 1px solid var(--rule); }
-.sec--plate { background: var(--paper-2); border-block-start: 0; }
-.sec--night {
-background: var(--night); color: var(--on-night); border-block-start: 0;
-}
-.sec--night .sec__t { color: var(--on-night); }
-.sec--night .sec__n, .sec--night .rows--num .row::before { color: var(--paper); }
-.sec--night .sec__en { color: var(--on-night-2); }
-.sec--night .row { border-block-start-color: rgba(255,255,255,.16); }
-.sec--night .row__t { color: var(--on-night); }
-.sec--night .row__t-en { color: var(--on-night-2); }
-.sec--night .row__b { color: var(--on-night-2); }
-.sec__head { margin-block-end: clamp(26px, 5vw, 44px); }
-.sec__n {
-display: block; font-size: 12px; letter-spacing: .2em; color: var(--brand-text);
-font-weight: 600; margin: 0 0 10px;
-}
-.sec__t { font-size: clamp(23px, 4.4vw, 34px); font-weight: 600; line-height: 1.3; margin: 0; }
-.sec__en {
-display: block; margin: 7px 0 0; color: var(--ink-3);
-font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase;
-}
-.sec__body { min-width: 0; }
-@media (min-width: 1000px) {
-.sec__grid { display: grid; grid-template-columns: 250px 1fr; gap: 0 56px; align-items: start; }
-.sec__head { margin-block-end: 0; position: sticky; inset-block-start: 76px; }
-}
-.cat { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
-@media (min-width: 520px) { .cat { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .cat { grid-template-columns: repeat(3, 1fr); } }
-.part { background: var(--paper); padding: 0 0 18px; display: flex; flex-direction: column; }
-.part__shot {
-position: relative; aspect-ratio: 4 / 3; overflow: hidden;
-background: var(--paper-2);
-display: flex; align-items: center; justify-content: center;
-}
-.part__shot img {
-width: 100%; height: 100%; object-fit: contain; padding: 12px;
-transition: transform .6s var(--ease);
-}
-.part__shot--cut img { mix-blend-mode: multiply; }
-.part:hover .part__shot img { transform: scale(1.04); }
-.part__t { font-size: 16px; font-weight: 600; line-height: 1.5; margin: 16px 18px 0; }
-.part__s { font-size: 13.5px; color: var(--ink-2); margin: 6px 18px 0; line-height: 1.7; }
-.part__en {
-margin: 4px 18px 0; color: var(--ink-3); font-size: 11.5px; letter-spacing: .1em;
-}
-.part--bare .part__shot { display: none; }
-.part--bare { padding-block-start: 18px; }
-.works { list-style: none; margin: 0; padding: 0; }
-.work {
-display: grid; grid-template-columns: 44px 1fr; gap: 0 14px;
-padding-block: 24px; border-block-start: 1px solid var(--rule);
-}
-.work:first-child { border-block-start: 0; padding-block-start: 0; }
-.work__n {
-font-size: 12px; font-weight: 600; color: var(--brand-text); letter-spacing: .1em;
-padding-top: 7px;
-}
-.work__t { font-size: 18.5px; font-weight: 600; line-height: 1.5; margin: 0; }
-.work__tag { display: block; font-size: 13px; color: var(--ink-3); margin-block-start: 3px; }
-.work__b { font-size: 15.5px; color: var(--ink-2); margin: 12px 0 0; line-height: 1.85; }
-.spec { display: grid; gap: 1px; margin: 14px 0 0; background: var(--rule); border: 1px solid var(--rule); }
-@media (min-width: 620px) { .spec { grid-template-columns: repeat(2, 1fr); } }
-.spec > div { background: var(--paper); padding: 10px 13px; display: flex; gap: 10px; flex-wrap: wrap; }
-.spec .k { color: var(--ink-3); font-size: 13px; min-width: 88px; }
-.spec .v { font-size: 14.5px; font-weight: 600; }
-.more { margin-block-start: 22px; }
-.more > summary {
-cursor: pointer; font-weight: 600; font-size: 15px; color: var(--brand-text);
-padding: 12px 0; border-block-start: 1px solid var(--rule);
-}
-.more[open] > summary { border-block-end: 1px solid var(--rule); margin-block-end: 18px; }
-.rows { display: grid; gap: 0; }
-.row { padding-block: 22px; border-block-start: 1px solid var(--rule); }
-.row:first-child { border-block-start: 0; padding-block-start: 0; }
-.row__t { font-size: 18px; font-weight: 600; margin: 0; line-height: 1.5; }
-.row__t-en {
-margin: 4px 0 0; color: var(--ink-3); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase;
-}
-.row__b { margin: 10px 0 0; color: var(--ink-2); font-size: 15.5px; line-height: 1.85; }
-.rows--num { counter-reset: r; }
-.rows--num .row { position: relative; padding-inline-start: 46px; counter-increment: r; }
-.rows--num .row::before {
-content: counter(r, arabic-indic);
-position: absolute; inset-inline-start: 0; inset-block-start: 22px;
-font-size: 13px; font-weight: 600; color: var(--brand-text);
-}
-.rows--num .row:first-child::before { inset-block-start: 0; }
-.facts {
+.head { border-block-end: 1px solid var(--brass); }
+.head__in {
 display: grid;
-border-block-start: 1px solid var(--rule);
-border-inline-end: 1px solid var(--rule);
+gap: clamp(22px, 4vw, 44px);
+padding-block: clamp(34px, 7vw, 78px) clamp(26px, 5vw, 54px);
 }
-@media (min-width: 640px) { .facts { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
-.fact {
-padding: 15px 16px;
+.head__say { min-width: 0; }
+.head__stamp {
+display: flex; flex-wrap: wrap; gap: 4px 14px;
+color: var(--brass);
+font-size: 13px; font-weight: 600;
+margin-block-end: 14px;
+}
+.head__stamp span + span::before { content: '·'; margin-inline-end: 14px; color: var(--rule); }
+.head__name {
+font-size: clamp(33px, 8.4vw, 68px);
+line-height: 1.08;
+margin-block-end: 10px;
+}
+.head__en {
+font-family: var(--lat);
+font-size: clamp(13px, 2.4vw, 16px);
+letter-spacing: .14em;
+text-transform: uppercase;
+color: var(--ink-2);
+}
+.head__line {
+margin-block-start: 20px;
+max-width: 38ch;
+font-size: clamp(17px, 2.6vw, 21px);
+line-height: 1.65;
+text-wrap: balance;
+color: var(--ink);
+}
+.head__calls { margin-block-start: 26px; display: flex; flex-wrap: wrap; gap: 12px; }
+.head__shot {
+margin: 0; background: var(--tile); padding: 10px;
+justify-self: start; align-self: start;
+}
+.head__img { width: auto; max-width: 100%; height: auto; }
+.ring {
+display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
+min-height: 48px; padding: 9px 18px;
+border: 1px solid var(--ink);
+color: var(--ink);
+font-size: 15px; font-weight: 600;
+text-decoration: none;
+}
+.ring:hover { background: var(--ink); color: var(--paper); }
+.ring:hover .ring__n { color: var(--paper); }
+.ring__n { font-family: var(--lat); font-size: 14px; font-weight: 400; color: var(--ink-2); }
+.facts { padding-block: clamp(22px, 4vw, 38px); }
+.facts__row {
+display: grid;
+grid-template-columns: 1fr;
+gap: 2px 24px;
+padding-block: 13px;
 border-block-end: 1px solid var(--rule);
-border-inline-start: 1px solid var(--rule);
 }
-.fact__k { font-size: 12.5px; color: var(--ink-3); line-height: 1.6; }
-.fact__v { font-size: 16px; font-weight: 600; line-height: 1.7; margin-block-start: 2px; }
-.fact__v-en {
-display: block; font-weight: 400; color: var(--ink-3);
-font-size: 11.5px; letter-spacing: .1em; margin: 2px 0 0;
+.facts__row:first-child { border-block-start: 1px solid var(--rule); }
+.facts__k { color: var(--brass); font-weight: 600; font-size: 14px; }
+.facts__v { color: var(--ink); font-size: 16px; line-height: 1.7; }
+@media (min-width: 560px) {
+.facts__row { grid-template-columns: 148px 1fr; align-items: baseline; }
+.facts__k { font-size: 15px; }
 }
-.list { list-style: none; margin: 0; padding: 0; columns: 1; }
-@media (min-width: 640px) { .list { columns: 2; column-gap: 40px; } }
-.list li {
-padding-block: 11px; border-block-end: 1px solid var(--rule);
-font-size: 15.5px; break-inside: avoid;
+.plate { padding-block: clamp(30px, 5vw, 56px) 22px; }
+.plate__t { font-size: clamp(22px, 3.6vw, 30px); }
+.plate__en {
+font-family: var(--lat); font-size: 12px; letter-spacing: .22em;
+text-transform: uppercase; color: var(--ink-2); margin-block-start: 5px;
 }
-.list small { display: block; color: var(--ink-3); font-size: 12.5px; }
-.gal { padding-block-end: clamp(46px, 9vw, 96px); }
-.gal__grid {
-display: grid; gap: 3px;
-grid-template-columns: repeat(2, 1fr);
+.cat { border-block-start: 1px solid var(--rule); }
+.fam { padding-block-end: clamp(30px, 5vw, 52px); }
+.fam__head {
+display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px;
+padding-block-end: 10px;
+border-block-end: 1px solid var(--brass);
+margin-block-end: clamp(14px, 2.4vw, 22px);
 }
-@media (min-width: 760px) { .gal__grid { grid-template-columns: repeat(4, 1fr); } }
-.gal__f { margin: 0; position: relative; overflow: hidden; background: var(--paper-2); aspect-ratio: 1; }
-@media (min-width: 760px) { .gal__f--lead { grid-column: span 2; grid-row: span 2; } }
-.gal__f img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
-.gal__f:hover img { transform: scale(1.05); }
-.gal__note { margin: 16px 0 0; font-size: 13px; color: var(--ink-3); }
-.prose p { margin: 0 0 16px; max-width: 62ch; font-size: 16.5px; line-height: 1.95; }
-.prose p:last-child { margin-block-end: 0; }
-.foot {
-background: var(--paper-2); border-block-start: 1px solid var(--rule);
-padding-block: clamp(34px, 6vw, 56px) calc(clamp(34px, 6vw, 56px) + env(safe-area-inset-bottom, 0px));
-font-size: 14.5px; color: var(--ink-2); line-height: 1.85;
+.fam__n {
+font-family: var(--lat); font-size: 13px; font-weight: 600;
+color: var(--brass); font-variant-numeric: tabular-nums;
 }
-.foot p { margin: 0 0 12px; max-width: 60ch; }
-.foot p:last-child { margin-block-end: 0; }
-.foot strong { color: var(--ink); }
-.foot__reach { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; font-weight: 600; }
-.foot__sep { color: var(--ink-3); }
-@media (max-width: 719px) { .foot { padding-block-end: calc(84px + env(safe-area-inset-bottom, 0px)); } }
+.fam__t { font-size: clamp(19px, 3.2vw, 26px); }
+.fam__en {
+font-family: var(--lat); font-size: 12px; letter-spacing: .18em;
+text-transform: uppercase; color: var(--ink-2); margin-inline-start: auto;
+}
+.fam__grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 12px;
+}
+@media (min-width: 520px) { .fam__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
+@media (min-width: 900px) { .fam__grid { grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 20px; } }
+.pc { margin: 0; }
+.pc__tile {
+display: grid; place-items: center;
+background: var(--tile);
+aspect-ratio: 2 / 3;
+max-block-size: 430px;
+padding: 8px;
+overflow: hidden;
+}
+.pc__img { width: 100%; height: 100%; object-fit: contain; }
+.pc__t {
+margin-block-start: 8px;
+font-size: 12.5px; line-height: 1.45;
+color: var(--ink-2);
+}
+.src {
+margin-block-start: 6px;
+padding-block-start: 16px;
+border-block-start: 1px solid var(--rule);
+font-size: 13px; color: var(--ink-2);
+}
+.about { border-block-start: 1px solid var(--rule); }
+.about__body { max-width: 62ch; padding-block-end: clamp(24px, 4vw, 40px); }
+.about__body p { margin-block-end: 1.05em; font-size: 17px; line-height: 1.95; }
+.about__body p:last-child { margin-block-end: 0; }
+.reach { border-block-start: 1px solid var(--rule); }
+.reach__list { padding-block-end: clamp(26px, 4vw, 46px); }
+.reach__row {
+display: grid; grid-template-columns: 1fr; gap: 2px 24px;
+padding-block: 14px;
+border-block-end: 1px solid var(--rule);
+}
+.reach__row:first-child { border-block-start: 1px solid var(--rule); }
+.reach__k { color: var(--brass); font-weight: 600; font-size: 14px; }
+.reach__v { font-size: 16px; line-height: 1.7; overflow-wrap: anywhere; }
+.reach__v a { color: var(--ink); text-underline-offset: 3px; }
+@media (min-width: 560px) {
+.reach__row { grid-template-columns: 148px 1fr; align-items: baseline; }
+.reach__k { font-size: 15px; }
+}
+.sign {
+border-block-start: 1px solid var(--brass);
+padding-block: clamp(24px, 4vw, 40px) clamp(28px, 5vw, 48px);
+color: var(--ink-2);
+font-size: 14.5px; line-height: 1.8;
+}
+.sign p + p { margin-block-start: 10px; }
+.sign__gift strong { color: var(--ink); }
+.sign__reach { display: flex; flex-wrap: wrap; gap: 4px 22px; }
+.sign__reach a { color: var(--ink); text-underline-offset: 3px; }
+.bar { display: none; }
+@media (max-width: 700px) {
+body { padding-block-end: 62px; }
 .bar {
-position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 50;
-display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
-background: var(--ink); padding-block-end: env(safe-area-inset-bottom, 0px);
+display: block;
+position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 3;
+background: var(--brass);
 }
 .bar a {
-display: flex; align-items: center; justify-content: center; gap: 8px;
-padding: 14px 8px; color: var(--paper); text-decoration: none;
-font-size: 15px; font-weight: 600;
+display: flex; align-items: center; justify-content: center;
+min-height: 56px;
+color: #fff; background: var(--brass);
+font-size: 16px; font-weight: 600; text-decoration: none;
 }
-.bar a + a { border-inline-start: 1px solid rgba(255,255,255,.18); }
-.bar svg { width: 18px; height: 18px; fill: currentColor; }
-@media (min-width: 720px) { .bar { display: none; } }
-:root { --brand: #8c6b3f; --brand-ink: #ffffff; --brand-text: #86673c; }</style>
-<script>try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.className='anim'}catch(e){}</script>
+}
+@media (min-width: 900px) {
+.head__in { grid-template-columns: minmax(0, 1fr) minmax(260px, 360px); align-items: center; }
+}
+@media print {
+.bar { display: none; }
+body { background: #fff; }
+}
+:root { --paper: #f7f5f1; --brass: #82643b; }</style>
 </head>
 <body>
 
-<div class="dock">
-<p class="dock__name">مصنع حمَّاد للمعادن</p>
-<a class="dock__call" href="tel:01006696870"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل</span></a>
+<header class="head">
+<div class="sheet head__in">
+<div class="head__say">
+<p class="head__stamp"><span>الإسكندرية</span></p>
+<h1 class="head__name">مصنع حمَّاد للمعادن</h1>
+<p class="head__en"><bdi dir="ltr">Hammad Factory For Metals</bdi></p>
+<p class="head__line">إكسسوارات معمار وأطقم مقابض أبواب — صناعة مصرية منذ ١٩٦٠</p>
+<div class="head__calls"><a class="ring" href="tel:01006696870"><span>اتصل بالمصنع</span><bdi class="ring__n" dir="ltr">01006696870</bdi></a></div>
 </div>
-
-<header class="hero hero--type">
-
-<div class="hero__in wrap">
-<p class="eyebrow" data-r><span>الإسكندرية</span><span>منذ ١٩٦٠</span></p>
-<h1 class="hero__name" data-r style="--i:1">مصنع حمَّاد للمعادن</h1>
-<p class="hero__en" data-r style="--i:2"><bdi dir="ltr">Hammad Factory For Metals</bdi></p>
-<p class="hero__line" data-r style="--i:3">إكسسوارات معمار وأطقم مقابض أبواب — صناعة مصرية منذ ١٩٦٠</p>
-<div class="calls" data-r style="--i:4"><a class="call call--fill" href="tel:01006696870"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل بنا</span></a></div>
+<figure class="head__shot"><img class="head__img" src="01-99af87b3.webp" alt="طقم مقبض على لوحة، بثلاث تشطيبات" width="415" height="225" loading="eager" decoding="async" fetchpriority="high"></figure>
 </div>
-<div class="wrap"><div class="band"><div class="band__grid" style="--n:2">
-<div class="band__cell" data-r style="--i:0">
-<span class="band__n">١٩٦٠</span>
-<span class="band__k">سنة التأسيس المعلنة</span>
-</div><div class="band__cell" data-r style="--i:1">
-<span class="band__n">١١</span>
-<span class="band__k">منتج في قائمتهم</span>
-</div>
-</div></div></div>
 </header>
-
 <main>
-<section class="sec">
-<div class="wrap">
-<div class="">
-<div class="sec__head" data-r>
-<span class="sec__n">٠١</span>
-<h2 class="sec__t">المنتجات</h2>
-<span class="sec__en"><bdi dir="ltr">Products</bdi></span>
+<dl class="facts sheet"><div class="facts__row">
+<dt class="facts__k">الخامات</dt>
+<dd class="facts__v">ألومنيوم، وصلب، ونحاس، وصفائح، وزنك</dd>
+</div><div class="facts__row">
+<dt class="facts__k">تصميم خاص</dt>
+<dd class="facts__v">تصميمات مخصّصة حسب الطلب</dd>
+</div><div class="facts__row">
+<dt class="facts__k">مواعيد العمل</dt>
+<dd class="facts__v">من ١٠:٠٠ صباحاً حتى ٥:٠٠ مساءً</dd>
+</div></dl>
+<section class="cat">
+<div class="sheet">
+<div class="plate">
+<h2 class="plate__t">الكتالوج</h2>
+<p class="plate__en">The catalogue</p>
 </div>
-<div class="sec__body"><div class="cat"><article class="part part--bare" data-r style="--i:0">
-
-<h3 class="part__t">دولفين</h3>
-<div class="part__en"><bdi dir="ltr">Dolphin</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:1">
-
-<h3 class="part__t">روزانا</h3>
-<div class="part__en"><bdi dir="ltr">Rozana</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:2">
-
-<h3 class="part__t">ريجنسي</h3>
-<div class="part__en"><bdi dir="ltr">Regency</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:3">
-
-<h3 class="part__t">ساندي</h3>
-<div class="part__en"><bdi dir="ltr">Sandy</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:4">
-
-<h3 class="part__t">سندريلا</h3>
-<div class="part__en"><bdi dir="ltr">Cinderella</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:5">
-
-<h3 class="part__t">طقم اس</h3>
-<div class="part__en"><bdi dir="ltr">S set</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:6">
-
-<h3 class="part__t">فراشة</h3>
-<div class="part__en"><bdi dir="ltr">Farasha</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:6">
-
-<h3 class="part__t">كلاسيك</h3>
-<div class="part__en"><bdi dir="ltr">Classic</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:6">
-
-<h3 class="part__t">كوين</h3>
-<div class="part__en"><bdi dir="ltr">Queen</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:6">
-
-<h3 class="part__t">مارسيليا</h3>
-<div class="part__en"><bdi dir="ltr">Marseille</bdi></div>
-
-</article><article class="part part--bare" data-r style="--i:6">
-
-<h3 class="part__t">منتجات متنوعة</h3>
-<div class="part__en"><bdi dir="ltr">Assorted products</bdi></div>
-
-</article></div></div>
+<section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠١</span>
+<h3 class="fam__t">دولفين</h3>
+<p class="fam__en"><bdi dir="ltr">Dolphin</bdi></p>
 </div>
-</div>
-</section>
-<section class="sec sec--plate">
-<div class="wrap">
-<div class="">
-<div class="sec__head" data-r>
-<span class="sec__n">٠٢</span>
-<h2 class="sec__t">من أعمالهم</h2>
-<span class="sec__en"><bdi dir="ltr">From their work</bdi></span>
-</div>
-<div class="sec__body"><div class="gal__grid"><figure class="gal__f gal__f--lead" data-r style="--i:0">
-<img src="02-7c9c15eb.webp" alt="" width="734" height="1100" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:1">
-<img src="03-fa85f0c0.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:2">
-<img src="04-d293f3bd.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:3">
-<img src="05-6c8e910f.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:4">
-<img src="06-81d8e330.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:5">
-<img src="07-ebd7ce47.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:6">
-<img src="08-eae53ac8.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:6">
-<img src="09-3f3da41c.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
-</figure><figure class="gal__f" data-r style="--i:6">
-<img src="10-03c923e2.webp" alt="" width="507" height="760" loading="lazy" decoding="async">
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="02-8919ce9e.webp" alt="يد شباك دولفين" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="03-bbe708ca.webp" alt="يد سلندر دولفين" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="04-a664cef7.webp" alt="سلندر دولفين" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
 </figure></div>
-<p class="gal__note">الصور منشورة على الموقع الرسمي للشركة. لم يُنسب أي منها إلى مشروع بعينه لأن مصدرها لا ينسبه.</p></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٢</span>
+<h3 class="fam__t">روزانا</h3>
+<p class="fam__en"><bdi dir="ltr">Rozana</bdi></p>
 </div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="05-2c399ed9.webp" alt="سلندر روزانا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="06-3d9bb827.webp" alt="يد سلندر روزانا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="07-00a072fc.webp" alt="يد شباك روزانا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٣</span>
+<h3 class="fam__t">ريجنسي</h3>
+<p class="fam__en"><bdi dir="ltr">Regency</bdi></p>
+</div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="08-89d759fd.webp" alt="سلندر ريجنسي" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="09-d8c33b9a.webp" alt="يد سلندر ريجنسي" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="10-d5db7edf.webp" alt="يد شباك ريجنسي" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٤</span>
+<h3 class="fam__t">ساندي</h3>
+<p class="fam__en"><bdi dir="ltr">Sandy</bdi></p>
+</div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="11-3cbc6ca0.webp" alt="سلندر ساندي" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="12-ff77b21b.webp" alt="يد سلندر ساندي" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="13-37670b05.webp" alt="يد شباك ساندي" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٥</span>
+<h3 class="fam__t">سندريلا</h3>
+<p class="fam__en"><bdi dir="ltr">Cinderella</bdi></p>
+</div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="14-ec84be1e.webp" alt="يد سلندر سندريلا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="15-64636110.webp" alt="يد شباك سندريلا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="16-7bb301bb.webp" alt="سلندر سندريلا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٦</span>
+<h3 class="fam__t">طقم اس</h3>
+<p class="fam__en"><bdi dir="ltr">S set</bdi></p>
+</div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="17-17375d8b.webp" alt="سلندر اس" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="18-560ee9be.webp" alt="يد سلندر اس" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="19-64563720.webp" alt="يد شباك اس" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٧</span>
+<h3 class="fam__t">فراشة</h3>
+<p class="fam__en"><bdi dir="ltr">Farasha</bdi></p>
+</div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="20-d54fba77.webp" alt="سلندر فراشة" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="21-fea8e6d4.webp" alt="يد سلندر فراشة" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="22-579d8d67.webp" alt="يد شباك فراشة" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٨</span>
+<h3 class="fam__t">كلاسيك</h3>
+<p class="fam__en"><bdi dir="ltr">Classic</bdi></p>
+</div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="23-9c4f1240.webp" alt="سلندر كلاسيك" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="24-083fdb12.webp" alt="يد سلندر كلاسيك" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="25-2a083e43.webp" alt="يد شباك كلاسيك" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">٠٩</span>
+<h3 class="fam__t">كوين</h3>
+<p class="fam__en"><bdi dir="ltr">Queen</bdi></p>
+</div>
+<div class="fam__grid" style="--n:2"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="26-abdc60f9.webp" alt="سلندر كوين" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="27-ae3ce064.webp" alt="يد سلندر كوين" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">١٠</span>
+<h3 class="fam__t">مارسيليا</h3>
+<p class="fam__en"><bdi dir="ltr">Marseille</bdi></p>
+</div>
+<div class="fam__grid" style="--n:3"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="28-4950a2ea.webp" alt="سلندر مارسيليا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="29-0a38e6e2.webp" alt="يد سلندر مارسيليا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد سلندر</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="30-147914af.webp" alt="يد شباك مارسيليا" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">يد شباك</figcaption>
+</figure></div>
+</section><section class="fam">
+<div class="fam__head">
+<span class="fam__n">١١</span>
+<h3 class="fam__t">منتجات متنوعة</h3>
+<p class="fam__en"><bdi dir="ltr">Assorted products</bdi></p>
+</div>
+<div class="fam__grid" style="--n:4"><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="01-99af87b3.webp" alt="طقم مقبض على لوحة، بثلاث تشطيبات" width="415" height="225" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">طقم مقبض على لوحة، بثلاث تشطيبات</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="31-f65b880d.webp" alt="ترباس حديد 3 بوصة" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">ترباس حديد <bdi dir="ltr" class="nb">3</bdi> بوصة</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="32-3c31316d.webp" alt="ترباس حديد 4 بوصة" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">ترباس حديد <bdi dir="ltr" class="nb">4</bdi> بوصة</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="33-21648062.webp" alt="ترباس نحاس 6 بوصة" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">ترباس نحاس <bdi dir="ltr" class="nb">6</bdi> بوصة</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="34-e34b0f61.webp" alt="روزيتة مودرن" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">روزيتة مودرن</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="35-86285258.webp" alt="سبليونة حلقة جولد" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سبليونة حلقة جولد</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="36-0f01833c.webp" alt="سبليونة شاكوش" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سبليونة شاكوش</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="37-7905288e.webp" alt="سبليونة شاكوش جولد" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سبليونة شاكوش جولد</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="38-674e66e5.webp" alt="سلندر مودرن" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">سلندر مودرن</figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="39-fe04cdb7.webp" alt="مقبض 2117" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">مقبض <bdi dir="ltr" class="nb">2117</bdi></figcaption>
+</figure><figure class="pc">
+<span class="pc__tile"><img class="pc__img" src="40-7a4aa97b.webp" alt="مقبض 2118" width="480" height="720" loading="lazy" decoding="async"></span>
+<figcaption class="pc__t">مقبض <bdi dir="ltr" class="nb">2118</bdi></figcaption>
+</figure></div>
+</section>
+<p class="src">كل الصور من موقع الشركة نفسه، وأسماء القطع أسماء ملفاتها عندهم.</p>
 </div>
 </section>
-<section class="sec">
-<div class="wrap">
-<div class="sec__grid">
-<div class="sec__head" data-r>
-<span class="sec__n">٠٣</span>
-<h2 class="sec__t">القدرات والمواصفات</h2>
-<span class="sec__en"><bdi dir="ltr">Capabilities</bdi></span>
+<section class="about">
+<div class="sheet">
+<div class="plate">
+<h2 class="plate__t">عن المصنع</h2>
+<p class="plate__en">About</p>
 </div>
-<div class="sec__body"><div class="facts"><div class="fact" data-r style="--i:0">
-<div class="fact__k">الخامات</div>
-<div class="fact__v">ألومنيوم، وصلب، ونحاس، وصفائح، وزنك<span class="fact__v-en"><bdi dir="ltr">Aluminium, steel, brass, sheet metal, zinc</bdi></span></div>
-</div><div class="fact" data-r style="--i:1">
-<div class="fact__k">تصميم خاص</div>
-<div class="fact__v">تصميمات مخصّصة حسب الطلب<span class="fact__v-en"><bdi dir="ltr">Custom designs made to order</bdi></span></div>
-</div><div class="fact" data-r style="--i:2">
-<div class="fact__k">مواعيد العمل</div>
-<div class="fact__v">من ١٠:٠٠ صباحاً حتى ٥:٠٠ مساءً<span class="fact__v-en"><bdi dir="ltr">10:00 to 17:00</bdi></span></div>
-</div></div></div>
-</div>
+<div class="about__body"><p>مصنع حمَّاد للمعادن مصنع إسكندراني لإكسسوارات المعمار، ويقول عن نفسه إنه أحد كبار المصنّعين والمصدّرين في هذا المجال منذ سنة ١٩٦٠، وإن خبرته خمسون عاماً.</p><p>ويقول المصنع إنه يتميّز بابتكار تصميمات فريدة وجودة عالية ومجموعة كبيرة من الألوان والأسعار تناسب جميع الطبقات، وإنه يصنّع تصميمات مخصّصة حسب الطلب.</p><p>والخامات التي يذكرها: الألومنيوم، والصلب، والنحاس، والصفائح، والزنك.</p><p>ومواعيد العمل من الساعة ١٠:٠٠ صباحاً حتى ٥:٠٠ مساءً.</p></div>
 </div>
 </section>
-<section class="sec">
-<div class="wrap">
-<div class="sec__grid">
-<div class="sec__head" data-r>
-<span class="sec__n">٠٤</span>
-<h2 class="sec__t">نبذة عن الشركة</h2>
-<span class="sec__en"><bdi dir="ltr">About</bdi></span>
+<section class="reach">
+<div class="sheet">
+<div class="plate">
+<h2 class="plate__t">للتواصل</h2>
+<p class="plate__en">Contact</p>
 </div>
-<div class="sec__body"><div class="prose" data-r><p>مصنع حمَّاد للمعادن مصنع إسكندراني لإكسسوارات المعمار، ويقول عن نفسه إنه أحد كبار المصنّعين والمصدّرين في هذا المجال منذ سنة ١٩٦٠، وإن خبرته خمسون عاماً.</p><p>ويقول المصنع إنه يتميّز بابتكار تصميمات فريدة وجودة عالية ومجموعة كبيرة من الألوان والأسعار تناسب جميع الطبقات، وإنه يصنّع تصميمات مخصّصة حسب الطلب.</p><p>والخامات التي يذكرها: الألومنيوم، والصلب، والنحاس، والصفائح، والزنك.</p><p>ومواعيد العمل من الساعة ١٠:٠٠ صباحاً حتى ٥:٠٠ مساءً.</p></div>
-<div class="facts" style="margin-block-start:26px" data-r><div class="fact"><div class="fact__k">يعمل منذ</div><div class="fact__v">١٩٦٠</div></div><div class="fact"><div class="fact__k">المحافظة</div><div class="fact__v">الإسكندرية</div></div></div></div>
-</div>
-</div>
-</section>
-<section class="sec sec--plate" id="contact">
-<div class="wrap">
-<div class="sec__grid">
-<div class="sec__head" data-r>
-<span class="sec__n">٠٥</span>
-<h2 class="sec__t">للتواصل</h2>
-<span class="sec__en"><bdi dir="ltr">Contact</bdi></span>
-</div>
-<div class="sec__body"><div class="facts" data-r><div class="fact"><div class="fact__k">تليفون</div><div class="fact__v"><a href="tel:01006696870"><bdi dir="ltr" class="tel">01006696870</bdi></a></div></div><div class="fact"><div class="fact__k">البريد</div><div class="fact__v"><a href="mailto:info@doorhandlesegypt.com"><bdi dir="ltr">info@doorhandlesegypt.com</bdi></a></div></div><div class="fact"><div class="fact__k">الموقع</div><div class="fact__v"><bdi dir="ltr">doorhandlesegypt.com</bdi></div></div><div class="fact"><div class="fact__k">العنوان</div><div class="fact__v">كم ٢١ — طريق إسكندرية القاهرة الصحراوي، أول طريق البتروكيماويات، مرغم، الإسكندرية</div></div></div></div>
-</div>
+<dl class="reach__list"><div class="reach__row">
+<dt class="reach__k">العنوان</dt><dd class="reach__v">كم ٢١ — طريق إسكندرية القاهرة الصحراوي، أول طريق البتروكيماويات، مرغم، الإسكندرية</dd>
+</div><div class="reach__row">
+<dt class="reach__k">تليفون</dt><dd class="reach__v"><a href="tel:01006696870"><bdi dir="ltr" class="tel">01006696870</bdi></a></dd>
+</div><div class="reach__row">
+<dt class="reach__k">بريد</dt><dd class="reach__v"><a href="mailto:info@doorhandlesegypt.com"><bdi dir="ltr">info@doorhandlesegypt.com</bdi></a></dd>
+</div><div class="reach__row">
+<dt class="reach__k">الموقع</dt><dd class="reach__v"><a href="https://doorhandlesegypt.com" rel="nofollow"><bdi dir="ltr">doorhandlesegypt.com</bdi></a></dd>
+</div></dl>
 </div>
 </section>
 </main>
-
-<footer class="foot"><div class="wrap">
+<footer class="sign">
+<div class="sheet">
 <p>أعدّت هذه الصفحة صبري داود مجاناً من المواد المنشورة علناً عن الشركة.</p>
-<p><strong>الصفحة دي بتاعتك.</strong> هي ليك مجاناً سواء تعاملنا مع بعض أو لأ، ولو مش عايزها رد بكلمة واحدة وتتمسح في نفس اليوم.</p>
-<p class="foot__reach"><a href="tel:+201069017890"><bdi dir="ltr" class="tel">+20 106 901 7890</bdi></a><span class="foot__sep"> · </span><a href="mailto:usbneran@gmail.com"><bdi dir="ltr">usbneran@gmail.com</bdi></a></p>
-</div></footer>
-
+<p class="sign__gift"><strong>الصفحة دي بتاعتك.</strong> هي ليك مجاناً سواء تعاملنا مع بعض أو لأ، ولو مش عايزها رد بكلمة واحدة وتتمسح في نفس اليوم.</p>
+<p class="sign__reach"><a href="tel:+201069017890"><bdi dir="ltr" class="tel">+20 106 901 7890</bdi></a><a href="mailto:usbneran@gmail.com"><bdi dir="ltr">usbneran@gmail.com</bdi></a></p>
+</div>
+</footer>
 <nav class="bar" aria-label="تواصل">
-<a href="tel:01006696870"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg><span>اتصل</span></a>
-
+<a href="tel:01006696870">اتصل بالمصنع</a>
 </nav>
-<script>(function(){
-var d=document,root=d.documentElement;
-var p=d.querySelector('.hero__img');
-if(p){var on=function(){p.classList.add('ready')};p.complete?on():p.addEventListener('load',on)}
-var show=function(el){el.classList.add('in')};
-var els=[].slice.call(d.querySelectorAll('[data-r]'));
-if(!root.classList.contains('anim')){els.forEach(show);return}
-if(!('IntersectionObserver' in window)){els.forEach(show);return}
-var io=new IntersectionObserver(function(en){en.forEach(function(e){
-if(e.isIntersecting){show(e.target);io.unobserve(e.target)}})},{rootMargin:'0px 0px -6% 0px',threshold:.04});
-els.forEach(function(el){io.observe(el)});
-setTimeout(function(){els.forEach(show)},2600);
-var h=d.querySelector('.hero'),k=d.querySelector('.dock');
-if(h&&k)new IntersectionObserver(function(en){
-k.classList.toggle('dock--on',!en[0].isIntersecting)},{threshold:0}).observe(h);
-})();</script>
 </body>
 </html>
